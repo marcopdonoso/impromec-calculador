@@ -1,5 +1,7 @@
 import clsx from 'clsx'
-type ButtonVariants =
+import { ButtonHTMLAttributes } from 'react'
+
+type ButtonVariant =
   | 'primary'
   | 'primary_small'
   | 'secondary'
@@ -19,10 +21,10 @@ interface VariantProps {
   className: string
 }
 
-const variants: Record<ButtonVariants, VariantProps> = {
+const variants: Record<ButtonVariant, VariantProps> = {
   primary: {
     className:
-      'h-12 w-80 rounded-lg bg-gray-button_primary text-sm font-medium text-gray-white hover:bg-gray-placeholder_icon active:bg-gray-button_primary disabled:bg-gray-input disabled:text-gray-text_inactive sm:w-1/3 sm:text-base',
+      'h-12 w-80 rounded-lg bg-gray-button_primary text-sm font-medium text-gray-white hover:bg-gray-placeholder_icon active:bg-gray-button_primary disabled:bg-gray-input disabled:text-gray-text_inactive sm:w-[32vw] sm:text-base',
   },
   primary_small: {
     className:
@@ -30,7 +32,7 @@ const variants: Record<ButtonVariants, VariantProps> = {
   },
   secondary: {
     className:
-      'bg-gray-white active:bg-gray-white h-12 w-80 rounded-lg border border-gray-input text-sm font-medium text-gray-text hover:bg-gray-background sm:w-1/3 sm:text-base',
+      'bg-gray-white active:bg-gray-white h-12 w-80 rounded-lg border border-gray-input text-sm font-medium text-gray-text hover:bg-gray-background sm:w-[32vw] sm:text-base',
   },
   secondary_small: {
     className:
@@ -38,7 +40,7 @@ const variants: Record<ButtonVariants, VariantProps> = {
   },
   tertiary: {
     className:
-      'h-12 w-80 rounded-lg border border-gray-input bg-gray-background text-sm font-medium text-gray-text hover:bg-gray-input active:bg-gray-background sm:w-1/3 sm:text-base',
+      'h-12 w-80 rounded-lg border border-gray-input bg-gray-background text-sm font-medium text-gray-text hover:bg-gray-input active:bg-gray-background sm:w-[32vw] sm:text-base',
   },
   tertiary_small: {
     className:
@@ -46,7 +48,7 @@ const variants: Record<ButtonVariants, VariantProps> = {
   },
   destructive: {
     className:
-      'text-gray-white active:text-gray-white h-12 w-80 rounded-lg bg-red text-sm font-medium hover:bg-red_alt hover:text-red active:bg-red sm:w-1/3 sm:text-base',
+      'text-gray-white active:text-gray-white h-12 w-80 rounded-lg bg-red text-sm font-medium hover:bg-red_alt hover:text-red active:bg-red sm:w-[32vw] sm:text-base',
   },
   destructive_small: {
     className:
@@ -62,7 +64,7 @@ const variants: Record<ButtonVariants, VariantProps> = {
   },
   add: {
     className:
-      'bg-gray-white active:bg-gray-white h-12 w-80 rounded-lg border border-green-success text-sm font-medium text-green-success hover:bg-green-success_alt sm:w-2/3 sm:text-base',
+      'bg-gray-white active:bg-gray-white h-12 w-80 rounded-lg border border-green-success text-sm font-medium text-green-success hover:bg-green-success_alt sm:w-[66vw] sm:text-base',
   },
   add_small: {
     className:
@@ -78,8 +80,8 @@ const variants: Record<ButtonVariants, VariantProps> = {
   },
 }
 
-interface ButtonProps {
-  variant?: ButtonVariants
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant
   children?: React.ReactNode
   icon?: React.ReactNode
   className?: string

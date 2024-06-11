@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ElementType, ReactNode } from 'react'
+import { ElementType, HTMLAttributes, ReactNode } from 'react'
 
 type TypographyVariant =
   | 'heading_h4'
@@ -71,7 +71,7 @@ const variants: Record<TypographyVariant, VariantProps> = {
   },
 }
 
-interface TypographyProps {
+interface TypographyProps extends HTMLAttributes<HTMLParagraphElement> {
   variant?: TypographyVariant
   className?: string
   children: ReactNode
