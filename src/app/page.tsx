@@ -1,13 +1,10 @@
 'use client'
+import Button from '@/components/Button'
 import Input from '@/components/Input'
 import Textarea from '@/components/Textarea'
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
 
 export default function Home() {
-  const Icon = () => (
-    <div className="flex h-4 w-4 items-center justify-center text-gray-text">
-      +
-    </div>
-  )
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <br />
@@ -20,6 +17,9 @@ export default function Home() {
       <Input variant="large" label="email" placeholder="yo@correo.com" />
       <Input label="email" placeholder="yo@correo.com" />
       <Textarea label="Textarea" placeholder="hola" />
+      <Button variant="add" icon={<PlusCircleIcon />}>
+        Mis Proyectos
+      </Button>
     </div>
   )
 }

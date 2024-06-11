@@ -99,7 +99,7 @@ export default function Button({
       <div
         className={`flex items-center ${variant === 'icon_right' || variant === 'icon_right_small' ? 'flex-row-reverse justify-between gap-4' : 'justify-center gap-2'}`}
       >
-        {icon}
+        {icon && <div className="w-5 sm:w-6">{icon}</div>}
         {children}
       </div>
     </button>
