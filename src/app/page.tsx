@@ -1,5 +1,6 @@
 'use client'
 import Input from '@/components/Input'
+import Textarea from '@/components/Textarea'
 
 export default function Home() {
   const Icon = () => (
@@ -18,6 +19,7 @@ export default function Home() {
       <br />
       <Input variant="large" label="email" placeholder="yo@correo.com" />
       <Input label="email" placeholder="yo@correo.com" />
+      <Textarea label="Textarea" placeholder="hola" />
     </div>
   )
 }
