@@ -7,6 +7,8 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    transparent: 'transparent',
+    current: 'currentColor',
     colors: {
       red: '#DA0027',
       red_alt: '#FEEBEB',
@@ -27,6 +29,7 @@ const config: Config = {
         background_alt: '#FAFAFA',
         white: '#FFFFFF',
       },
+      shadow: 'rgba(160, 175, 195, 0.4)',
     },
     extend: {
       backgroundImage: {
