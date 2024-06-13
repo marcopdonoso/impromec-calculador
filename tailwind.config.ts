@@ -28,6 +28,7 @@ const config: Config = {
         background: '#F2F2F2',
         background_alt: '#FAFAFA',
         white: '#FFFFFF',
+        dark: '#111928',
       },
       shadow: 'rgba(160, 175, 195, 0.4)',
     },

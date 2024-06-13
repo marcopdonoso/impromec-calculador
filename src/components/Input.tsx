@@ -5,32 +5,6 @@ import { InputHTMLAttributes, useState } from 'react'
 
 type InputVariant = 'default' | 'large' | 'password'
 
-interface VariantProps {
-  inputStyles: string
-  labelStyles?: string
-}
-
-const variants: Record<InputVariant, VariantProps> = {
-  default: {
-    inputStyles:
-      'bg-gray-white h-12 rounded-lg border border-gray-input pl-5 text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive sm:text-base sm:placeholder:text-base',
-    labelStyles:
-      'flex w-80 flex-col justify-start gap-1 text-sm font-medium sm:w-[32vw] sm:gap-2 sm:text-base',
-  },
-  large: {
-    inputStyles:
-      'bg-gray-white h-12 rounded-lg border border-gray-input pl-5 text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive sm:text-base sm:placeholder:text-base',
-    labelStyles:
-      'flex w-[66vw] flex-col justify-start gap-2 text-base font-medium',
-  },
-  password: {
-    inputStyles:
-      'bg-gray-white h-12 rounded-lg border border-gray-input pl-5 text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive sm:text-base sm:placeholder:text-base',
-    labelStyles:
-      'flex w-80 flex-col justify-start gap-1 text-sm font-medium sm:w-[32vw] sm:gap-2 sm:text-base',
-  },
-}
-
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: InputVariant
   label?: string
@@ -46,14 +20,21 @@ export default function Input({
   const [isPassword, setIsPassword] = useState(true)
   return (
     <label
-      className={clsx(variants[variant].labelStyles, 'relative')}
+      className={clsx(
+        'relative flex flex-col justify-start font-medium',
+        variant === 'large'
+          ? 'w-[66vw] gap-2 text-base'
+          : 'w-80 gap-1 text-sm sm:w-[32vw] sm:gap-2 sm:text-base'
+      )}
       htmlFor="input"
     >
       {label}
       <input
         type={variant === 'password' && isPassword ? 'password' : props.type}
-        name="input"
-        className={clsx(variants[variant].inputStyles, className)}
+        className={clsx(
+          'h-12 rounded-lg border border-gray-input bg-gray-white pl-5 text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive sm:text-base sm:placeholder:text-base',
+          className
+        )}
         {...props}
       />
       {variant === 'password' && (

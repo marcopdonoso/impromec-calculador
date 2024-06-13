@@ -30,6 +30,7 @@ interface MyListboxProps {
   label?: string
   options: Option[]
   className?: string
+  name?: string
 }
 
 export default function MyListbox({
@@ -37,6 +38,7 @@ export default function MyListbox({
   label,
   options,
   className,
+  name,
 }: MyListboxProps) {
   const [selected, setSelected] = useState(options[0])
   const [isOpen, setIsOpen] = useState(false)
@@ -51,7 +53,7 @@ export default function MyListbox({
       >
         {label}
       </Label>
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox name={name} value={selected} onChange={setSelected}>
         <ListboxButton
           onClick={() => setIsOpen(!isOpen)}
           className={clsx(
@@ -94,7 +96,7 @@ export default function MyListbox({
           >
             {options.map((option) => (
               <ListboxOption
-                key={option.value}
+                key={option.text}
                 value={option}
                 className="cursor-default select-none truncate border-t border-gray-background px-5 py-2 text-sm first:border-t-0 data-[focus]:bg-gray-button_primary data-[focus]:text-gray-white sm:text-base"
                 onClick={() => setIsOpen(false)}
