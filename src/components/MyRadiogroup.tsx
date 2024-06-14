@@ -52,9 +52,9 @@ export default function MyRadiogroup({
                 value={item.label}
                 className="group flex size-4 items-center justify-center rounded-full border border-gray-placeholder_icon bg-gray-white outline-none data-[checked]:border-green-success data-[checked]:bg-green-success sm:size-5"
               >
-                <span className="invisible size-2 rounded-full bg-gray-white group-data-[checked]:visible" />
+                <span className="invisible size-2 rounded-full bg-gray-white group-data-[checked]:visible sm:size-[10px]" />
               </Radio>
-              <Label className={'text-gray-dark text-sm sm:text-base'}>
+              <Label className={'text-sm text-gray-dark sm:text-base'}>
                 {item.label}
               </Label>
             </div>
