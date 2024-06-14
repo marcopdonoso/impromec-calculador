@@ -1,3 +1,4 @@
+'use client'
 import {
   Field,
   Label,
@@ -90,7 +91,7 @@ export default function MyListbox({
           <ListboxOptions
             anchor="bottom"
             className={clsx(
-              'shadow-shadow mt-1 rounded-md py-2 text-gray-text shadow focus:outline-none sm:mt-2',
+              'shadow-shadow mt-1 rounded-md bg-gray-white py-2 text-gray-text shadow focus:outline-none sm:mt-2',
               variant !== 'order' && 'w-[var(--button-width)]'
             )}
           >

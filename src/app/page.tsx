@@ -1,8 +1,6 @@
-'use client'
 import Button from '@/components/Button'
 import MyListbox from '@/components/MyListbox'
 import MyRadiogroup from '@/components/MyRadiogroup'
-import { useState } from 'react'
 
 const opciones = [
   { value: '1.5', text: 'Orden alfabético (A-Z)' },
@@ -12,18 +10,16 @@ const opciones = [
 ]
 
 const items = [
-  'Liviana (resiste hasta 100kg/ml)',
-  'Semipesado (Resiste hasta 150kg/ml)',
-  'Pesado (Resiste hasta 400kg/ml)',
+  { label: 'Escalerilla', image: 'escalerilla' },
+  { label: 'Canal', image: 'escalerilla' },
 ]
 
 export default function Home() {
-  const [first, setFirst] = useState('')
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-3">
-      <MyListbox variant="small" options={opciones} label="Ordenar por:" />
+      <MyListbox variant="order" options={opciones} label="Ordenar por:" />
       <Button variant="primary">Click me</Button>
-      <MyRadiogroup items={items} />
+      <MyRadiogroup className="flex gap-2" items={items} />
     </div>
   )
 }
