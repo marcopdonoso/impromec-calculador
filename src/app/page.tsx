@@ -4,6 +4,7 @@ import MyListbox from '@/components/MyListbox'
 import MyRadiogroup from '@/components/MyRadiogroup'
 import MySlider from '@/components/MySlider'
 import MySwitch from '@/components/MySwitch'
+import Link from 'next/link'
 import { useState } from 'react'
 
 const opciones = [
@@ -27,6 +28,7 @@ export default function Home() {
       <MyRadiogroup className="flex gap-2" items={items} />
       <MySwitch />
       <MySlider value={value} onValueChange={(v) => setValue(v)} />
+      <Link href={'/dashboard'}>Dash</Link>
     </div>
   )
 }
