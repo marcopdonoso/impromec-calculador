@@ -2,7 +2,7 @@
 import * as Progress from '@radix-ui/react-progress'
 import { useEffect, useState } from 'react'
 
-const MyProgress: React.FC = () => {
+const MyProgress = ({ label }: { label?: string }) => {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const MyProgress: React.FC = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">
-      <p className="mb-8 font-medium">Cargando...</p>
+      <p className="mb-8 font-medium">{label ?? 'Cargando...'}</p>
       <Progress.Root
         className="h-4 w-64 overflow-hidden rounded-full bg-gray-background"
         style={{

@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { ButtonHTMLAttributes } from 'react'
 
-type ButtonVariant =
+export type ButtonVariant =
   | 'primary'
   | 'primary_small'
   | 'secondary'

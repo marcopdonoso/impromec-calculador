@@ -1,11 +1,9 @@
-'use client'
 import Button from '@/components/Button'
 import MyListbox from '@/components/MyListbox'
 import MyRadiogroup from '@/components/MyRadiogroup'
 import MySlider from '@/components/MySlider'
 import MySwitch from '@/components/MySwitch'
-import Link from 'next/link'
-import { useState } from 'react'
+import DeleteModal from './components/DeleteModal'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -20,15 +18,14 @@ const items = [
 ]
 
 export default function Home() {
-  const [value, setValue] = useState([0])
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-3">
       <MyListbox variant="large" options={opciones} label="Secciones:" />
       <Button variant="primary">Click me</Button>
       <MyRadiogroup className="flex gap-2" items={items} />
       <MySwitch />
-      <MySlider value={value} onValueChange={(v) => setValue(v)} />
-      <Link href={'/dashboard'}>Dash</Link>
+      <MySlider />
+      <DeleteModal />
     </div>
   )
 }

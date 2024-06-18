@@ -30,6 +30,7 @@ export default function MyRadiogroup({
       className={clsx(className)}
       value={selected}
       onChange={setSelected}
+      name={props.name}
       {...props}
     >
       {items.map((item) => {

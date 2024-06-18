@@ -1,11 +1,10 @@
 'use client'
 import * as Slider from '@radix-ui/react-slider'
 import clsx from 'clsx'
-interface MySliderProps {
-  value: number[]
-  onValueChange: (value: number[]) => void
-}
-export default function MySlider({ value, onValueChange }: MySliderProps) {
+import { useState } from 'react'
+
+export default function MySlider() {
+  const [value, setValue] = useState([0])
   return (
     <div className="flex items-center gap-2 sm:gap-4">
       <Slider.Root
@@ -13,7 +12,7 @@ export default function MySlider({ value, onValueChange }: MySliderProps) {
         step={5}
         className="relative flex h-5 w-56 items-center sm:w-80"
         value={value}
-        onValueChange={onValueChange}
+        onValueChange={(v) => setValue(v)}
       >
         <Slider.Track className="relative h-[10px] grow rounded-full bg-gray-input">
           <Slider.Range className="absolute h-full rounded-full bg-green-success" />
