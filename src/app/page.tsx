@@ -1,4 +1,5 @@
 import Button from '@/components/Button'
+import ListItem from '@/components/ListItem'
 import MyListbox from '@/components/MyListbox'
 import MyRadiogroup from '@/components/MyRadiogroup'
 import MySlider from '@/components/MySlider'
@@ -25,6 +26,10 @@ export default function Home() {
       <MyRadiogroup className="flex gap-2" items={items} />
       <MySwitch />
       <MySlider />
+      <ul>
+        <ListItem variant="checkmark">Hola</ListItem>
+        <ListItem>Chau</ListItem>
+      </ul>
       <DeleteModal />
     </div>
   )
