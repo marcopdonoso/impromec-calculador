@@ -4,6 +4,7 @@ import MyListbox from '@/components/MyListbox'
 import MyRadiogroup from '@/components/MyRadiogroup'
 import MySlider from '@/components/MySlider'
 import MySwitch from '@/components/MySwitch'
+import Notification from '@/components/Notification'
 import DeleteModal from './components/DeleteModal'
 
 const opciones = [
@@ -26,6 +27,11 @@ export default function Home() {
       <MyRadiogroup className="flex gap-2" items={items} />
       <MySwitch />
       <MySlider />
+      <Notification
+        paragraph="Cuando divides el proyecto en sectores debes agregar al menos un sector y así podrás comenzar con el calculo (o puedes crear el proyecto desde 0)."
+        title="El sector ha sido guardado"
+        variant="backgroundedInfo"
+      />
       <ul>
         <ListItem variant="checkmark">Hola</ListItem>
         <ListItem>Chau</ListItem>
