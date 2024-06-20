@@ -6,6 +6,7 @@ import MySlider from '@/components/MySlider'
 import MySwitch from '@/components/MySwitch'
 import Notification from '@/components/Notification'
 import DeleteModal from './components/DeleteModal'
+import Table from './components/Table'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -21,11 +22,17 @@ const items = [
 
 export default function Home() {
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-3">
+    <div className="flex h-full flex-col items-center gap-3 py-2">
+      <Table />
       <MyListbox variant="large" options={opciones} label="Secciones:" />
-      <Button variant="primary">Click me</Button>
+      <div>
+        {' '}
+        <Button variant="primary">Click me</Button>
+      </div>
       <MyRadiogroup className="flex gap-2" items={items} />
-      <MySwitch />
+      <div>
+        <MySwitch />
+      </div>
       <MySlider />
       <Notification
         paragraph="Cuando divides el proyecto en sectores debes agregar al menos un sector y así podrás comenzar con el calculo (o puedes crear el proyecto desde 0)."
