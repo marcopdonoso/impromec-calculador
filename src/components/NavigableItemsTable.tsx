@@ -35,32 +35,38 @@ export default function NavigableItemsTable({
           })
           return (
             <div
+              role="button"
               key={index}
-              className="flex w-80 flex-col rounded-2xl border border-gray-input px-3 py-4 md:h-14 md:w-full md:flex-row md:items-center"
+              className="relative flex w-80 flex-col border-y border-gray-input py-2 md:h-14 md:w-full md:flex-row md:items-center md:font-medium"
+              onClick={() => handleNavigate && handleNavigate(dataRowID)}
             >
-              <BriefcaseIcon className="mr-4 w-6 text-gray-text" />
-              {title && <h3 className="mr-1 font-medium">{title}:</h3>}
-              {entries.map((e, index) => {
-                return (
-                  <div
-                    className="flex justify-between border-b border-gray-input py-2 md:flex-1 md:border-none md:font-medium"
-                    key={index}
-                  >
-                    <span className="text-sm text-gray-text md:text-base">
-                      {e}
-                    </span>
-                  </div>
-                )
-              })}
-              {handleNavigate && (
-                <div className="mt-4 flex justify-end md:m-0">
-                  <ChevronRightIcon
-                    role="button"
-                    className="w-5 text-gray-text"
-                    onClick={() => handleNavigate(dataRowID)}
-                  />
+              <div className="flex">
+                <div className="md:mr-4">
+                  <BriefcaseIcon className="absolute top-4 w-6 text-gray-text md:static" />
                 </div>
-              )}
+                {title && (
+                  <h3 className="mr-1 pl-10 text-sm font-medium md:pl-0 md:text-base">
+                    {title}:
+                  </h3>
+                )}
+              </div>
+              <div className="w-full pl-10 md:flex md:items-center md:pl-0">
+                {entries.map((e, index) => {
+                  return (
+                    <div
+                      className="inline-block w-1/2 first:mb-3 first:w-full last:text-end md:w-full md:flex-1 md:first:mb-0 md:first:font-normal md:last:text-start"
+                      key={index}
+                    >
+                      <span className="text-sm text-gray-text md:text-base">
+                        {e}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="absolute right-0 top-4 md:static">
+                <ChevronRightIcon className="w-4 text-gray-text" />
+              </div>
             </div>
           )
         })}
