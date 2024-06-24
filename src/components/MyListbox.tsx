@@ -15,9 +15,9 @@ import { useState } from 'react'
 type ListBoxVariant = 'small' | 'medium' | 'large' | 'order'
 
 const variants: Record<ListBoxVariant, string> = {
-  small: 'w-40 sm:w-[14vw] sm:min-w-min',
-  medium: 'w-[19vw] sm:min-w-min',
-  large: 'w-80 sm:w-[32vw] sm:min-w-min',
+  small: 'w-40 sm:w-[14vw] sm:min-w-28',
+  medium: 'w-[19vw] min-w-28',
+  large: 'w-80 sm:w-[32vw] sm:min-w-28',
   order: 'w-fit flex items-center gap-1',
 }
 
@@ -91,7 +91,7 @@ export default function MyListbox({
           <ListboxOptions
             anchor="bottom"
             className={clsx(
-              'shadow-shadow mt-1 rounded-md bg-gray-white py-2 text-gray-text shadow focus:outline-none sm:mt-2',
+              'mt-1 rounded-md bg-gray-white py-2 text-gray-text shadow shadow-shadow focus:outline-none sm:mt-2',
               variant !== 'order' && 'w-[var(--button-width)]'
             )}
           >

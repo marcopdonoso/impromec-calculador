@@ -3,7 +3,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { InputHTMLAttributes, useState } from 'react'
 
-type InputVariant = 'default' | 'large' | 'password'
+type InputVariant = 'small' | 'third' | 'default' | 'large' | 'password'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: InputVariant
@@ -21,18 +21,23 @@ export default function Input({
   return (
     <label
       className={clsx(
-        'relative flex flex-col justify-start font-medium',
-        variant === 'large'
-          ? 'w-[66vw] gap-2 text-base'
-          : 'w-80 gap-1 text-sm sm:w-[32vw] sm:gap-2 sm:text-base'
+        'relative flex flex-col justify-start gap-1 text-sm font-medium sm:gap-2 sm:text-base',
+        {
+          'w-40 sm:w-[14vw]': variant === 'small',
+          'w-80 sm:w-[19vw]': variant === 'third',
+          'w-80 sm:w-[32vw]': variant === 'default' || variant === 'password',
+          'w-80 sm:w-[66vw]': variant === 'large',
+        }
       )}
-      htmlFor="input"
+      htmlFor={props.name}
     >
       {label}
       <input
+        min={0}
+        id={props.name}
         type={variant === 'password' && isPassword ? 'password' : props.type}
         className={clsx(
-          'h-12 rounded-lg border border-gray-input bg-gray-white pl-5 text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive sm:text-base sm:placeholder:text-base',
+          'h-12 rounded-lg border border-gray-input bg-gray-white pl-5 pr-4 text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive sm:text-base sm:placeholder:text-base',
           className
         )}
         {...props}
