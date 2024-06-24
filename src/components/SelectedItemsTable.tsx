@@ -4,11 +4,11 @@ import clsx from 'clsx'
 interface TableProps {
   headers: string[]
   dataRows: Record<string, any>[]
-  handleDelete: () => void
+  handleDelete?: (id: string) => void
   className?: string
 }
 
-export default function TableWithHeaders({
+export default function SelectedItemsTable({
   headers,
   dataRows,
   handleDelete,
@@ -24,11 +24,14 @@ export default function TableWithHeaders({
             </div>
           )
         })}
-        <div className="w-6"></div>
+        {handleDelete && <div className="w-6" />}
       </div>
       <div className="flex flex-col items-center gap-2">
         {dataRows.map((dataRow, index) => {
-          const entries = Object.values(dataRow)
+          const dataRowCopy = { ...dataRow }
+          const dataRowID = dataRow.id
+          delete dataRowCopy.id
+          const entries = Object.values(dataRowCopy)
           return (
             <div
               key={index}
@@ -49,13 +52,15 @@ export default function TableWithHeaders({
                   </div>
                 )
               })}
-              <div className="mt-4 flex justify-end md:m-0">
-                <TrashIcon
-                  role="button"
-                  onClick={handleDelete}
-                  className="w-6 text-red"
-                />
-              </div>
+              {handleDelete && (
+                <div className="mt-4 flex justify-end md:m-0">
+                  <TrashIcon
+                    role="button"
+                    onClick={() => handleDelete(dataRowID)}
+                    className="w-6 text-red"
+                  />
+                </div>
+              )}
             </div>
           )
         })}

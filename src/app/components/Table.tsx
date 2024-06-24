@@ -1,5 +1,7 @@
 'use client'
-import TableWithHeaders from '@/components/TableWithHeaders'
+
+import NavigableItemsTable from '@/components/NavigableItemsTable'
+import SelectedItemsTable from '@/components/SelectedItemsTable'
 
 export interface Data {
   id?: number
@@ -9,6 +11,13 @@ export interface Data {
   quantity: number
   disp: string
   layers: string
+}
+
+export interface Data2 {
+  id?: number
+  name: string
+  description: string
+  createdAt: string
 }
 
 export default function Table() {
@@ -51,17 +60,44 @@ export default function Table() {
     },
   ]
 
-  const adaptedData = data.map((d) => {
-    delete d.id
-    return d
-  })
+  const data2: Data2[] = [
+    {
+      id: 1,
+      name: 'Instalación Electrobol',
+      description: '2 Sectores',
+      createdAt: '2023-05-01T12:00:00Z',
+    },
+    {
+      id: 2,
+      name: 'Instalación Electrocablera',
+      description: '1 Sector',
+      createdAt: '2023-05-02T09:30:00Z',
+    },
+    {
+      id: 3,
+      name: 'Instalación Electromecánica',
+      description: '3 Sectores',
+      createdAt: '2023-05-03T14:45:00Z',
+    },
+  ]
+
   return (
-    <TableWithHeaders
-      headers={headers}
-      dataRows={adaptedData}
-      handleDelete={() => {
-        alert('deleted')
-      }}
-    />
+    <>
+      <SelectedItemsTable
+        headers={headers}
+        dataRows={data}
+        handleDelete={(id) => {
+          alert('deleted:' + id)
+        }}
+      />
+      <br />
+      <NavigableItemsTable
+        dataRows={data2}
+        title="Proyecto"
+        handleNavigate={(id) => {
+          alert('open:' + id)
+        }}
+      />
+    </>
   )
 }
