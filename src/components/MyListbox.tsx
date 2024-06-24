@@ -94,6 +94,11 @@ export default function MyListbox({
               'mt-1 rounded-md bg-gray-white py-2 text-gray-text shadow shadow-shadow focus:outline-none sm:mt-2',
               variant !== 'order' && 'w-[var(--button-width)]'
             )}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setIsOpen(false)
+              }
+            }}
           >
             {options.map((option) => (
               <ListboxOption
