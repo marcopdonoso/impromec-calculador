@@ -1,23 +1,23 @@
 'use client'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { InputHTMLAttributes, useState } from 'react'
+import { InputHTMLAttributes } from 'react'
 
-type InputVariant = 'small' | 'third' | 'default' | 'large' | 'password'
+export type InputVariant = 'small' | 'third' | 'default' | 'large'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: InputVariant
   label?: string
   className?: string
+  children?: React.ReactNode
 }
 
 export default function Input({
   variant = 'default',
   label,
   className,
+  children,
   ...props
 }: InputProps) {
-  const [isPassword, setIsPassword] = useState(true)
   return (
     <label
       className={clsx(
@@ -25,7 +25,7 @@ export default function Input({
         {
           'w-40 sm:w-[14vw]': variant === 'small',
           'w-80 sm:w-[19vw]': variant === 'third',
-          'w-80 sm:w-[32vw]': variant === 'default' || variant === 'password',
+          'w-80 sm:w-[32vw]': variant === 'default',
           'w-80 sm:w-[66vw]': variant === 'large',
         }
       )}
@@ -35,14 +35,15 @@ export default function Input({
       <input
         min={0}
         id={props.name}
-        type={variant === 'password' && isPassword ? 'password' : props.type}
+        // type={variant === 'password' && isPassword ? 'password' : props.type}
         className={clsx(
           'h-12 rounded-lg border border-gray-input bg-gray-white pl-5 pr-4 text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive sm:text-base sm:placeholder:text-base',
           className
         )}
         {...props}
       />
-      {variant === 'password' && (
+      {children}
+      {/* {variant === 'password' && (
         <button
           className="absolute bottom-4 right-4"
           onClick={() => setIsPassword(!isPassword)}
@@ -54,7 +55,7 @@ export default function Input({
             <EyeIcon className="w-4 text-gray-text" />
           )}
         </button>
-      )}
+      )} */}
     </label>
   )
 }
