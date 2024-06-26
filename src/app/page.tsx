@@ -1,5 +1,5 @@
-'use client'
 import InputPass from '@/components/InputPass'
+import InputSearch from '@/components/InputSearch'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -15,8 +15,9 @@ const items = [
 
 export default function Home() {
   return (
-    <div className="flex h-full flex-col items-center gap-3 py-2">
+    <div className="flex h-full flex-col items-center gap-3 px-3 py-2">
       <InputPass variant="default" />
+      <InputSearch placeholder="Busca alguito..." />
     </div>
   )
 }
