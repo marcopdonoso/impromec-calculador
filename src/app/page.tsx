@@ -1,5 +1,4 @@
-import InputPass from '@/components/InputPass'
-import InputSearch from '@/components/InputSearch'
+import Carousel from '@/components/Carousel'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -13,11 +12,15 @@ const items = [
   { label: 'Canal', image: 'escalerilla' },
 ]
 
+const images = [
+  { src: '/img/escalerilla.png', alt: 'Escalerilla' },
+  { src: '/img/curva.png', alt: 'Curva' },
+]
+
 export default function Home() {
   return (
     <div className="flex h-full flex-col items-center gap-3 px-3 py-2">
-      <InputPass variant="default" />
-      <InputSearch placeholder="Busca alguito..." />
+      <Carousel images={images} />
     </div>
   )
 }
