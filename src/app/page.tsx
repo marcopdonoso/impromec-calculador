@@ -15,6 +15,7 @@ const items = [
 const images = [
   { src: '/img/escalerilla.png', alt: 'Escalerilla' },
   { src: '/img/curva.png', alt: 'Curva' },
+  { src: '/img/escalerilla.png', alt: 'Escalerilla' },
 ]
 
 export default function Home() {
