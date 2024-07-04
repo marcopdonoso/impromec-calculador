@@ -10,7 +10,7 @@ interface PaginationProps {
 }
 
 export default function Pagination({ totalPages, onChange }: PaginationProps) {
-  const [currPage, setCurrPage] = useState<number>(1)
+  const [currPage, setCurrPage] = useState(1)
 
   const pages = Array.from({ length: totalPages }, (_, idx) => idx + 1)
 

@@ -1,5 +1,6 @@
 'use client'
-import Pagination from '@/components/Pagination'
+import Breadcrumbs from '@/components/Breadcrumbs'
+import Link from 'next/link'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -28,10 +29,11 @@ export default function Home() {
 
   return (
     <div className="flex h-full flex-col items-center gap-3 px-3 py-2">
-      <Pagination
-        totalPages={17}
-        onChange={(currPage) => handleChange(currPage)}
-      />
+      <Breadcrumbs />
+      <div>
+        <Link href={'/uno'}>uno</Link>
+        <Link href={'/uno/dos'}>dos</Link>
+      </div>
     </div>
   )
 }
