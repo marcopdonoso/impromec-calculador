@@ -10,8 +10,6 @@ type BreadcrumbItem = {
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   const pathnames = pathname.split('/').filter((x) => x)
-  console.log(pathnames)
-
   return pathnames.map((_, idx) => {
     const path = `/${pathnames.slice(0, idx + 1).join('/')}`
     const name = pathnames[idx]
@@ -37,7 +35,9 @@ export default function Breadcrumbs() {
             <li key={breadcrumb.path} className="flex gap-2">
               <ChevronRightIcon className="w-5 text-gray-text_inactive" />
               {idx === breadcrumbs.length - 1 ? (
-                <span>{breadcrumb.name}</span>
+                <span className="font-medium text-gray-text">
+                  {breadcrumb.name}
+                </span>
               ) : (
                 <Link
                   className="text-gray-text_inactive"
