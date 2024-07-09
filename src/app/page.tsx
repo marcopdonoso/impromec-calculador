@@ -1,6 +1,5 @@
 'use client'
-import Breadcrumbs from '@/components/Breadcrumbs'
-import Link from 'next/link'
+import Navbar, { Navlink } from '@/components/Navbar'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -22,6 +21,14 @@ const images = [
 
 const options = ['100mm', '200mm', '300mm', '400mm', '500mm', '600mm']
 
+const navlinks: Navlink[] = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Calculador', path: '/calculator' },
+  { name: 'Productos', path: '/products' },
+  { name: 'Nosotros', path: '/about' },
+  { name: 'Contáctanos', path: '/contact' },
+]
+
 export default function Home() {
   const handleChange = (currPage: number) => {
     console.log(currPage)
@@ -29,11 +36,7 @@ export default function Home() {
 
   return (
     <div className="flex h-full flex-col items-center gap-3 px-3 py-2">
-      <Breadcrumbs />
-      <div>
-        <Link href={'/uno'}>uno</Link>
-        <Link href={'/uno/dos'}>dos</Link>
-      </div>
+      <Navbar navlinks={navlinks} />
     </div>
   )
 }
