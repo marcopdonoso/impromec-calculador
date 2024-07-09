@@ -1,18 +1,11 @@
+'use client'
+import { navlinks } from '@/app/page'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export interface Navlink {
-  name: string
-  path: string
-}
-
-interface NavbarProps {
-  navlinks: Navlink[]
-}
-
-export default function Navbar({ navlinks }: NavbarProps) {
+export default function Navbar() {
   const [activeLink, setActiveLink] = useState<string | null>(null)
   const pathname = usePathname()
 
@@ -21,7 +14,7 @@ export default function Navbar({ navlinks }: NavbarProps) {
   }, [pathname])
 
   return (
-    <nav className="flex flex-col sm:flex-row sm:gap-10">
+    <nav className="flex flex-col sm:flex-row sm:items-center sm:gap-10">
       {navlinks.map((navlink) => {
         return (
           <Link

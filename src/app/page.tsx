@@ -1,5 +1,4 @@
-'use client'
-import Navbar, { Navlink } from '@/components/Navbar'
+import HeaderMenu from '@/components/Menu/HeaderMenu'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -21,7 +20,12 @@ const images = [
 
 const options = ['100mm', '200mm', '300mm', '400mm', '500mm', '600mm']
 
-const navlinks: Navlink[] = [
+export interface Navlink {
+  name: string
+  path: string
+}
+
+export const navlinks: Navlink[] = [
   { name: 'Inicio', path: '/' },
   { name: 'Calculador', path: '/calculator' },
   { name: 'Productos', path: '/products' },
@@ -29,14 +33,36 @@ const navlinks: Navlink[] = [
   { name: 'Contáctanos', path: '/contact' },
 ]
 
-export default function Home() {
-  const handleChange = (currPage: number) => {
-    console.log(currPage)
-  }
+export type User = {
+  id: string
+  avatar: string | null
+  name: string
+  email: string
+  company: string | null
+  area: string
+  phone: string
+  location: string
+  createdAt: string
+  updatedAt: string
+}
 
+export const userFromStore: User = {
+  id: '1',
+  avatar: null,
+  name: 'Marco Perez Donoso',
+  email: 'marcopdonoso@gmail.com',
+  company: 'Impromec',
+  area: 'Development',
+  phone: '123456789',
+  location: 'Mexico City',
+  createdAt: '2021-09-01',
+  updatedAt: '2021-09-01',
+}
+
+export default function Home() {
   return (
-    <div className="flex h-full flex-col items-center gap-3 px-3 py-2">
-      <Navbar navlinks={navlinks} />
+    <div className="flex h-full flex-col items-center gap-3 px-3">
+      <HeaderMenu />
     </div>
   )
 }
