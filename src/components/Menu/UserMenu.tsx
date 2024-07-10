@@ -2,7 +2,9 @@
 import Link from 'next/link'
 
 export default function UserMenu() {
-  const handleCloseSession = () => {}
+  const handleCloseSession = () => {
+    console.log('Cerrar sesión')
+  }
 
   return (
     <div className="z-50 flex w-52 flex-col bg-gray-white sm:rounded-md sm:py-2 sm:shadow sm:shadow-shadow">
