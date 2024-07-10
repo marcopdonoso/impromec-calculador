@@ -1,10 +1,8 @@
-import { User, userFromStore } from '@/app/page'
+import { User } from '@/app/page'
 import Image from 'next/image'
 import InitialsAvatar from './InitialsAvatar'
 
-export default function UserSection() {
-  const user: User = userFromStore
-
+export default function UserSection({ user }: { user: User }) {
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
       {user.avatar ? (
