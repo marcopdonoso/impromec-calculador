@@ -1,4 +1,5 @@
 'use client'
+import { userFromStore } from '@/app/page'
 import { Bars3Icon, XCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import Image from 'next/image'
@@ -12,7 +13,7 @@ import UserSection from './UserSection'
 
 export default function HeaderMenu() {
   const [showUserMenu, setShowUserMenu] = useState(false)
-  const user = null
+  const user = userFromStore
   const router = useRouter()
 
   const handleClose = () => {
@@ -24,7 +25,7 @@ export default function HeaderMenu() {
   }
 
   return (
-    <div className="flex h-screen flex-col px-8 py-6 sm:h-fit sm:w-screen sm:flex-row-reverse sm:justify-between sm:px-28 sm:py-6">
+    <div className="flex h-screen flex-col px-8 py-6 sm:h-fit sm:w-screen sm:flex-row-reverse sm:justify-between sm:px-28 sm:py-6 sm:shadow-md">
       {user ? (
         <div
           onClick={handleUserSectionClick}
