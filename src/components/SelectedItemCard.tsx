@@ -21,7 +21,7 @@ export default function SelectedItemCard({
           src={image ?? '/svg/landscape-placeholder.svg'}
           alt={alt ?? 'product'}
           className="object-contain"
-          sizes="(max-width: 640px) 30vw, (max-width: 1536px) 20vw"
+          sizes="(max-width: 1024px) 30vw, (max-width: 1536px) 20vw"
         />
       </div>
       <div className="flex flex-col gap-1">

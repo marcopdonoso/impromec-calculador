@@ -16,7 +16,7 @@ export default function SelectedItemsTable({
 }: TableProps) {
   return (
     <div className={clsx('w-[66vw] min-w-80', className)}>
-      <div className="mb-3 hidden px-10 md:flex">
+      <div className="mb-3 hidden px-10 lg:flex">
         {headers.map((h) => {
           return (
             <div key={h} className="flex-1 text-gray-placeholder">
@@ -35,25 +35,25 @@ export default function SelectedItemsTable({
           return (
             <div
               key={index}
-              className="flex w-80 flex-col rounded-2xl border border-gray-input px-3 py-4 md:h-16 md:w-full md:flex-row md:items-center md:px-10"
+              className="flex w-80 flex-col rounded-2xl border border-gray-input px-3 py-4 lg:h-16 lg:w-full lg:flex-row lg:items-center lg:px-10"
             >
               {entries.map((e, index) => {
                 return (
                   <div
-                    className="flex justify-between border-b border-gray-input py-2 first:font-medium md:flex-1 md:border-none md:first:font-bold"
+                    className="flex justify-between border-b border-gray-input py-2 first:font-medium lg:flex-1 lg:border-none lg:first:font-bold"
                     key={index}
                   >
-                    <span className="text-sm font-normal text-gray-placeholder md:hidden">
+                    <span className="text-sm font-normal text-gray-placeholder lg:hidden">
                       {headers[index]}
                     </span>
-                    <span className="text-sm text-gray-text md:text-base">
+                    <span className="text-sm text-gray-text lg:text-base">
                       {e}
                     </span>
                   </div>
                 )
               })}
               {handleDelete && (
-                <div className="mt-4 flex justify-end md:m-0">
+                <div className="mt-4 flex justify-end lg:m-0">
                   <TrashIcon
                     role="button"
                     onClick={() => handleDelete(dataRowID)}
@@ -69,4 +69,4 @@ export default function SelectedItemsTable({
   )
 }
 
-// flex md:h-16 w-80 flex-col md:flex-row rounded-2xl border border-gray-input px-3 md:w-full md:px-10 md:items-center
+// flex lg:h-16 w-80 flex-col lg:flex-row rounded-2xl border border-gray-input px-3 lg:w-full lg:px-10 lg:items-center
