@@ -19,7 +19,7 @@ export default function ListItem({
 
   return (
     <li
-      className="flex list-none items-center gap-2 text-sm text-gray-text_inactive sm:text-base"
+      className="flex list-none items-center gap-2 text-sm text-gray-text_inactive lg:text-base"
       {...props}
     >
       {icon ? icon : <div className="h-2 min-w-2 rounded-full bg-gray-text" />}
