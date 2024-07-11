@@ -43,7 +43,7 @@ export default function MyRadiogroup({
             key={item.label}
             className={clsx(
               item.image &&
-                `inline-block size-40 rounded-lg bg-gray-placeholder/15 bg-cover bg-no-repeat p-3 sm:size-48`
+                `inline-block size-40 rounded-lg bg-gray-placeholder/15 bg-cover bg-no-repeat p-3 lg:size-48`
             )}
             style={bgStyle}
             onClick={() => setSelected(item.label)}
@@ -51,11 +51,11 @@ export default function MyRadiogroup({
             <div className="flex items-center gap-2">
               <Radio
                 value={item.label}
-                className="group flex size-4 items-center justify-center rounded-full border border-gray-placeholder_icon bg-gray-white outline-none data-[checked]:border-green-success data-[checked]:bg-green-success sm:size-5"
+                className="group flex size-4 items-center justify-center rounded-full border border-gray-placeholder_icon bg-gray-white outline-none data-[checked]:border-green-success data-[checked]:bg-green-success lg:size-5"
               >
-                <span className="invisible size-2 rounded-full bg-gray-white group-data-[checked]:visible sm:size-[10px]" />
+                <span className="invisible size-2 rounded-full bg-gray-white group-data-[checked]:visible lg:size-[10px]" />
               </Radio>
-              <Label className={'text-sm text-gray-dark sm:text-base'}>
+              <Label className={'text-sm text-gray-dark lg:text-base'}>
                 {item.label}
               </Label>
             </div>
