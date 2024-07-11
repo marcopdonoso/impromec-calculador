@@ -60,9 +60,5 @@ export const userFromStore: User = {
 }
 
 export default function Home() {
-  return (
-    <div className="flex h-full flex-col items-center gap-3 px-3">
-      <HeaderMenu />
-    </div>
-  )
+  return <HeaderMenu />
 }
