@@ -39,7 +39,7 @@ export default function Carousel({ images }: CarouselProps) {
 
   return (
     <div>
-      <div className="relative size-72 sm:size-[44vw]">
+      <div className="relative size-72 lg:size-[44vw]">
         <Transition
           show={show}
           enter="transition-opacity duration-200"
@@ -54,7 +54,7 @@ export default function Carousel({ images }: CarouselProps) {
             src={images[currentImageIndex].src}
             alt={images[currentImageIndex].alt}
             fill
-            className="rounded-lg border border-gray-input sm:rounded-2xl sm:border-2"
+            className="rounded-lg border border-gray-input lg:rounded-2xl lg:border-2"
             sizes="(max-width: 640px) 90vw, (max-width: 1536px) 50vw"
           />
         </Transition>
@@ -74,7 +74,7 @@ export default function Carousel({ images }: CarouselProps) {
         </button>
       </div>
       {
-        <div className="mt-6 hidden justify-center gap-6 sm:flex">
+        <div className="mt-6 hidden justify-center gap-6 lg:flex">
           {images.map((image, index) => (
             <div
               key={index}
@@ -93,7 +93,7 @@ export default function Carousel({ images }: CarouselProps) {
                 alt={image.alt}
                 fill
                 className="rounded-2xl border-2 border-gray-input"
-                sizes="(max-width: 640px) 90vw, (max-width: 1536px) 50vw"
+                sizes="(max-width: 1024px) 90vw, (max-width: 1536px) 50vw"
               />
             </div>
           ))}
