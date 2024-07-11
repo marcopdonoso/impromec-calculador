@@ -35,19 +35,19 @@ export default function Notification({
       className={clsx(
         'flex items-center',
         variant === 'backgroundedInfo'
-          ? 'w-80 items-baseline gap-5 rounded-lg bg-gray-background p-9 shadow shadow-shadow sm:w-[66vw]'
+          ? 'w-80 items-baseline gap-5 rounded-lg bg-gray-background p-9 shadow shadow-shadow lg:w-[66vw]'
           : 'gap-3'
       )}
     >
       <div>{icon}</div>
       <div className="flex flex-col gap-3">
         {title && (
-          <p className="font-medium text-gray-text sm:text-lg sm:font-semibold">
+          <p className="font-medium text-gray-text lg:text-lg lg:font-semibold">
             {title}
           </p>
         )}
         <p
-          className={clsx('text-sm sm:text-base', {
+          className={clsx('text-sm lg:text-base', {
             'text-green-success': variant === 'success',
             'text-red': variant === 'error',
             'text-gray-text': variant === 'info' || 'backgroundedInfo',
