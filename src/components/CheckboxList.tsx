@@ -32,17 +32,17 @@ export default function CheckboxList({
   }
 
   return (
-    <fieldset className="flex w-80 flex-col rounded-lg border border-gray-input px-8 py-4 text-gray-text sm:w-[19vw] sm:min-w-max">
-      <h4 className="text-sm font-medium sm:text-lg sm:font-semibold">
+    <fieldset className="flex w-80 flex-col rounded-lg border border-gray-input px-8 py-4 text-gray-text lg:w-[19vw] lg:min-w-max">
+      <h4 className="text-sm font-medium lg:text-lg lg:font-semibold">
         {legend}
       </h4>
-      <hr className="my-4 text-gray-input sm:-mx-8 sm:mb-8" />
-      <div className="flex gap-12 sm:flex-col sm:gap-4">
+      <hr className="my-4 text-gray-input lg:-mx-8 lg:mb-8" />
+      <div className="flex gap-12 lg:flex-col lg:gap-4">
         {options.map((option, index) => {
           return (
             <label
               key={option}
-              className="relative flex items-center text-sm sm:text-base sm:font-medium"
+              className="relative flex items-center text-sm lg:text-base lg:font-medium"
             >
               <input
                 className="peer mr-3 size-5 appearance-none rounded-md border border-gray-input checked:border-green-success checked:bg-green-success"
@@ -51,7 +51,7 @@ export default function CheckboxList({
                 value={checkedItems[index]}
                 onChange={() => handleCheckboxChange(index)}
               />
-              <CheckIcon className="absolute left-1 top-1 hidden w-3 stroke-2 text-gray-white peer-checked:block sm:top-1.5" />
+              <CheckIcon className="absolute left-1 top-1 hidden w-3 stroke-2 text-gray-white peer-checked:block lg:top-1.5" />
               {option}
             </label>
           )
