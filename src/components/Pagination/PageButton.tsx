@@ -16,7 +16,7 @@ export default function PageButton({
       onClick={() => onPageClick(pageNumber)}
       disabled={currPage === pageNumber}
       className={clsx(
-        'flex size-6 items-center justify-center rounded-md text-sm sm:text-base',
+        'flex size-6 items-center justify-center rounded-md text-sm lg:text-base',
         {
           'text-gray-text_inactive': pageNumber !== currPage,
           'bg-gray-button_primary text-gray-white': pageNumber === currPage,
