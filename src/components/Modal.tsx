@@ -36,7 +36,7 @@ export default function Modal({
   return (
     <div
       className={clsx(
-        'relative flex w-72 flex-col items-center rounded-2xl px-4 py-8 shadow shadow-shadow sm:w-[39vw] sm:min-w-[530px]',
+        'relative flex w-72 flex-col items-center rounded-2xl px-4 py-8 shadow shadow-shadow lg:w-[39vw] lg:min-w-[530px]',
         !showModal && 'hidden'
       )}
     >
@@ -44,7 +44,7 @@ export default function Modal({
         <XCircleIcon
           role="button"
           onClick={() => setShowModal(false)}
-          className="absolute right-2 top-2 w-6 text-gray-placeholder sm:w-8"
+          className="absolute right-2 top-2 w-6 text-gray-placeholder lg:w-8"
         />
       )}
       <div
@@ -65,13 +65,13 @@ export default function Modal({
           <InformationCircleIcon className="w-6 text-gray-text" />
         )}
       </div>
-      <h6 className="mb-2 text-center font-medium text-gray-text sm:text-2xl sm:font-semibold">
+      <h6 className="mb-2 text-center font-medium text-gray-text lg:text-2xl lg:font-semibold">
         {title}
       </h6>
-      <p className="mb-8 text-center text-sm text-gray-text_inactive sm:text-base">
+      <p className="mb-8 text-center text-sm text-gray-text_inactive lg:text-base">
         {paragraph}
       </p>
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
         {buttons.map((button, index) => (
           <Button
             key={index}
