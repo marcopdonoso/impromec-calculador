@@ -35,12 +35,12 @@ export default function InputSearch({
     <Input
       variant={variant}
       label={label}
-      className={clsx(className, 'sm:w-full')}
+      className={clsx(className, 'lg:w-full')}
       onChange={(e) => handleSearch(e.target.value)}
       placeholder={placeholder}
       defaultValue={searchParams.get('query')?.toString()}
     >
-      <MagnifyingGlassIcon className="absolute bottom-4 right-4 w-4 text-gray-placeholder sm:bottom-3 sm:right-3 sm:w-5" />
+      <MagnifyingGlassIcon className="absolute bottom-4 right-4 w-4 text-gray-placeholder lg:bottom-3 lg:right-3 lg:w-5" />
     </Input>
   )
 }
