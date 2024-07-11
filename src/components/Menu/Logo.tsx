@@ -10,7 +10,7 @@ export default function Logo() {
       onClick={() => {
         router.push('/')
       }}
-      className="relative hidden h-auto min-w-20 sm:block"
+      className="relative hidden h-auto min-w-20 lg:block"
     >
       <Image src="svg/Logo_iso.svg" alt="logo" fill priority />
     </div>

@@ -25,12 +25,10 @@ export default function MenuContent({
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 640)
+      setIsMobile(window.innerWidth < 1024)
     }
-
     handleResize()
     window.addEventListener('resize', handleResize)
-
     return () => {
       window.removeEventListener('resize', handleResize)
     }
@@ -52,14 +50,14 @@ export default function MenuContent({
     >
       <div
         className={clsx(
-          'absolute left-0 top-0 flex min-h-screen w-fit flex-col bg-gray-white px-8 py-6 sm:h-fit sm:min-h-fit sm:w-screen sm:flex-row-reverse sm:justify-between sm:px-28 sm:py-6 sm:shadow-md'
+          'absolute left-0 top-0 flex min-h-screen w-fit flex-col bg-gray-white px-8 py-6 lg:static lg:h-fit lg:min-h-fit lg:w-screen lg:flex-row-reverse lg:justify-between lg:px-28 lg:py-6 lg:shadow-md'
         )}
       >
         {user ? (
           <div
             onClick={handleUserSectionClick}
             role="button"
-            className="pointer-events-none sm:pointer-events-auto"
+            className="pointer-events-none lg:pointer-events-auto"
           >
             <UserSection user={user} />
           </div>
@@ -68,31 +66,31 @@ export default function MenuContent({
             <Bars3Icon
               onClick={toggleMenu}
               role="button"
-              className="mb-3 w-7 text-gray-text sm:hidden"
+              className="mb-3 w-7 text-gray-text lg:hidden"
             />
-            <div className="hidden sm:block">
+            <div className="hidden lg:block">
               <AuthButtons />
             </div>
           </>
         )}
 
-        <hr className="my-5 text-gray-input sm:hidden" />
+        <hr className="my-5 text-gray-input lg:hidden" />
         <Navbar />
-        <hr className="my-5 text-gray-input sm:hidden" />
+        <hr className="my-5 text-gray-input lg:hidden" />
         {user ? (
           <div
-            className={clsx('grow sm:absolute sm:top-20', {
-              'sm:hidden': !showUserMenu,
+            className={clsx('grow lg:absolute lg:top-20', {
+              'lg:hidden': !showUserMenu,
             })}
           >
             <UserMenu />
           </div>
         ) : (
-          <div className="mb-6 flex grow flex-col-reverse sm:hidden">
+          <div className="mb-6 flex grow flex-col-reverse lg:hidden">
             <AuthButtons />
           </div>
         )}
-        <div className="sm:hidden">
+        <div className="lg:hidden">
           <Button
             onClick={toggleMenu}
             type="button"

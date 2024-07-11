@@ -46,7 +46,7 @@ export type User = {
   updatedAt: string
 }
 
-export const userFromStore: User = {
+const user = {
   id: '1',
   avatar: null,
   name: 'Marco Perez Donoso',
@@ -59,6 +59,16 @@ export const userFromStore: User = {
   updatedAt: '2021-09-01',
 }
 
+export const userFromStore: User | null = user
+
 export default function Home() {
-  return <HeaderMenu />
+  return (
+    <div className="flex flex-col">
+      <header>
+        <HeaderMenu />
+      </header>
+      <main>Principal</main>
+      <footer></footer>
+    </div>
+  )
 }

@@ -21,7 +21,7 @@ export default function MenuOverlay({
     >
       <div
         onClick={toggleMenu}
-        className="no-scrollbar fixed inset-0 bg-gray-button_primary bg-opacity-20 sm:hidden"
+        className="no-scrollbar fixed inset-0 bg-gray-button_primary bg-opacity-20 lg:hidden"
       />
     </Transition>
   )

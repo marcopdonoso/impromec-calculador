@@ -13,7 +13,7 @@ export default function HeaderMenu() {
 
   return (
     <>
-      <div className="sm:hidden">
+      <div className="lg:hidden">
         <CollapsedHeaderMenu handleClick={showMenuToggler} />
       </div>
       <MenuOverlay showMenu={showMenu} toggleMenu={showMenuToggler} />
