@@ -22,9 +22,9 @@ export default function CatalogProductCard({
     <div
       onClick={() => (onClick && id ? onClick(id) : null)}
       role="button"
-      className="flex w-40 flex-col items-center rounded-md bg-gray-background py-2 hover:shadow-lg active:shadow-none sm:w-72 sm:rounded-lg sm:py-3"
+      className="flex w-40 flex-col items-center rounded-md bg-gray-background py-2 hover:shadow-lg active:shadow-none lg:w-72 lg:rounded-lg lg:py-3"
     >
-      <div className="relative mb-3 size-36 min-h-36 rounded-sm bg-gray-white sm:mb-4 sm:size-64 sm:min-h-64 sm:rounded-md">
+      <div className="relative mb-3 size-36 min-h-36 rounded-sm bg-gray-white lg:mb-4 lg:size-64 lg:min-h-64 lg:rounded-md">
         <Image
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1536px) 20vw"
@@ -34,10 +34,10 @@ export default function CatalogProductCard({
         />
       </div>
       <div className="flex flex-col gap-1 overflow-hidden">
-        <p className="text-center text-[10px] text-gray-text sm:text-base sm:font-medium">
+        <p className="text-center text-[10px] text-gray-text lg:text-base lg:font-medium">
           {primaryText}
         </p>
-        <p className="text-center text-[10px] text-gray-text sm:text-base">
+        <p className="text-center text-[10px] text-gray-text lg:text-base">
           {secondaryText}
         </p>
       </div>
