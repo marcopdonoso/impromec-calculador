@@ -24,7 +24,7 @@ interface VariantProps {
 const variants: Record<ButtonVariant, VariantProps> = {
   primary: {
     className:
-      'h-12 w-80 bg-gray-button_primary text-gray-white hover:bg-gray-placeholder_icon active:bg-gray-button_primary disabled:bg-gray-input disabled:text-gray-text_inactive sm:w-[32vw]',
+      'h-12 w-80 bg-gray-button_primary text-gray-white hover:bg-gray-placeholder_icon active:bg-gray-button_primary disabled:bg-gray-input disabled:text-gray-text_inactive lg:w-[32vw]',
   },
   primary_small: {
     className:
@@ -32,7 +32,7 @@ const variants: Record<ButtonVariant, VariantProps> = {
   },
   secondary: {
     className:
-      'bg-gray-white active:bg-gray-white h-12 w-80 border border-gray-input text-gray-text hover:bg-gray-background sm:w-[32vw]',
+      'bg-gray-white active:bg-gray-white h-12 w-80 border border-gray-input text-gray-text hover:bg-gray-background lg:w-[32vw]',
   },
   secondary_small: {
     className:
@@ -40,7 +40,7 @@ const variants: Record<ButtonVariant, VariantProps> = {
   },
   tertiary: {
     className:
-      'h-12 w-80 border border-gray-input bg-gray-background text-gray-text hover:bg-gray-input active:bg-gray-background sm:w-[32vw]',
+      'h-12 w-80 border border-gray-input bg-gray-background text-gray-text hover:bg-gray-input active:bg-gray-background lg:w-[32vw]',
   },
   tertiary_small: {
     className:
@@ -48,7 +48,7 @@ const variants: Record<ButtonVariant, VariantProps> = {
   },
   destructive: {
     className:
-      'text-gray-white active:text-gray-white h-12 w-80 bg-red hover:bg-red_alt hover:text-red active:bg-red sm:w-[32vw]',
+      'text-gray-white active:text-gray-white h-12 w-80 bg-red hover:bg-red_alt hover:text-red active:bg-red lg:w-[32vw]',
   },
   destructive_small: {
     className:
@@ -56,7 +56,7 @@ const variants: Record<ButtonVariant, VariantProps> = {
   },
   icon_right: {
     className:
-      'text-gray-white bg-gray-button_primary p-3 hover:bg-gray-placeholder_icon active:bg-gray-button_primary sm:h-12 sm:px-4 sm:py-0',
+      'text-gray-white bg-gray-button_primary p-3 hover:bg-gray-placeholder_icon active:bg-gray-button_primary lg:h-12 lg:px-4 lg:py-0',
   },
   icon_right_small: {
     className:
@@ -64,7 +64,7 @@ const variants: Record<ButtonVariant, VariantProps> = {
   },
   add: {
     className:
-      'bg-gray-white active:bg-gray-white h-12 w-80 border border-green-success text-green-success hover:bg-green-success_alt sm:w-[66vw]',
+      'bg-gray-white active:bg-gray-white h-12 w-80 border border-green-success text-green-success hover:bg-green-success_alt lg:w-[66vw]',
   },
   add_small: {
     className:
@@ -72,11 +72,11 @@ const variants: Record<ButtonVariant, VariantProps> = {
   },
   register: {
     className:
-      'h-10 w-52 text-gray-text active:border active:border-gray-input active:bg-gray-background sm:w-36',
+      'h-10 w-52 text-gray-text active:border active:border-gray-input active:bg-gray-background lg:w-36',
   },
   login: {
     className:
-      'text-gray-white h-10 w-52 bg-gray-button_primary hover:bg-gray-placeholder_icon active:bg-gray-button_primary sm:w-36',
+      'text-gray-white h-10 w-52 bg-gray-button_primary hover:bg-gray-placeholder_icon active:bg-gray-button_primary lg:w-36',
   },
 }
 
@@ -97,7 +97,7 @@ export default function Button({
   return (
     <button
       className={clsx(
-        'rounded-lg text-sm font-medium sm:text-base',
+        'rounded-lg text-sm font-medium lg:text-base',
         variants[variant].className,
         className
       )}
@@ -106,7 +106,7 @@ export default function Button({
       <div
         className={`flex items-center ${variant === 'icon_right' || variant === 'icon_right_small' ? 'flex-row-reverse justify-between gap-4' : 'justify-center gap-2'}`}
       >
-        {icon && <div className="w-5 sm:w-6">{icon}</div>}
+        {icon && <div className="w-5 lg:w-6">{icon}</div>}
         {children}
       </div>
     </button>
