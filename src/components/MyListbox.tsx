@@ -15,9 +15,9 @@ import { useState } from 'react'
 type ListBoxVariant = 'small' | 'medium' | 'large' | 'order'
 
 const variants: Record<ListBoxVariant, string> = {
-  small: 'w-40 sm:w-[14vw] sm:min-w-28',
+  small: 'w-40 lg:w-[14vw] lg:min-w-28',
   medium: 'w-[19vw] min-w-28',
-  large: 'w-80 sm:w-[32vw] sm:min-w-28',
+  large: 'w-80 lg:w-[32vw] lg:min-w-28',
   order: 'w-fit flex items-center gap-1',
 }
 
@@ -49,7 +49,7 @@ export default function MyListbox({
       <Label
         className={clsx(
           'font-medium text-gray-text',
-          variant !== 'order' && 'truncate text-sm sm:text-base'
+          variant !== 'order' && 'truncate text-sm lg:text-base'
         )}
       >
         {label}
@@ -61,7 +61,7 @@ export default function MyListbox({
             'relative text-gray-text',
             variant === 'order'
               ? 'w-fit pr-10 text-end'
-              : 'mt-1 h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none sm:mt-2 sm:text-base'
+              : 'mt-1 h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:mt-2 lg:text-base'
           )}
         >
           {selected.text}
@@ -91,7 +91,7 @@ export default function MyListbox({
           <ListboxOptions
             anchor="bottom"
             className={clsx(
-              'mt-1 rounded-md bg-gray-white py-2 text-gray-text shadow shadow-shadow focus:outline-none sm:mt-2',
+              'mt-1 rounded-md bg-gray-white py-2 text-gray-text shadow shadow-shadow focus:outline-none lg:mt-2',
               variant !== 'order' && 'w-[var(--button-width)]'
             )}
             onKeyDown={(event) => {
@@ -104,7 +104,7 @@ export default function MyListbox({
               <ListboxOption
                 key={option.text}
                 value={option}
-                className="cursor-default select-none truncate border-t border-gray-background px-5 py-2 text-sm first:border-t-0 data-[focus]:bg-gray-button_primary data-[focus]:text-gray-white sm:text-base"
+                className="cursor-default select-none truncate border-t border-gray-background px-5 py-2 text-sm first:border-t-0 data-[focus]:bg-gray-button_primary data-[focus]:text-gray-white lg:text-base"
                 onClick={() => setIsOpen(false)}
               >
                 {option.text}
