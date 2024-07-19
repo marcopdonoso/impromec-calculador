@@ -1,3 +1,5 @@
+'use client'
+import Footer from '@/components/Footer'
 import HeaderMenu from '@/components/Menu/HeaderMenu'
 
 const opciones = [
@@ -61,14 +63,20 @@ const user = {
 
 export const userFromStore: User | null = user
 
+const onchage = () => {
+  console.log('cambio')
+}
+
 export default function Home() {
   return (
-    <div className="flex flex-col">
+    <div className="flex h-screen flex-col">
       <header>
         <HeaderMenu />
       </header>
-      <main>Principal</main>
-      <footer></footer>
+      <main className="grow">Principal</main>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   )
 }

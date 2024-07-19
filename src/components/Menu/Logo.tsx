@@ -1,7 +1,12 @@
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-export default function Logo() {
+interface LogoProps {
+  className?: string
+}
+
+export default function Logo({ className }: LogoProps) {
   const router = useRouter()
 
   return (
@@ -10,7 +15,7 @@ export default function Logo() {
       onClick={() => {
         router.push('/')
       }}
-      className="relative hidden h-auto min-w-20 lg:block"
+      className={clsx('relative h-full w-full', className)}
     >
       <Image src="svg/Logo_iso.svg" alt="logo" fill priority />
     </div>

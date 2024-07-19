@@ -50,7 +50,7 @@ export default function MenuContent({
     >
       <div
         className={clsx(
-          'absolute left-0 top-0 flex min-h-screen w-fit flex-col bg-gray-white px-8 py-6 lg:static lg:h-fit lg:min-h-fit lg:w-screen lg:flex-row-reverse lg:justify-between lg:px-28 lg:py-6 lg:shadow-md'
+          'absolute left-0 top-0 z-50 flex min-h-screen w-fit flex-col bg-gray-white px-8 py-6 lg:static lg:h-fit lg:min-h-fit lg:w-screen lg:flex-row-reverse lg:justify-between lg:px-28 lg:py-6 lg:shadow-md'
         )}
       >
         {user ? (
@@ -75,7 +75,7 @@ export default function MenuContent({
         )}
 
         <hr className="my-5 text-gray-input lg:hidden" />
-        <Navbar />
+        <Navbar className="flex flex-col" />
         <hr className="my-5 text-gray-input lg:hidden" />
         {user ? (
           <div
@@ -101,7 +101,9 @@ export default function MenuContent({
             Cerrar
           </Button>
         </div>
-        <Logo />
+        <div className="h-11 w-20">
+          <Logo className="hidden lg:block" />
+        </div>
       </div>
     </Transition>
   )
