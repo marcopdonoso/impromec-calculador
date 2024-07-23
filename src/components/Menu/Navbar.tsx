@@ -1,5 +1,5 @@
 'use client'
-import { navlinks } from '@/app/page'
+import { navlinks } from '@/constants/navlinks.constants'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -19,7 +19,12 @@ export default function Navbar({ className, footer }: NavbarProps) {
   }, [pathname])
 
   return (
-    <nav className={clsx('lg:flex-row lg:items-center lg:gap-10', className)}>
+    <nav
+      className={clsx(
+        'lg:flex-row lg:items-center lg:gap-4 xl:gap-10',
+        className
+      )}
+    >
       {navlinks.map((navlink) => {
         return (
           <Link

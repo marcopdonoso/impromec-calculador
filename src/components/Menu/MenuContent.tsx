@@ -1,4 +1,3 @@
-import { userFromStore } from '@/app/page'
 import { Transition } from '@headlessui/react'
 import { Bars3Icon, XCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
@@ -21,7 +20,7 @@ export default function MenuContent({
 }: MenuContentProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const user = userFromStore
+  const user = null // TODO CREAR STORE PARA ALMACENAR EL USUARIO
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,7 +49,7 @@ export default function MenuContent({
     >
       <div
         className={clsx(
-          'absolute left-0 top-0 z-50 flex min-h-screen w-fit flex-col bg-gray-white px-8 py-6 lg:static lg:h-fit lg:min-h-fit lg:w-screen lg:flex-row-reverse lg:justify-between lg:px-28 lg:py-6 lg:shadow-md'
+          'fixed left-0 top-0 z-50 flex min-h-screen w-fit flex-col bg-gray-white px-8 py-6 lg:static lg:h-fit lg:min-h-fit lg:w-screen lg:flex-row-reverse lg:justify-between lg:px-28 lg:py-6 lg:shadow-md'
         )}
       >
         {user ? (

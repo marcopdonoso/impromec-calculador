@@ -1,3 +1,4 @@
+'use client'
 import Logo from './Menu/Logo'
 import Navbar from './Menu/Navbar'
 
