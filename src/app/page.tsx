@@ -1,6 +1,4 @@
 'use client'
-import Footer from '@/components/Footer'
-import HeaderMenu from '@/components/Menu/HeaderMenu'
 
 const opciones = [
   { value: '1.5', text: '1.5 mm2' },
@@ -69,14 +67,19 @@ const onchage = () => {
 
 export default function Home() {
   return (
-    <div className="flex h-screen flex-col">
-      <header>
-        <HeaderMenu />
-      </header>
-      <main className="grow">Principal</main>
-      <footer>
-        <Footer />
-      </footer>
+    <div className="flex h-full flex-col">
+      <p className="heading_h4">heading_h4</p>
+      <p className="heading_h6">heading_h6</p>
+      <p className="body_large_semibold">body_large_semibold</p>
+      <p className="body_large_regular">body_large_regular</p>
+      <p className="body_medium_bold">body_medium_bold</p>
+      <p className="body_medium_medium">body_medium_medium</p>
+      <p className="body_medium_regular">body_medium_regular</p>
+      <p className="body_small_medium">body_small_medium</p>
+      <p className="body_small_regular">body_small_regular</p>
+      <p className="body_xs_medium">body_xs_medium</p>
+      <p className="body_xs_regular">body_xs_regular</p>
+      <p className="body_xxs_regular">body_xxs_regular</p>
     </div>
   )
 }
