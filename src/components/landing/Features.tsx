@@ -1,8 +1,13 @@
+import clsx from 'clsx'
 import IconTextFeature from './IconTextFeature'
 
-export default function Features() {
+interface FeaturesProps {
+  className?: string
+}
+
+export default function Features({ className }: FeaturesProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className={clsx('flex flex-col gap-4', className)}>
       <IconTextFeature
         icon="/svg/Icon_calculator.svg"
         alt="Icono de calculadora"

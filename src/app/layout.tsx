@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" className="no-scrollbar">
       <body className={`${inter.className} text-gray-text`}>
         <header>
           <HeaderMenu />

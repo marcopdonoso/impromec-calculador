@@ -18,9 +18,11 @@ export default function IconTextFeature({
         alt={alt}
         width={80}
         height={80}
-        className="h-auto w-14"
+        className="h-auto w-14 lg:w-16"
       />
-      <p className="body_small_regular">{children}</p>
+      <p className="body_small_regular lg:body_large_regular lg:flex-1">
+        {children}
+      </p>
     </div>
   )
 }

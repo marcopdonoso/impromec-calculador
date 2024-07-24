@@ -12,12 +12,12 @@ export default function HeaderMenu() {
   }, [])
 
   return (
-    <>
+    <div>
       <div className="lg:hidden">
         <CollapsedHeaderMenu handleClick={showMenuToggler} />
       </div>
       <MenuOverlay showMenu={showMenu} toggleMenu={showMenuToggler} />
       <MenuContent showMenu={showMenu} toggleMenu={showMenuToggler} />
-    </>
+    </div>
   )
 }
