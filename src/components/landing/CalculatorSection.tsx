@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Button from '../Button'
-import Features from './Features'
+import CalculatorFeatures from './CalculatorFeatures'
 
 export default function CalculatorSection() {
   return (
@@ -17,7 +17,7 @@ export default function CalculatorSection() {
           Fácil, rápido y preciso:{' '}
           <span className="text-red">Calcula tu Bandeja Portacables</span> ideal
         </p>
-        <Features className={'lg:max-w-[32vw]'} />
+        <CalculatorFeatures className={'lg:max-w-[32vw]'} />
         <Button>Usar Impromec Calculador</Button>
       </div>
       <Image

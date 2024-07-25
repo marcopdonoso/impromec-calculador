@@ -5,7 +5,7 @@ interface FeaturesProps {
   className?: string
 }
 
-export default function Features({ className }: FeaturesProps) {
+export default function CalculatorFeatures({ className }: FeaturesProps) {
   return (
     <div className={clsx('flex flex-col gap-4', className)}>
       <IconTextFeature
