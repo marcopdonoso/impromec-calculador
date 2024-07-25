@@ -1,12 +1,11 @@
 import clsx from 'clsx'
 import { InputHTMLAttributes } from 'react'
 
-export type InputVariant = 'small' | 'third' | 'default' | 'large'
+export type InputVariant = 'small' | 'third' | 'default' | 'large' | 'full'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: InputVariant
   label?: string
-  placeholder?: string
   className?: string
   children?: React.ReactNode
 }
@@ -26,9 +25,10 @@ export default function Input({
         'relative flex flex-col justify-start gap-1 text-sm font-medium lg:gap-2 lg:text-base',
         {
           'w-40 lg:w-[14vw]': variant === 'small',
-          'w-80 lg:w-[19vw]': variant === 'third',
-          'w-80 lg:w-[32vw]': variant === 'default',
-          'w-80 lg:w-[66vw]': variant === 'large',
+          'w-full max-w-80 lg:w-[19vw] lg:max-w-none': variant === 'third',
+          'w-full max-w-80 lg:w-[32vw] lg:max-w-none': variant === 'default',
+          'w-full lg:w-[66vw]': variant === 'large',
+          'w-full': variant === 'full',
         }
       )}
       htmlFor={props.name}
