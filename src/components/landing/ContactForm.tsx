@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Button from '../Button'
 import Input from '../Input'
-import Textarea from '../Textarea'
+import TextArea from '../TextArea'
 
 export default function ContactForm() {
   return (
@@ -24,7 +24,7 @@ export default function ContactForm() {
           label="Correo electrónico"
           placeholder="Ej: yo@correo.com"
         />
-        <Textarea
+        <TextArea
           variant="full"
           label="Mensaje"
           placeholder="Escribe tu mensaje aquí"

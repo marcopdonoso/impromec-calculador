@@ -1,4 +1,4 @@
-import { User } from '@/app/page'
+import { User } from '@/models/user.model'
 import Image from 'next/image'
 import InitialsAvatar from './InitialsAvatar'
 

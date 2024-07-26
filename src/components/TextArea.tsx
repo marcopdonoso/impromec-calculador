@@ -8,7 +8,7 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string
   className?: string
 }
-export default function Textarea({
+export default function TextArea({
   variant = 'default',
   label,
   className,
