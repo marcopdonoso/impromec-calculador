@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { ButtonHTMLAttributes } from 'react'
 
 export type ButtonVariant =
+  | 'full'
   | 'primary'
   | 'primary_small'
   | 'secondary'
@@ -22,9 +23,13 @@ interface VariantProps {
 }
 
 const variants: Record<ButtonVariant, VariantProps> = {
+  full: {
+    className:
+      'h-12 w-full bg-gray-button_primary text-gray-white hover:bg-gray-placeholder_icon active:bg-gray-button_primary disabled:bg-gray-input disabled:text-gray-text_inactive',
+  },
   primary: {
     className:
-      'h-12 w-80 bg-gray-button_primary text-gray-white hover:bg-gray-placeholder_icon active:bg-gray-button_primary disabled:bg-gray-input disabled:text-gray-text_inactive lg:w-[32vw]',
+      'h-12 max-w-80 w-full bg-gray-button_primary text-gray-white hover:bg-gray-placeholder_icon active:bg-gray-button_primary disabled:bg-gray-input disabled:text-gray-text_inactive lg:w-[32vw] lg:max-w-none',
   },
   primary_small: {
     className:

@@ -1,85 +1,61 @@
-'use client'
-
-const opciones = [
-  { value: '1.5', text: '1.5 mm2' },
-  { value: '2.5', text: '2.5 mm2' },
-  { value: '4', text: '4 mm2' },
-  { value: '6', text: '6 mm2' },
-]
-
-const items = [
-  { label: 'Escalerilla', image: 'escalerilla' },
-  { label: 'Canal', image: 'escalerilla' },
-]
-
-const images = [
-  { src: '/img/escalerilla.png', alt: 'Escalerilla' },
-  { src: '/img/curva.png', alt: 'Curva' },
-  { src: '/img/escalerilla.png', alt: 'Escalerilla' },
-]
-
-const options = ['100mm', '200mm', '300mm', '400mm', '500mm', '600mm']
-
-export interface Navlink {
-  name: string
-  path: string
-}
-
-export const navlinks: Navlink[] = [
-  { name: 'Inicio', path: '/' },
-  { name: 'Calculador', path: '/calculator' },
-  { name: 'Productos', path: '/products' },
-  { name: 'Nosotros', path: '/about' },
-  { name: 'Contáctanos', path: '/contact' },
-]
-
-export type User = {
-  id: string
-  avatar: string | null
-  name: string
-  email: string
-  company: string | null
-  area: string
-  phone: string
-  location: string
-  createdAt: string
-  updatedAt: string
-}
-
-const user = {
-  id: '1',
-  avatar: null,
-  name: 'Marco Perez Donoso',
-  email: 'marcopdonoso@gmail.com',
-  company: 'Impromec',
-  area: 'Development',
-  phone: '123456789',
-  location: 'Mexico City',
-  createdAt: '2021-09-01',
-  updatedAt: '2021-09-01',
-}
-
-export const userFromStore: User | null = user
-
-const onchage = () => {
-  console.log('cambio')
-}
+import AboutusSection from '@/components/landing/AboutusSection'
+import CalculatorSection from '@/components/landing/CalculatorSection'
+import ContactForm from '@/components/landing/ContactForm'
+import IconTextFeature from '@/components/landing/IconTextFeature'
+import ProductsSection from '@/components/landing/ProductsSection'
+import TopSection from '@/components/landing/TopSection'
+import Image from 'next/image'
 
 export default function Home() {
   return (
-    <div className="flex h-full flex-col">
-      <p className="heading_h4">heading_h4</p>
-      <p className="heading_h6">heading_h6</p>
-      <p className="body_large_semibold">body_large_semibold</p>
-      <p className="body_large_regular">body_large_regular</p>
-      <p className="body_medium_bold">body_medium_bold</p>
-      <p className="body_medium_medium">body_medium_medium</p>
-      <p className="body_medium_regular">body_medium_regular</p>
-      <p className="body_small_medium">body_small_medium</p>
-      <p className="body_small_regular">body_small_regular</p>
-      <p className="body_xs_medium">body_xs_medium</p>
-      <p className="body_xs_regular">body_xs_regular</p>
-      <p className="body_xxs_regular">body_xxs_regular</p>
-    </div>
+    <section className="flex flex-col items-center pt-16 lg:pt-20">
+      <TopSection />
+      <CalculatorSection />
+      <ProductsSection />
+      <AboutusSection />
+      <section className="w-full px-4 pb-11 pt-12 lg:relative lg:flex lg:gap-24 lg:px-28 lg:py-28">
+        <div className="lg:flex lg:w-1/2 lg:flex-col lg:justify-center">
+          <h4 className="body_large_semibold mb-2 lg:heading_h4 lg:mb-6">
+            Contáctanos
+          </h4>
+          <p className="body_small_regular mb-8 text-justify lg:body_large_regular lg:mb-12">
+            ¿Tienes alguna pregunta, comentario o necesitas más información?
+            Completa el formulario a continuación y nos pondremos en contacto
+            contigo lo antes posible.
+          </p>
+
+          <div className="mb-8 flex flex-col gap-8">
+            <IconTextFeature icon="/svg/Icon_location.svg" alt="">
+              Estamos en Planta Industrial &ldquo;El Abra&rdquo; Av. Cristo de
+              la Concordia esq. Fairos, 1/2 cuadra al Norte Cochabamba - Bolivia
+            </IconTextFeature>
+            <IconTextFeature icon="/svg/Icon_phone.svg" alt="">
+              Llámanos ahora: 4061219 - 72216766 - 67400666 - 65342591
+              {/* TODO REEMPLAZAR POR TELEFONOS DEFINITIVOS */}
+            </IconTextFeature>
+            <IconTextFeature icon="/svg/Icon_letter.svg" alt="">
+              Escríbenos a nuestro correo: contacto@impromec.com
+            </IconTextFeature>
+          </div>
+        </div>
+        <div className="lg:relative lg:w-1/2">
+          <ContactForm />
+          <Image
+            src={'/svg/circulo_logo.svg'}
+            alt=""
+            width={500}
+            height={500}
+            className="absolute -bottom-20 -left-20 -z-10 hidden h-auto w-72 lg:block"
+          />
+        </div>
+        <Image
+          src={'/svg/circulo_logo_esquina.svg'}
+          alt=""
+          width={500}
+          height={500}
+          className="absolute left-0 top-0 hidden h-auto w-52 lg:block"
+        />
+      </section>
+    </section>
   )
 }
