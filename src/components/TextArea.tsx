@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { TextareaHTMLAttributes } from 'react'
 
-export type TextareaVariant = 'default' | 'large' | 'full'
+export type TextareaVariant = 'medium' | 'large' | 'full'
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   variant?: TextareaVariant
@@ -9,7 +9,7 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string
 }
 export default function TextArea({
-  variant = 'default',
+  variant = 'full',
   label,
   className,
   ...props
@@ -19,7 +19,7 @@ export default function TextArea({
       className={clsx(
         'flex h-40 flex-col justify-start gap-1 text-sm font-medium lg:gap-2 lg:text-base',
         {
-          'w-full max-w-80 lg:w-[32vw] lg:max-w-none': variant === 'default',
+          'w-full max-w-80 lg:w-[32vw] lg:max-w-none': variant === 'medium',
           'w-full lg:w-[66vw]': variant === 'large',
           'w-full': variant === 'full',
         }

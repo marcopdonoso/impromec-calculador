@@ -14,16 +14,8 @@ export default function ContactForm() {
         className="h-auto w-20 lg:w-32"
       />
       <form className="flex w-full flex-col items-center gap-4 lg:gap-6">
-        <Input
-          variant="full"
-          label="Nombre"
-          placeholder="Ej: José Rodríguez Soto"
-        />
-        <Input
-          variant="full"
-          label="Correo electrónico"
-          placeholder="Ej: yo@correo.com"
-        />
+        <Input label="Nombre" placeholder="Ej: José Rodríguez Soto" />
+        <Input label="Correo electrónico" placeholder="Ej: yo@correo.com" />
         <TextArea
           variant="full"
           label="Mensaje"

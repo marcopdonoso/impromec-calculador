@@ -1,4 +1,5 @@
 'use client'
+import { Option } from '@/models/listbox.model'
 import {
   Field,
   Label,
@@ -12,18 +13,14 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { useState } from 'react'
 
-type ListBoxVariant = 'small' | 'medium' | 'large' | 'order'
+type ListBoxVariant = 'small' | 'medium' | 'large' | 'full' | 'sorting'
 
 const variants: Record<ListBoxVariant, string> = {
   small: 'w-40 lg:w-[14vw] lg:min-w-28',
   medium: 'w-[19vw] min-w-28',
   large: 'w-80 lg:w-[32vw] lg:min-w-28',
-  order: 'w-fit flex items-center gap-1',
-}
-
-interface Option {
-  text: string
-  value: string | number
+  full: 'w-full',
+  sorting: 'w-fit flex items-center gap-1',
 }
 
 interface MyListboxProps {
@@ -35,7 +32,7 @@ interface MyListboxProps {
 }
 
 export default function MyListbox({
-  variant = 'small',
+  variant = 'full',
   label,
   options,
   className,
@@ -49,7 +46,7 @@ export default function MyListbox({
       <Label
         className={clsx(
           'font-medium text-gray-text',
-          variant !== 'order' && 'truncate text-sm lg:text-base'
+          variant !== 'sorting' && 'truncate text-sm lg:text-base'
         )}
       >
         {label}
@@ -58,8 +55,8 @@ export default function MyListbox({
         <ListboxButton
           onClick={() => setIsOpen(!isOpen)}
           className={clsx(
-            'relative text-gray-text',
-            variant === 'order'
+            'relative bg-gray-white text-gray-text',
+            variant === 'sorting'
               ? 'w-fit pr-10 text-end'
               : 'mt-1 h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:mt-2 lg:text-base'
           )}
@@ -69,7 +66,7 @@ export default function MyListbox({
             <ChevronUpIcon
               className={clsx(
                 'pointer-events-none absolute right-3 w-4',
-                variant === 'order' ? 'top-1' : 'top-4'
+                variant === 'sorting' ? 'top-1' : 'top-4'
               )}
               aria-hidden="true"
             />
@@ -77,7 +74,7 @@ export default function MyListbox({
             <ChevronDownIcon
               className={clsx(
                 'pointer-events-none absolute right-3 w-4',
-                variant === 'order' ? 'top-1' : 'top-4'
+                variant === 'sorting' ? 'top-1' : 'top-4'
               )}
               aria-hidden="true"
             />
@@ -92,7 +89,7 @@ export default function MyListbox({
             anchor="bottom"
             className={clsx(
               'mt-1 rounded-md bg-gray-white py-2 text-gray-text shadow shadow-shadow focus:outline-none lg:mt-2',
-              variant !== 'order' && 'w-[var(--button-width)]'
+              variant !== 'sorting' && 'w-[var(--button-width)]'
             )}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
