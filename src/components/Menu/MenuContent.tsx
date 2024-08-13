@@ -68,13 +68,13 @@ export default function MenuContent({
               className="mb-3 w-7 text-gray-text lg:hidden"
             />
             <div className="hidden lg:block">
-              <AuthButtons />
+              <AuthButtons toggleMenu={toggleMenu} />
             </div>
           </>
         )}
 
         <hr className="my-5 text-gray-input lg:hidden" />
-        <Navbar className="flex flex-col" />
+        <Navbar className="flex flex-col" toggleMenu={toggleMenu} />
         <hr className="my-5 text-gray-input lg:hidden" />
         {user ? (
           <div
@@ -86,7 +86,7 @@ export default function MenuContent({
           </div>
         ) : (
           <div className="mb-6 flex grow flex-col-reverse lg:hidden">
-            <AuthButtons />
+            <AuthButtons toggleMenu={toggleMenu} />
           </div>
         )}
         <div className="lg:hidden">
