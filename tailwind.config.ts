@@ -35,6 +35,9 @@ const config: Config = {
     },
     extend: {
       backgroundImage: {
+        'auth_background-desktop': "url('/svg/auth_background-desktop.svg')",
+        'app_background-mobile': "url('/svg/app_background-mobile.svg')",
+        'app_background-desktop': "url('/svg/app_background-desktop.svg')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',

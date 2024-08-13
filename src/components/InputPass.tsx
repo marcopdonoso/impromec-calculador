@@ -6,12 +6,14 @@ import Input, { InputVariant } from './Input'
 interface InputPassProps {
   variant?: InputVariant
   label?: string
+  placeholder?: string
   className?: string
 }
 
 export default function InputPass({
   variant,
   label,
+  placeholder,
   className,
 }: InputPassProps) {
   const [showPass, setShowPass] = useState(false)
@@ -21,6 +23,7 @@ export default function InputPass({
       label={label}
       className={className}
       type={!showPass ? 'password' : 'text'}
+      placeholder={placeholder}
     >
       <button
         className="absolute bottom-4 right-4"

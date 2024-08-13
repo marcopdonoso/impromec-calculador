@@ -8,9 +8,10 @@ import { useEffect, useState } from 'react'
 interface NavbarProps {
   className?: string
   footer?: boolean
+  toggleMenu?: () => void
 }
 
-export default function Navbar({ className, footer }: NavbarProps) {
+export default function Navbar({ className, footer, toggleMenu }: NavbarProps) {
   const [activeLink, setActiveLink] = useState<string | null>(null)
   const pathname = usePathname()
 
@@ -30,7 +31,10 @@ export default function Navbar({ className, footer }: NavbarProps) {
           <Link
             key={navlink.name}
             href={navlink.path}
-            onClick={() => setActiveLink(navlink.path)}
+            onClick={() => {
+              setActiveLink(navlink.path)
+              toggleMenu && toggleMenu()
+            }}
             className={clsx(
               'w-52 py-3 pl-4 text-sm hover:bg-gray-button_primary hover:text-gray-white lg:w-auto lg:p-0 lg:text-base lg:font-medium',
               {

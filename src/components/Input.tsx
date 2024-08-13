@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { InputHTMLAttributes } from 'react'
 
-export type InputVariant = 'small' | 'third' | 'default' | 'large' | 'full'
+export type InputVariant = 'small' | 'third' | 'medium' | 'large' | 'full'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: InputVariant
@@ -11,7 +11,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function Input({
-  variant = 'default',
+  variant = 'full',
   label,
   placeholder,
   className,
@@ -26,7 +26,7 @@ export default function Input({
         {
           'w-40 lg:w-[14vw]': variant === 'small',
           'w-full max-w-80 lg:w-[19vw] lg:max-w-none': variant === 'third',
-          'w-full max-w-80 lg:w-[32vw] lg:max-w-none': variant === 'default',
+          'w-full max-w-80 lg:w-[32vw] lg:max-w-none': variant === 'medium',
           'w-full lg:w-[66vw]': variant === 'large',
           'w-full': variant === 'full',
         }
