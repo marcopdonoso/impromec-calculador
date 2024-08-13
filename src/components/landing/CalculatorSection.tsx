@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Button from '../Button'
-import CalculatorFeatures from './CalculatorFeatures'
+import CalculatorFeatures from '../CalculatorFeatures'
 
 export default function CalculatorSection() {
   return (
