@@ -19,11 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="no-scrollbar">
-      <body className={`${inter.className} text-gray-text`}>
+      <body
+        className={`${inter.className} flex min-h-screen flex-col text-gray-text`}
+      >
         <header>
           <HeaderMenu />
         </header>
-        <main>{children}</main>
+        <main className="grow">{children}</main>
         <footer>
           <Footer />
         </footer>
