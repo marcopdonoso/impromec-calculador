@@ -31,7 +31,7 @@ export default function ProductsSection() {
         />
       </div>
       <div className="w-full px-4 text-center">
-        <Button>Ver todos los productos</Button>
+        <Button className="lg:w-[32vw]">Ver todos los productos</Button>
       </div>
     </section>
   )

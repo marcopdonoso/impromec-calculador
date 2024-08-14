@@ -1,20 +1,18 @@
 import AuthFormCard from '../components/AuthFormCard'
-import LoginFeatures from './components/LoginFeatures'
-import LoginForm from './components/LoginForm'
+import ForgotPassForm from './components/ForgotPassForm'
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   return (
     <main className="px-2 pb-20 pt-24 lg:flex lg:items-center lg:gap-28 lg:px-28 lg:py-7">
-      <LoginFeatures />
       <AuthFormCard
-        title="¡Bienvenido de vuelta!"
-        description="Estamos felices de tenerte de vuelta. Accede a tu cuenta y continua con tus cálculos."
+        title="¡Olvidaste tu contraseña!"
+        description="Escribe el correo electrónico asociado a tu cuenta. Te enviaremos las instrucciones para restablecer tu contraseña."
         footer="¿No tienes cuenta?"
         footerLink="/register"
         footerLinkText="Registrate"
         fullwidth={false}
       >
-        <LoginForm />
+        <ForgotPassForm />
       </AuthFormCard>
     </main>
   )

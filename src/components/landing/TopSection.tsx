@@ -15,7 +15,7 @@ export default function TopSection() {
           ideal para tu instalación. Ahorra tiempo, reduce errores y mejora la
           eficiencia de tus proyectos.
         </p>
-        <Button className="">Comenzar ahora</Button>
+        <Button className="lg:w-[32vw]">Comenzar ahora</Button>
       </section>
       <TopImage />
     </>

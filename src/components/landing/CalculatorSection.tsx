@@ -5,7 +5,7 @@ import CalculatorFeatures from '../CalculatorFeatures'
 export default function CalculatorSection() {
   return (
     <section className="flex w-full justify-center bg-gray-background px-4 pb-16 pt-12 lg:justify-between lg:p-0">
-      <div className="flex flex-col items-center gap-8 lg:items-start lg:justify-center lg:py-32 lg:pl-28">
+      <div className="flex w-full flex-col items-center gap-8 lg:items-start lg:justify-center lg:py-32 lg:pl-28">
         <Image
           src={'/svg/Logo_text.svg'}
           alt="Logotipo de Impromec"
@@ -18,7 +18,7 @@ export default function CalculatorSection() {
           <span className="text-red">Calcula tu Bandeja Portacables</span> ideal
         </p>
         <CalculatorFeatures className={'lg:max-w-[32vw]'} />
-        <Button>Usar Impromec Calculador</Button>
+        <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
       </div>
       <Image
         src={'/img/calculator_desktop.webp'}

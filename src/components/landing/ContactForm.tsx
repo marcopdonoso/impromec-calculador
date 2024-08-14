@@ -21,7 +21,7 @@ export default function ContactForm() {
           label="Mensaje"
           placeholder="Escribe tu mensaje aquí"
         />
-        <Button className="mt-16" variant="full" type="submit">
+        <Button className="mt-16" type="submit">
           Enviar Correo
         </Button>
       </form>
