@@ -19,7 +19,7 @@ export default function LoginForm() {
       >
         ¿Olvidaste tu contraseña?
       </Link>
-      <Button variant="full">Iniciar sesión</Button>
+      <Button>Iniciar sesión</Button>
     </form>
   )
 }

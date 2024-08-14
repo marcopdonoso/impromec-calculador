@@ -54,7 +54,7 @@ export default function RegisterForm() {
           className="mb-20 lg:mb-0"
         />
       </div>
-      <Button>Registrarme</Button>
+      <Button className="lg:w-[32vw]">Registrarme</Button>
     </form>
   )
 }
