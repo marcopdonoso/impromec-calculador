@@ -8,12 +8,17 @@ export default function AuthButtons({
 }) {
   return (
     <div className="flex flex-col gap-2 lg:flex-row lg:gap-0">
-      <Button variant="register" onClick={toggleMenu}>
-        <Link href={'/register'}>Registrarme</Link>
-      </Button>
-      <Button variant="login" onClick={toggleMenu}>
-        <Link href={'/login'}>Iniciar sesión</Link>
-      </Button>
+      <Link href={'/register'} className="rounded-lg">
+        <Button variant="register" onClick={toggleMenu}>
+          Registrarme
+        </Button>
+      </Link>
+
+      <Link href={'/login'} className="rounded-lg">
+        <Button variant="login" onClick={toggleMenu}>
+          Iniciar sesión
+        </Button>
+      </Link>
     </div>
   )
 }
