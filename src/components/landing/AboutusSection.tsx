@@ -17,7 +17,7 @@ export default function AboutusSection() {
           Hemos creado Impromec Calculador, una herramienta que te ayudará a
           calcular la bandeja ideal para tu instalación.{' '}
         </p>
-        <Button>Usar Impromec Calculador</Button>
+        <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
         <Image
           src={'/svg/aboutus_desktop.svg'}
           alt="figuras con los colores de impromec"

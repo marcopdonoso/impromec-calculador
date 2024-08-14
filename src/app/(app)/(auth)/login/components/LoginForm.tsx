@@ -14,12 +14,12 @@ export default function LoginForm() {
       />
       <InputPass label="Contraseña" />
       <Link
-        href={''}
+        href={'/forgot-password'}
         className="body_small_regular mb-20 mt-1 w-full text-end text-gray-text_alt"
       >
         ¿Olvidaste tu contraseña?
       </Link>
-      <Button variant="full">Iniciar sesión</Button>
+      <Button>Iniciar sesión</Button>
     </form>
   )
 }
