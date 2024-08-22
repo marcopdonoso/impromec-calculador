@@ -14,7 +14,7 @@ export default function ForgotPassForm() {
       <Button type="submit" className="mb-4 lg:mb-6">
         Enviar enlace
       </Button>
-      <Link href={'/login'} className="w-full">
+      <Link href={'/login'} className="w-full rounded-lg">
         <Button type="button" variant="secondary">
           Volver atrás
         </Button>
