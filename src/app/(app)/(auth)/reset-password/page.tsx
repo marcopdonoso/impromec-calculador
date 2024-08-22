@@ -5,7 +5,7 @@ import AuthFormCard from '../components/AuthFormCard'
 
 export default function ResetPasswordPage() {
   return (
-    <main className="px-2 pb-20 pt-24 lg:flex lg:items-center lg:justify-center lg:gap-28 lg:px-28 lg:py-7">
+    <main className="flex min-h-screen items-center justify-center px-2 py-8 lg:px-28">
       <AuthFormCard
         title="Restablecer contraseña"
         description="Crea una nueva contraseña con al menos 8 caracteres, letras, números y símbolos  (!$@%)."

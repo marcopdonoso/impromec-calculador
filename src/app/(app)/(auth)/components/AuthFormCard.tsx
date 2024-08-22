@@ -25,7 +25,7 @@ export default function AuthFormCard({
   return (
     <section
       className={clsx(
-        'flex flex-col items-center rounded-lg bg-gray-background px-2 py-8 lg:rounded-2xl',
+        'flex w-full flex-col items-center rounded-lg bg-gray-background px-2 py-8 lg:rounded-2xl',
         {
           'lg:px-28 lg:py-11': fullwidth,
           'lg:w-1/2 lg:p-14': !fullwidth,
