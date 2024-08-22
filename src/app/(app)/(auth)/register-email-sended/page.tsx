@@ -9,7 +9,7 @@ export default function RegisterEmailSendedPage() {
           alt="happy_face"
           width={150}
           height={150}
-          className="-z-10 size-[70px]"
+          className="size-[70px]"
         />
         <h4 className="body_large_semibold text-center lg:heading_h4">
           Sus datos de registro han sido enviados
