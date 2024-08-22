@@ -2,14 +2,14 @@ import Image from 'next/image'
 
 export default function RegisterEmailSendedPage() {
   return (
-    <main className="flex h-screen items-center justify-center px-7">
+    <main className="flex h-screen items-center justify-center p-7">
       <div className="flex flex-col items-center gap-6">
         <Image
           src={'/svg/smile.svg'}
           alt="happy_face"
           width={150}
           height={150}
-          className="size-[70px]"
+          className="-z-10 size-[70px]"
         />
         <h4 className="body_large_semibold text-center lg:heading_h4">
           Sus datos de registro han sido enviados
