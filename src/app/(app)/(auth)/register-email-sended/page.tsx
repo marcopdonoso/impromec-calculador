@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default function RegisterEmailSendedPage() {
   return (
-    <main className="flex h-screen items-center justify-center p-7">
+    <main className="flex min-h-screen items-center justify-center p-7">
       <div className="flex flex-col items-center gap-6">
         <Image
           src={'/svg/smile.svg'}

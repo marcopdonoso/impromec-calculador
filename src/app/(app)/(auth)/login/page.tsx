@@ -4,7 +4,7 @@ import LoginForm from './components/LoginForm'
 
 export default function LoginPage() {
   return (
-    <main className="flex h-screen items-center justify-center px-2 lg:gap-28 lg:px-28">
+    <main className="flex min-h-screen items-center justify-center px-2 py-8 lg:gap-28 lg:px-28">
       <LoginFeatures />
       <AuthFormCard
         title="¡Bienvenido de vuelta!"
