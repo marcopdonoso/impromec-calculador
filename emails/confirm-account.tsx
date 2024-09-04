@@ -68,11 +68,11 @@ const ConfirmAccountEmail = ({ name, email, token }: ConfirmAccountProps) => {
           <Container className="h-7 w-full bg-red" />
           <Container className="flex w-full flex-col">
             <Row className="my-4">
-              <Column className="flex items-center gap-7">
+              <Column className="flex items-center gap-5">
                 <Img
                   src="https://res.cloudinary.com/drc513m7f/image/upload/v1725472967/Logo_xd3tbz.jpg"
                   alt="impromec_logo"
-                  className="h-12"
+                  className="h-16"
                 />
                 <h4 className="text-2xl font-bold">Confirma tu cuenta</h4>
               </Column>
@@ -86,7 +86,7 @@ const ConfirmAccountEmail = ({ name, email, token }: ConfirmAccountProps) => {
             </Text>
             <Button
               href="example.com"
-              className="mt-4 w-full max-w-[430px] rounded-lg bg-[#636363] py-3 text-center text-gray-white"
+              className="mt-4 w-full max-w-[430px] rounded-lg bg-gray-button_primary py-3 text-center text-gray-white"
             >
               Confirmar registro
             </Button>
