@@ -1,5 +1,6 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
+import { authLinks } from '@/constants/links.constants'
 import Link from 'next/link'
 
 export default function ForgotPassForm() {
@@ -14,7 +15,7 @@ export default function ForgotPassForm() {
       <Button type="submit" className="mb-4 lg:mb-6">
         Enviar enlace
       </Button>
-      <Link href={'/login'} className="w-full rounded-lg">
+      <Link href={authLinks.login.path} className="w-full rounded-lg">
         <Button type="button" variant="secondary">
           Volver atrás
         </Button>
