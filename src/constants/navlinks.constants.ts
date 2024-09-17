@@ -5,18 +5,18 @@ export const navlinks = [
   },
   {
     name: 'Calculador',
-    path: '/calculador',
+    path: '#calculator',
   },
   {
     name: 'Productos',
-    path: '/productos',
+    path: '#products',
   },
   {
     name: 'Nosotros',
-    path: '/nosotros',
+    path: '#about',
   },
   {
     name: 'Contáctanos',
-    path: '/contacto',
+    path: '#contact',
   },
 ]

@@ -4,7 +4,10 @@ import CalculatorFeatures from '../CalculatorFeatures'
 
 export default function CalculatorSection() {
   return (
-    <section className="flex w-full justify-center bg-gray-background px-4 pb-16 pt-12 lg:justify-between lg:p-0">
+    <section
+      className="flex w-full justify-center bg-gray-background px-4 pb-16 pt-12 lg:justify-between lg:p-0"
+      id="calculator"
+    >
       <div className="flex w-full flex-col items-center gap-8 lg:items-start lg:justify-center lg:py-32 lg:pl-28">
         <Image
           src={'/svg/Logo_text.svg'}

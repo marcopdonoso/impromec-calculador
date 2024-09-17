@@ -80,17 +80,24 @@ export default function Button({
           'border-green-success text-green-success hover:bg-green-success_alt':
             variant === 'add',
 
-          'p-3 lg:h-12 lg:px-4 lg:py-0': variant === 'icon_right',
-
           'active:border active:border-gray-input active:bg-gray-background':
             variant === 'register',
+
+          'h-12 w-full pl-5 pr-4': variant === 'icon_right' && children,
+
+          'size-8': variant === 'icon_right' && !children,
         },
         className
       )}
       {...props}
     >
       <div
-        className={`flex items-center ${variant === 'icon_right' ? 'flex-row-reverse justify-between gap-4' : 'justify-center gap-2'}`}
+        className={clsx('flex items-center', {
+          'justify-center gap-2': variant !== 'icon_right',
+          'flex-row-reverse justify-between':
+            variant === 'icon_right' && children,
+          'justify-center': variant === 'icon_right' && !children,
+        })}
       >
         {icon && <div className="w-5 lg:w-6">{icon}</div>}
         {children}
