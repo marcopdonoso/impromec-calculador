@@ -3,7 +3,10 @@ import Button from '../Button'
 
 export default function ProductsSection() {
   return (
-    <section className="flex flex-col items-center py-12 lg:py-40">
+    <section
+      className="flex flex-col items-center py-12 lg:py-40"
+      id="products"
+    >
       <h4 className="body_large_semibold mb-2 text-center lg:heading_h4 lg:mb-5">
         Productos
       </h4>

@@ -1,6 +1,7 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import InputPass from '@/components/InputPass'
+import { authLinks } from '@/constants/links.constants'
 import Link from 'next/link'
 
 export default function LoginForm() {
@@ -14,7 +15,7 @@ export default function LoginForm() {
       />
       <InputPass label="Contraseña" />
       <Link
-        href={'/forgot-password'}
+        href={authLinks.forgot_pass.path}
         className="body_small_regular mb-20 mt-1 w-full text-end text-gray-text_alt"
       >
         ¿Olvidaste tu contraseña?

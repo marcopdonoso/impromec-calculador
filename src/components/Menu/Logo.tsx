@@ -17,7 +17,7 @@ export default function Logo({ className }: LogoProps) {
       }}
       className={clsx('relative h-full w-full', className)}
     >
-      <Image src="svg/Logo_iso.svg" alt="logo" fill priority />
+      <Image src="/svg/Logo_iso.svg" alt="logo" fill priority />
     </div>
   )
 }

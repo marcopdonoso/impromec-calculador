@@ -3,7 +3,7 @@ import Button from '../Button'
 
 export default function AboutusSection() {
   return (
-    <section className="lg:flex lg:w-full">
+    <section className="lg:flex lg:w-full" id="about">
       <div className="relative flex flex-1 flex-col items-center bg-gray-background px-4 pb-8 pt-12 lg:items-start lg:justify-center lg:px-28">
         <h4 className="body_large_semibold mb-2 lg:heading_h4 lg:mb-9">
           Nosotros

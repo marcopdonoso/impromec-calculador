@@ -1,5 +1,5 @@
 'use client'
-import { navlinks } from '@/constants/navlinks.constants'
+import { navlinks } from '@/constants/links.constants'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'

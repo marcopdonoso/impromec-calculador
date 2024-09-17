@@ -1,3 +1,4 @@
+import { authLinks } from '@/constants/links.constants'
 import AuthFormCard from '../components/AuthFormCard'
 import LoginFeatures from './components/LoginFeatures'
 import LoginForm from './components/LoginForm'
@@ -10,7 +11,7 @@ export default function LoginPage() {
         title="¡Bienvenido de vuelta!"
         description="Estamos felices de tenerte de vuelta. Accede a tu cuenta y continua con tus cálculos."
         footer="¿No tienes cuenta?"
-        footerLink="/register"
+        footerLink={authLinks.register.path}
         footerLinkText="Registrate"
         fullwidth={false}
       >

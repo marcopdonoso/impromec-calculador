@@ -1,3 +1,4 @@
+import { authLinks } from '@/constants/links.constants'
 import AuthFormCard from '../components/AuthFormCard'
 import ForgotPassForm from './components/ForgotPassForm'
 
@@ -8,7 +9,7 @@ export default function ForgotPasswordPage() {
         title="¡Olvidaste tu contraseña!"
         description="Escribe el correo electrónico asociado a tu cuenta. Te enviaremos las instrucciones para restablecer tu contraseña."
         footer="¿No tienes cuenta?"
-        footerLink="/register"
+        footerLink={authLinks.register.path}
         footerLinkText="Registrate"
         fullwidth={false}
       >

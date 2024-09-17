@@ -1,3 +1,4 @@
+import { authLinks } from '@/constants/links.constants'
 import 'react-phone-number-input/style.css'
 import AuthFormCard from '../components/AuthFormCard'
 import RegisterForm from './components/RegisterForm'
@@ -9,7 +10,7 @@ export default function RegisterPage() {
         title="¡Regístrate y comienza hoy!"
         description="Accede y utiliza nuestra calculadora de bandejas portacables de forma segura y confiable."
         footer="¿Ya tienes una cuenta?"
-        footerLink="/login"
+        footerLink={authLinks.login.path}
         footerLinkText="Inicia sesión"
       >
         <RegisterForm />

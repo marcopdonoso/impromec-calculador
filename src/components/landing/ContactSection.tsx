@@ -4,7 +4,10 @@ import ContactForm from './ContactForm'
 
 export default function ContactSection() {
   return (
-    <section className="w-full px-4 pb-11 pt-12 lg:relative lg:flex lg:gap-24 lg:px-28 lg:py-28">
+    <section
+      className="w-full px-4 pb-11 pt-12 lg:relative lg:flex lg:gap-24 lg:px-28 lg:py-28"
+      id="contact"
+    >
       <div className="lg:flex lg:w-1/2 lg:flex-col lg:justify-center">
         <h4 className="body_large_semibold mb-2 lg:heading_h4 lg:mb-6">
           Contáctanos

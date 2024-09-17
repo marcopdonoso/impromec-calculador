@@ -1,5 +1,6 @@
 import Button from '@/components/Button'
 import InputPass from '@/components/InputPass'
+import { authLinks } from '@/constants/links.constants'
 import Link from 'next/link'
 import AuthFormCard from '../components/AuthFormCard'
 
@@ -10,7 +11,7 @@ export default function ResetPasswordPage() {
         title="Restablecer contraseña"
         description="Crea una nueva contraseña con al menos 8 caracteres, letras, números y símbolos  (!$@%)."
         footer="¿No tienes cuenta?"
-        footerLink="/register"
+        footerLink={authLinks.register.path}
         footerLinkText="Registrate"
         fullwidth={false}
       >
@@ -28,7 +29,7 @@ export default function ResetPasswordPage() {
           <Button type="submit" className="mb-4">
             Cambiar contraseña
           </Button>
-          <Link href={'/login'} className="w-full rounded-lg">
+          <Link href={authLinks.login.path} className="w-full rounded-lg">
             <Button type="button" variant="secondary">
               Cancelar
             </Button>
