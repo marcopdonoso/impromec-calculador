@@ -1,5 +1,5 @@
 'use client'
-import { appLinks } from '@/constants/links.constants'
+import { getNameByPathname } from '@/utilities/get-name-by-pathname.utility'
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -8,17 +8,6 @@ import { usePathname } from 'next/navigation'
 type BreadcrumbItem = {
   name: string | null
   path: string
-}
-
-type AppLinks = typeof appLinks
-type AppLinkKey = keyof AppLinks
-
-const getNameByPathname = (pathname: string) => {
-  for (const key in appLinks) {
-    if (appLinks[key as AppLinkKey].path === pathname)
-      return appLinks[key as AppLinkKey].name
-  }
-  return null
 }
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {

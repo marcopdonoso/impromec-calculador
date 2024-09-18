@@ -68,6 +68,10 @@ export const authLinks = {
 }
 
 export const appLinks = {
+  home: {
+    name: 'Inicio',
+    path: '/',
+  },
   calculatorHome: {
     name: 'Calculador',
     path: '/dashboard/calculator',
