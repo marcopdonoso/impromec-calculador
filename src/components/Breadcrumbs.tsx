@@ -1,5 +1,6 @@
 'use client'
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -17,12 +18,16 @@ const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   })
 }
 
-export default function Breadcrumbs() {
+interface BreadcrumbsProps {
+  className?: string
+}
+
+export default function Breadcrumbs({ className }: BreadcrumbsProps) {
   const pathname = usePathname()
   const breadcrumbs = generateBreadcrumbs(pathname)
 
   return (
-    <nav>
+    <nav className={clsx('hidden lg:block', className)}>
       <ol className="flex gap-2">
         <li>
           <Link className="flex gap-2 text-gray-text_inactive" href={'/'}>
