@@ -6,23 +6,23 @@ export const navlinks = [
   },
   {
     name: 'Calculador',
-    path: '#calculator',
-    logged_path: 'dashboard/calculator',
+    path: '/#calculator',
+    logged_path: '/dashboard/calculator',
   },
   {
     name: 'Productos',
-    path: '#products',
-    logged_path: 'dashboard/products',
+    path: '/#products',
+    logged_path: '/dashboard/products',
   },
   {
     name: 'Nosotros',
-    path: '#about',
-    logged_path: '#about',
+    path: '/#about',
+    logged_path: '/#about',
   },
   {
     name: 'Contáctanos',
-    path: '#contact',
-    logged_path: '#contact',
+    path: '/#contact',
+    logged_path: '/#contact',
   },
 ]
 
