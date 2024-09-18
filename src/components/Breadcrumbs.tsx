@@ -1,21 +1,36 @@
 'use client'
+import { appLinks } from '@/constants/links.constants'
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 type BreadcrumbItem = {
-  name: string
+  name: string | null
   path: string
+}
+
+type AppLinks = typeof appLinks
+type AppLinkKey = keyof AppLinks
+
+const getNameByPathname = (pathname: string) => {
+  for (const key in appLinks) {
+    if (appLinks[key as AppLinkKey].path === pathname)
+      return appLinks[key as AppLinkKey].name
+  }
+  return null
 }
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   const pathnames = pathname.split('/').filter((x) => x)
-  return pathnames.map((_, idx) => {
-    const path = `/${pathnames.slice(0, idx + 1).join('/')}`
-    const name = pathnames[idx]
-    return { name, path }
-  })
+  const breadcrumbs: BreadcrumbItem[] = pathnames
+    .map((_, idx) => {
+      const path = `/${pathnames.slice(0, idx + 1).join('/')}`
+      const name = getNameByPathname(path)
+      return { name, path }
+    })
+    .filter((breadcrumb) => breadcrumb.name !== null)
+  return breadcrumbs
 }
 
 interface BreadcrumbsProps {

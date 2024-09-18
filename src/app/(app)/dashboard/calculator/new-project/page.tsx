@@ -2,6 +2,7 @@ import Breadcrumbs from '@/components/Breadcrumbs'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import MySwitch from '@/components/MySwitch'
+import { appLinks } from '@/constants/links.constants'
 import Link from 'next/link'
 
 export default function NewProjectPage() {
@@ -37,7 +38,7 @@ export default function NewProjectPage() {
           </div>
           <div className="mt-8 flex w-full flex-col gap-4 lg:flex-row-reverse lg:gap-9">
             <Button type="submit">Continuar</Button>
-            <Link href={'/dashboard/calculator'} className="lg:w-full">
+            <Link href={appLinks.calculatorHome.path} className="lg:w-full">
               <Button variant="secondary" type="button">
                 Volver atrás
               </Button>
