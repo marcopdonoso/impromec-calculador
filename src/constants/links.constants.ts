@@ -1,28 +1,46 @@
-export const navlinks = [
+export const noLoggedNavbarLinks = [
   {
     name: 'Inicio',
     path: '/',
-    logged_path: '/',
   },
   {
     name: 'Calculador',
-    path: '#calculator',
-    logged_path: 'dashboard/calculator',
+    path: '/#calculator',
   },
   {
     name: 'Productos',
-    path: '#products',
-    logged_path: 'dashboard/products',
+    path: '/#products',
   },
   {
     name: 'Nosotros',
-    path: '#about',
-    logged_path: '#about',
+    path: '/#about',
   },
   {
     name: 'Contáctanos',
-    path: '#contact',
-    logged_path: '#contact',
+    path: '/#contact',
+  },
+]
+
+export const loggedNavbarLinks = [
+  {
+    name: 'Inicio',
+    path: '/',
+  },
+  {
+    name: 'Calculador',
+    path: '/dashboard/calculator',
+  },
+  {
+    name: 'Productos',
+    path: '/dashboard/products',
+  },
+  {
+    name: 'Nosotros',
+    path: '/#about',
+  },
+  {
+    name: 'Contáctanos',
+    path: '/#contact',
   },
 ]
 
@@ -35,16 +53,31 @@ export const authLinks = {
     name: 'Registrarme',
     path: '/auth/register',
   },
-  forgot_pass: {
+  forgotPass: {
     name: 'Olvidé mi contraseña',
     path: '/auth/forgot-password',
   },
-  reset_pass: {
+  resetPass: {
     name: 'Restablecer contraseña',
     path: '/auth/reset-password',
   },
-  successful_reg: {
+  successfulReg: {
     name: 'Registro exitoso',
     path: '/auth/register-email-sended',
+  },
+}
+
+export const appLinks = {
+  home: {
+    name: 'Inicio',
+    path: '/',
+  },
+  calculatorHome: {
+    name: 'Calculador',
+    path: '/dashboard/calculator',
+  },
+  calculatorNewProject: {
+    name: 'Proyecto nuevo',
+    path: '/dashboard/calculator/new-project',
   },
 }

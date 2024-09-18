@@ -1,5 +1,5 @@
 'use client'
-import { navlinks } from '@/constants/links.constants'
+import { loggedNavbarLinks } from '@/constants/links.constants'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -14,6 +14,9 @@ interface NavbarProps {
 export default function Navbar({ className, footer, toggleMenu }: NavbarProps) {
   const [activeLink, setActiveLink] = useState<string | null>(null)
   const pathname = usePathname()
+
+  // TODO: REEMPLAZAR POR LÓGICA DE REDIRECCIONAMIENTO
+  const navlinks = loggedNavbarLinks
 
   useEffect(() => {
     setActiveLink(pathname)

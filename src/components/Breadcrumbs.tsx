@@ -1,28 +1,37 @@
 'use client'
+import { getNameByPathname } from '@/utilities/get-name-by-pathname.utility'
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 type BreadcrumbItem = {
-  name: string
+  name: string | null
   path: string
 }
 
 const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   const pathnames = pathname.split('/').filter((x) => x)
-  return pathnames.map((_, idx) => {
-    const path = `/${pathnames.slice(0, idx + 1).join('/')}`
-    const name = pathnames[idx]
-    return { name, path }
-  })
+  const breadcrumbs: BreadcrumbItem[] = pathnames
+    .map((_, idx) => {
+      const path = `/${pathnames.slice(0, idx + 1).join('/')}`
+      const name = getNameByPathname(path)
+      return { name, path }
+    })
+    .filter((breadcrumb) => breadcrumb.name !== null)
+  return breadcrumbs
 }
 
-export default function Breadcrumbs() {
+interface BreadcrumbsProps {
+  className?: string
+}
+
+export default function Breadcrumbs({ className }: BreadcrumbsProps) {
   const pathname = usePathname()
   const breadcrumbs = generateBreadcrumbs(pathname)
 
   return (
-    <nav>
+    <nav className={clsx('hidden lg:block', className)}>
       <ol className="flex gap-2">
         <li>
           <Link className="flex gap-2 text-gray-text_inactive" href={'/'}>

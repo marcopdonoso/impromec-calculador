@@ -15,7 +15,7 @@ export default function LoginForm() {
       />
       <InputPass label="Contraseña" />
       <Link
-        href={authLinks.forgot_pass.path}
+        href={authLinks.forgotPass.path}
         className="body_small_regular mb-20 mt-1 w-full text-end text-gray-text_alt"
       >
         ¿Olvidaste tu contraseña?
