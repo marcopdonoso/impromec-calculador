@@ -10,7 +10,7 @@ export default function MySlider() {
       <Slider.Root
         max={100}
         step={5}
-        className="relative flex h-5 w-56 items-center lg:w-80"
+        className="relative flex h-5 flex-1 items-center"
         value={value}
         onValueChange={(v) => setValue(v)}
       >
