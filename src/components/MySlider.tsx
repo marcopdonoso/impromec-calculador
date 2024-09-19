@@ -23,7 +23,7 @@ export default function MySlider() {
       </Slider.Root>
       <span
         className={clsx(
-          'flex h-11 w-16 items-center justify-center rounded-lg border border-gray-input',
+          'flex h-11 w-16 items-center justify-center rounded-lg border border-gray-input bg-gray-white',
           value[0] !== 0 ? 'text-gray-text' : 'text-gray-placeholder'
         )}
       >
