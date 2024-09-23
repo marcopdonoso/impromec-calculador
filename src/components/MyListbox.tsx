@@ -16,11 +16,11 @@ import { useState } from 'react'
 type ListBoxVariant = 'small' | 'medium' | 'large' | 'full' | 'sorting'
 
 const variants: Record<ListBoxVariant, string> = {
-  small: 'w-40 lg:w-[14vw] lg:min-w-28',
-  medium: 'w-[19vw] min-w-28',
-  large: 'w-80 lg:w-[32vw] lg:min-w-28',
-  full: 'w-full',
-  sorting: 'w-fit flex items-center gap-1',
+  small: 'flex-col w-40 lg:w-[14vw] lg:min-w-28',
+  medium: 'flex-col w-[19vw] min-w-28',
+  large: 'flex-col w-80 lg:w-[32vw] lg:min-w-28',
+  full: 'flex-col w-full',
+  sorting: 'w-fit flex-row items-center gap-1',
 }
 
 interface MyListboxProps {
@@ -42,7 +42,7 @@ export default function MyListbox({
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <Field className={clsx(variants[variant], className)}>
+    <Field className={clsx('flex', variants[variant], className)}>
       <Label
         className={clsx(
           'font-medium text-gray-text',

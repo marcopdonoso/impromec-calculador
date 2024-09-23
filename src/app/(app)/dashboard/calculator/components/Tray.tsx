@@ -7,8 +7,8 @@ export default function Tray() {
       <div className="mb-5 flex h-12 items-center rounded-lg bg-gray-background px-5">
         <h4 className="body_small_medium">Bandeja</h4>
       </div>
-      <TrayTypeSelector className="mb-4" />
-      <ReservePercentage />
+      <TrayTypeSelector className="mb-2 rounded-2xl bg-gray-white p-2" />
+      <ReservePercentage className="rounded-2xl bg-gray-white p-2" />
     </div>
   )
 }
