@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function CalculatorPage() {
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center px-4">
+    <section className="flex min-h-screen w-full max-w-4xl flex-col items-center justify-center px-4">
       <Image
         src={'/svg/Logo_text.svg'}
         alt="logo_impromec_calculador"
@@ -20,7 +20,7 @@ export default function CalculatorPage() {
       <p className="body_small_regular mt-2 text-center lg:body_large_regular">
         Calcula la bandeja portacables adecuada para tu instalación.
       </p>
-      <div className="mt-14 flex w-full max-w-4xl flex-col gap-4 lg:mt-20">
+      <div className="mt-14 flex w-full flex-col gap-4 lg:mt-20">
         <Link href={''}>
           <Button variant="icon_right" icon={<ChevronRightIcon />}>
             Mis proyectos (0)

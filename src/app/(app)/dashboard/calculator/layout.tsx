@@ -7,10 +7,8 @@ interface CalculatorLayoutProps {
 export default function CalculatorLayout({ children }: CalculatorLayoutProps) {
   return (
     <div>
-      <div className="flex h-16 items-center px-28">
-        <Breadcrumbs />
-      </div>
-      {children}
+      <Breadcrumbs />
+      <div className="flex justify-center">{children}</div>
     </div>
   )
 }

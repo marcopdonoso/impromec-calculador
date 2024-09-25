@@ -39,7 +39,7 @@ export default function Breadcrumbs({
     : generateBreadcrumbs(pathname)
 
   return (
-    <nav className={clsx('hidden lg:block', className)}>
+    <nav className={clsx('hidden h-16 items-center px-28 lg:flex', className)}>
       <ol className="flex gap-2">
         <li>
           <Link className="flex gap-2 text-gray-text_inactive" href={'/'}>

@@ -2,17 +2,15 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import Input, { InputVariant } from './Input'
+import Input from './Input'
 
 interface InputSearchProps {
-  variant?: InputVariant
   label?: string
   placeholder?: string
   className?: string
 }
 
 export default function InputSearch({
-  variant,
   label,
   placeholder,
   className,
@@ -33,7 +31,6 @@ export default function InputSearch({
 
   return (
     <Input
-      variant={variant}
       label={label}
       className={clsx(className, 'lg:w-full')}
       onChange={(e) => handleSearch(e.target.value)}
