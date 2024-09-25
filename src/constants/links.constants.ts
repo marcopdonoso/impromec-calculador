@@ -80,4 +80,12 @@ export const appLinks = {
     name: 'Proyecto nuevo',
     path: '/dashboard/calculator/new-project',
   },
+  calculatorAddSector: {
+    name: 'Agregar sector',
+    path: '/dashboard/calculator/edit-project/add-sector',
+  },
+  calculatorEditProject: {
+    name: '[Editar proyecto]',
+    path: '/dashboard/calculator/edit-project',
+  },
 }
