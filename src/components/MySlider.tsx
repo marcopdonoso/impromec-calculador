@@ -6,7 +6,7 @@ import { useState } from 'react'
 export default function MySlider() {
   const [value, setValue] = useState([0])
   return (
-    <div className="flex items-center gap-2 lg:gap-4">
+    <div className="flex w-full items-center gap-2 lg:gap-4">
       <Slider.Root
         max={100}
         step={5}
