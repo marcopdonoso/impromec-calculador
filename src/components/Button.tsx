@@ -15,6 +15,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
   children?: React.ReactNode
   icon?: React.ReactNode
+  iconWidth?: number
   className?: string
 }
 
@@ -22,6 +23,7 @@ export default function Button({
   variant = 'primary',
   children,
   icon,
+  iconWidth,
   className,
   ...props
 }: ButtonProps) {
@@ -99,7 +101,16 @@ export default function Button({
           'justify-center': variant === 'icon_right' && !children,
         })}
       >
-        {icon && <div className="w-5 lg:w-6">{icon}</div>}
+        {icon && (
+          <div
+            className={clsx({
+              'w-5 lg:w-6': !iconWidth,
+              [`w-${iconWidth}`]: iconWidth,
+            })}
+          >
+            {icon}
+          </div>
+        )}
         {children}
       </div>
     </button>

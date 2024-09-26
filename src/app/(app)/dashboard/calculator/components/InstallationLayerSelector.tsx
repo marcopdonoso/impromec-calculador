@@ -10,8 +10,8 @@ export default function InstallationLayerSelector() {
     },
   ]
   return (
-    <div className="px-2">
-      <div className="mb-5 flex h-12 items-center rounded-lg bg-gray-background px-5 lg:mb-8">
+    <div>
+      <div className="mx-2 mb-5 flex h-12 items-center rounded-lg bg-gray-background px-5 lg:mb-8">
         <h4 className="body_small_medium lg:body_medium_medium">
           Tipo de instalación de cables
         </h4>
