@@ -9,8 +9,8 @@ export default function SectorsList() {
       <Button variant="add" icon={<PlusCircleIcon />}>
         Agregar sector
       </Button>
-      <hr className="my-8 text-gray-placeholder" />
-      <h4 className="body_large_semibold text-center">
+      <hr className="my-8 text-gray-placeholder lg:my-10" />
+      <h4 className="body_large_semibold text-center lg:heading_h6">
         Sector [1]: [Sala de servidores]
       </h4>
     </div>

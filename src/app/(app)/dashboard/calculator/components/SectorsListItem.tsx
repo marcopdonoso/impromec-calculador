@@ -23,8 +23,8 @@ export default function SectorsListItem({
   }
 
   return (
-    <div className="mb-7">
-      <div className="flex items-end gap-2">
+    <div className="mb-7 lg:mb-6">
+      <div className="flex items-end gap-2 lg:gap-6">
         <Input
           label={`Nombre del Sector ${sectorNumber}`}
           value={sectorName}
@@ -35,7 +35,7 @@ export default function SectorsListItem({
           <Button
             variant="tertiary"
             icon={<EllipsisVerticalIcon />}
-            iconWidth={8}
+            iconClassName={'w-8'}
             onClick={optionsVisibilityToggler}
           />
           <div
@@ -51,9 +51,12 @@ export default function SectorsListItem({
         </div>
       </div>
       <div
-        className={clsx('mt-16 flex flex-col gap-4', {
-          hidden: !canEdit,
-        })}
+        className={clsx(
+          'mt-16 flex flex-col gap-4 lg:mt-6 lg:flex-row-reverse lg:gap-9',
+          {
+            hidden: !canEdit,
+          }
+        )}
       >
         <Button>Guardar</Button>
         <Button

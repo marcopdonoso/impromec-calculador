@@ -15,7 +15,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
   children?: React.ReactNode
   icon?: React.ReactNode
-  iconWidth?: number
+  iconClassName?: string
   className?: string
 }
 
@@ -23,7 +23,7 @@ export default function Button({
   variant = 'primary',
   children,
   icon,
-  iconWidth,
+  iconClassName,
   className,
   ...props
 }: ButtonProps) {
@@ -104,8 +104,8 @@ export default function Button({
         {icon && (
           <div
             className={clsx({
-              'w-5 lg:w-6': !iconWidth,
-              [`w-${iconWidth}`]: iconWidth,
+              'w-5 lg:w-6': !iconClassName,
+              [`${iconClassName}`]: iconClassName,
             })}
           >
             {icon}

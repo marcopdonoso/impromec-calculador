@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
+import ListItemOption from './ListItemOption'
 
 interface SectorsListItemOptionsProps {
   setCanEdit: Dispatch<SetStateAction<boolean>>
@@ -11,18 +12,16 @@ export default function SectorsListItemOptions({
 }: SectorsListItemOptionsProps) {
   return (
     <div className="z-50 w-40 rounded-md bg-gray-white py-2 shadow shadow-shadow">
-      <div
-        className="body_small_regular flex h-9 cursor-pointer items-center px-5 text-gray-text hover:bg-gray-button_primary hover:text-gray-white"
+      <ListItemOption
         onClick={() => {
           setCanEdit(true)
           setisOptionsVisible(false)
         }}
       >
         Editar nombre
-      </div>
-      <div className="body_small_regular flex h-9 cursor-pointer items-center px-5 text-gray-text hover:bg-gray-button_primary hover:text-gray-white">
-        Eliminar
-      </div>
+      </ListItemOption>
+      <hr className="text-gray-background" />
+      <ListItemOption onClick={() => {}}>Eliminar</ListItemOption>
     </div>
   )
 }
