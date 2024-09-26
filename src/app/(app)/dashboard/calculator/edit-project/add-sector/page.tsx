@@ -3,14 +3,16 @@ import Input from '@/components/Input'
 
 export default function AddSectorPage() {
   return (
-    <section className="flex min-h-screen flex-col px-4 pt-8">
+    <section className="flex min-h-screen w-full max-w-4xl flex-col px-4 pt-8">
       <Input
         label="Nombre del sector [1]"
         placeholder="Ej: Sala de servidores"
-        className="mb-16"
+        className="mb-16 lg:mb-6"
       />
-      <Button className="mb-4">Guardar sector</Button>
-      <Button variant="secondary">Volver atrás</Button>
+      <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-9">
+        <Button>Guardar sector</Button>
+        <Button variant="secondary">Volver atrás</Button>
+      </div>
     </section>
   )
 }
