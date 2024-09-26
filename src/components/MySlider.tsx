@@ -6,11 +6,11 @@ import { useState } from 'react'
 export default function MySlider() {
   const [value, setValue] = useState([0])
   return (
-    <div className="flex items-center gap-2 lg:gap-4">
+    <div className="flex w-full items-center gap-2 lg:gap-4">
       <Slider.Root
         max={100}
         step={5}
-        className="relative flex h-5 w-56 items-center lg:w-80"
+        className="relative flex h-5 flex-1 items-center"
         value={value}
         onValueChange={(v) => setValue(v)}
       >
@@ -23,7 +23,7 @@ export default function MySlider() {
       </Slider.Root>
       <span
         className={clsx(
-          'flex h-11 w-16 items-center justify-center rounded-lg border border-gray-input',
+          'flex h-11 w-16 items-center justify-center rounded-lg border border-gray-input bg-gray-white',
           value[0] !== 0 ? 'text-gray-text' : 'text-gray-placeholder'
         )}
       >

@@ -9,12 +9,12 @@ import {
 import clsx from 'clsx'
 import { useState } from 'react'
 
-interface Item {
+export interface RadioGroupItem {
   label: string
   image?: string
 }
 interface MyRadiogroupProps extends RadioGroupProps {
-  items: Item[]
+  items: RadioGroupItem[]
   className?: string
 }
 
@@ -43,7 +43,7 @@ export default function MyRadiogroup({
             key={item.label}
             className={clsx(
               item.image &&
-                `inline-block size-40 rounded-lg bg-gray-placeholder/15 bg-cover bg-no-repeat p-3 lg:size-48`
+                `inline-block size-40 rounded-lg bg-gray-background bg-cover bg-no-repeat p-3 lg:size-48`
             )}
             style={bgStyle}
             onClick={() => setSelected(item.label)}

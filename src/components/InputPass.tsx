@@ -1,17 +1,15 @@
 'use client'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
-import Input, { InputVariant } from './Input'
+import Input from './Input'
 
 interface InputPassProps {
-  variant?: InputVariant
   label?: string
   placeholder?: string
   className?: string
 }
 
 export default function InputPass({
-  variant,
   label,
   placeholder,
   className,
@@ -19,7 +17,6 @@ export default function InputPass({
   const [showPass, setShowPass] = useState(false)
   return (
     <Input
-      variant={variant}
       label={label}
       className={className}
       type={!showPass ? 'password' : 'text'}

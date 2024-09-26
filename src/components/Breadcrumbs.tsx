@@ -23,15 +23,23 @@ const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
 }
 
 interface BreadcrumbsProps {
+  currentPageTitle?: string
   className?: string
 }
 
-export default function Breadcrumbs({ className }: BreadcrumbsProps) {
+export default function Breadcrumbs({
+  currentPageTitle,
+  className,
+}: BreadcrumbsProps) {
   const pathname = usePathname()
-  const breadcrumbs = generateBreadcrumbs(pathname)
+  const breadcrumbs = currentPageTitle
+    ? generateBreadcrumbs(pathname).concat([
+        { name: currentPageTitle, path: '' },
+      ])
+    : generateBreadcrumbs(pathname)
 
   return (
-    <nav className={clsx('hidden lg:block', className)}>
+    <nav className={clsx('hidden h-16 items-center px-28 lg:flex', className)}>
       <ol className="flex gap-2">
         <li>
           <Link className="flex gap-2 text-gray-text_inactive" href={'/'}>

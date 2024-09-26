@@ -3,6 +3,6 @@ import { usePathname } from 'next/navigation'
 
 export default function useCurrentPageName() {
   const pathname = usePathname()
-  const currPage = getNameByPathname(pathname) || 'No encontrada'
+  const currPage = getNameByPathname(pathname) || null
   return currPage
 }
