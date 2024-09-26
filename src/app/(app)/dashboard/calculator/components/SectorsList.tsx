@@ -1,27 +1,11 @@
 import Button from '@/components/Button'
-import Input from '@/components/Input'
-import {
-  EllipsisVerticalIcon,
-  PlusCircleIcon,
-} from '@heroicons/react/24/outline'
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
+import SectorsListItem from './SectorsListItem'
 
 export default function SectorsList() {
   return (
     <div className="px-2">
-      <div className="mb-7 flex items-end gap-2">
-        <Input
-          label="Nombre del Sector [1]"
-          placeholder="[Sala de servidores]"
-          className="flex-1"
-        />
-        <div className="w-12">
-          <Button
-            variant="tertiary"
-            icon={<EllipsisVerticalIcon />}
-            iconWidth={8}
-          />
-        </div>
-      </div>
+      <SectorsListItem sectorName="[Sala de servidores]" sectorNumber={1} />
       <Button variant="add" icon={<PlusCircleIcon />}>
         Agregar sector
       </Button>
