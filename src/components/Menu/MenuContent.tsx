@@ -49,7 +49,7 @@ export default function MenuContent({
     >
       <div
         className={clsx(
-          'fixed left-0 top-0 z-50 flex min-h-screen w-fit flex-col bg-gray-white px-8 py-6 lg:static lg:h-fit lg:min-h-fit lg:w-screen lg:flex-row-reverse lg:justify-between lg:px-28 lg:py-6 lg:shadow-md'
+          'fixed left-0 top-0 z-50 flex h-screen w-fit flex-col overflow-y-auto bg-gray-white px-8 py-6 lg:static lg:h-fit lg:min-h-fit lg:w-screen lg:flex-row-reverse lg:justify-between lg:px-28 lg:py-6 lg:shadow-md'
         )}
       >
         {user ? (
@@ -61,7 +61,7 @@ export default function MenuContent({
             <UserSection user={user} />
           </div>
         ) : (
-          <>
+          <div>
             <Bars3Icon
               onClick={toggleMenu}
               role="button"
@@ -70,7 +70,7 @@ export default function MenuContent({
             <div className="hidden lg:block">
               <AuthButtons toggleMenu={toggleMenu} />
             </div>
-          </>
+          </div>
         )}
 
         <hr className="my-5 text-gray-input lg:hidden" />

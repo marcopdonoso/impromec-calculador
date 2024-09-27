@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function CalculatorPage() {
   return (
-    <section className="flex min-h-screen w-full max-w-4xl flex-col items-center justify-center px-4">
+    <section className="flex min-h-screen w-full max-w-4xl flex-col items-center justify-center px-4 py-12">
       <Image
         src={'/svg/Logo_text.svg'}
         alt="logo_impromec_calculador"
