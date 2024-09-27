@@ -1,14 +1,28 @@
 'use client'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import CollapsedHeaderMenu from './CollapsedHeaderMenu'
 import MenuContent from './MenuContent'
 import MenuOverlay from './MenuOverlay'
 
 export default function HeaderMenu() {
-  const [showMenu, setShowMenu] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  useEffect(() => {
+    // Bloquear scroll cuando el menú esté abierto
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    // Limpiar el efecto cuando el componente se desmonte
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isMenuOpen])
 
   const showMenuToggler = useCallback(() => {
-    setShowMenu((prevShowMenu) => !prevShowMenu)
+    setIsMenuOpen((prev) => !prev)
   }, [])
 
   return (
@@ -16,8 +30,8 @@ export default function HeaderMenu() {
       <div className="lg:hidden">
         <CollapsedHeaderMenu handleClick={showMenuToggler} />
       </div>
-      <MenuOverlay showMenu={showMenu} toggleMenu={showMenuToggler} />
-      <MenuContent showMenu={showMenu} toggleMenu={showMenuToggler} />
+      <MenuOverlay showMenu={isMenuOpen} toggleMenu={showMenuToggler} />
+      <MenuContent showMenu={isMenuOpen} toggleMenu={showMenuToggler} />
     </div>
   )
 }

@@ -6,7 +6,7 @@ import SectorSwitch from './SectorSwitch'
 
 export default function NewProjectForm() {
   return (
-    <form className="mt-12 w-full lg:mt-14 lg:max-w-4xl">
+    <form className="mt-12 w-full lg:mt-14">
       <Input
         label="Nombre del proyecto"
         placeholder="Ej: Instalación planta de fabricación"
