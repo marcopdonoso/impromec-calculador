@@ -7,7 +7,7 @@ import {
 import clsx from 'clsx'
 import Button, { ButtonVariant } from './Button'
 
-interface ModalButton {
+export interface ModalButton {
   variant: ButtonVariant
   children: string
   icon?: 'ReactNode'
@@ -36,7 +36,7 @@ export default function Modal({
   return (
     <div
       className={clsx(
-        'relative flex w-72 flex-col items-center rounded-2xl px-4 py-8 shadow shadow-shadow lg:w-[39vw] lg:min-w-[530px]',
+        'relative flex w-72 flex-col items-center rounded-2xl bg-gray-white px-4 py-8 shadow shadow-shadow lg:w-[39vw] lg:min-w-[530px]',
         !showModal && 'hidden'
       )}
     >
@@ -71,13 +71,14 @@ export default function Modal({
       <p className="mb-8 text-center text-sm text-gray-text_inactive lg:text-base">
         {paragraph}
       </p>
-      <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
+      <div className="flex w-full flex-col items-center gap-4 lg:flex-row lg:justify-center lg:gap-6">
         {buttons.map((button, index) => (
           <Button
             key={index}
             variant={button.variant}
             onClick={button.onClick}
             icon={button.icon}
+            className="max-w-52"
           >
             {button.children}
           </Button>

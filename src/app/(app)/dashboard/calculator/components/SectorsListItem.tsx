@@ -4,6 +4,7 @@ import Input from '@/components/Input'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { useState } from 'react'
+import DeleteSectorModal from './DeleteSectorModal'
 import SectorsListItemOptions from './SectorsListItemOptions'
 
 interface SectorsListItemProps {
@@ -16,10 +17,11 @@ export default function SectorsListItem({
   sectorName,
 }: SectorsListItemProps) {
   const [canEdit, setCanEdit] = useState(false)
-  const [isOptionsVisible, setisOptionsVisible] = useState(false)
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false)
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
 
   const optionsVisibilityToggler = () => {
-    setisOptionsVisible(!isOptionsVisible)
+    setIsOptionsVisible(!isOptionsVisible)
   }
 
   return (
@@ -45,7 +47,8 @@ export default function SectorsListItem({
           >
             <SectorsListItemOptions
               setCanEdit={setCanEdit}
-              setisOptionsVisible={setisOptionsVisible}
+              setIsOptionsVisible={setIsOptionsVisible}
+              setIsDeleteModalVisible={setIsDeleteModalVisible}
             />
           </div>
         </div>
@@ -64,12 +67,28 @@ export default function SectorsListItem({
           onClick={() => {
             {
               setCanEdit(false)
-              setisOptionsVisible(false)
+              setIsOptionsVisible(false)
             }
           }}
         >
           Cancelar
         </Button>
+      </div>
+      <div
+        className={clsx(
+          'fixed inset-0 z-40 flex items-center justify-center bg-gray-button_primary bg-opacity-20',
+          {
+            ['block']: isDeleteModalVisible,
+            ['hidden']: !isDeleteModalVisible,
+          }
+        )}
+      >
+        <div className="z-50">
+          <DeleteSectorModal
+            showModal={isDeleteModalVisible}
+            setShowModal={setIsDeleteModalVisible}
+          />
+        </div>
       </div>
     </div>
   )
