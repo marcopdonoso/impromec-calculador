@@ -1,5 +1,6 @@
 import ProjectOverview from '../../../components/ProjectOverview'
 import DataForCalculation from '../../components/DataForCalculation'
+import SaveAndCalc from '../../components/SaveAndCalc'
 import SectorsList from '../../components/SectorsList'
 
 export default function EditProjectPage() {
@@ -8,6 +9,7 @@ export default function EditProjectPage() {
       <SectorsList />
       <ProjectOverview />
       <DataForCalculation />
+      <SaveAndCalc />
     </section>
   )
 }

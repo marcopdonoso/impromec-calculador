@@ -4,7 +4,7 @@ import clsx from 'clsx'
 interface TableProps {
   headers: string[]
   dataRows: Record<string, any>[]
-  handleDelete?: (id: string) => void
+  handleDelete?: (id: number) => void
   className?: string
 }
 
@@ -15,7 +15,7 @@ export default function SelectedItemsTable({
   className,
 }: TableProps) {
   return (
-    <div className={clsx('w-[66vw] min-w-80', className)}>
+    <div className={clsx('w-full', className)}>
       <div className="mb-3 hidden px-10 lg:flex">
         {headers.map((h) => {
           return (
@@ -27,24 +27,24 @@ export default function SelectedItemsTable({
         {handleDelete && <div className="w-6" />}
       </div>
       <div className="flex flex-col items-center gap-2">
-        {dataRows.map((dataRow, index) => {
+        {dataRows.map((dataRow, idx) => {
           const dataRowCopy = { ...dataRow }
-          const dataRowID = dataRow.id
+          const dataRowIndex = idx
           delete dataRowCopy.id
           const entries = Object.values(dataRowCopy)
           return (
             <div
-              key={index}
-              className="flex w-80 flex-col rounded-2xl border border-gray-input px-3 py-4 lg:h-16 lg:w-full lg:flex-row lg:items-center lg:px-10"
+              key={idx}
+              className="flex w-full flex-col rounded-2xl border border-gray-input bg-gray-white px-3 py-4 lg:h-16 lg:w-full lg:flex-row lg:items-center lg:px-10"
             >
-              {entries.map((e, index) => {
+              {entries.map((e, idx) => {
                 return (
                   <div
                     className="flex justify-between border-b border-gray-input py-2 first:font-medium lg:flex-1 lg:border-none lg:first:font-bold"
-                    key={index}
+                    key={idx}
                   >
                     <span className="text-sm font-normal text-gray-placeholder lg:hidden">
-                      {headers[index]}
+                      {headers[idx]}
                     </span>
                     <span className="text-sm text-gray-text lg:text-base">
                       {e}
@@ -56,7 +56,7 @@ export default function SelectedItemsTable({
                 <div className="mt-4 flex justify-end lg:m-0">
                   <TrashIcon
                     role="button"
-                    onClick={() => handleDelete(dataRowID)}
+                    onClick={() => handleDelete(dataRowIndex)}
                     className="w-6 text-red"
                   />
                 </div>
