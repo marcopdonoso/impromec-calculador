@@ -14,6 +14,7 @@ const config: Config = {
       red: '#DA0027',
       red_alt: '#FEEBEB',
       yellow: '#FABC00',
+      yellow_alt: '#FEF3C7',
       green: {
         success: '#22AD5C',
         success_alt: '#DAF8E6',
