@@ -16,7 +16,7 @@ export default function AddCableForm() {
     value: cable.externalDiameterMM,
   }))
   return (
-    <div className="rounded-2xl border border-gray-input bg-gray-white px-2 py-5 lg:p-8">
+    <div className="mt-8 rounded-2xl border border-gray-input bg-gray-white px-2 py-5 lg:mt-6 lg:p-8">
       <h6 className="body_medium_medium mb-6">Cable 1</h6>
       <div className="flex flex-col lg:mb-6 lg:flex-row lg:gap-6">
         <div className="mb-5 flex gap-2 lg:mb-0 lg:w-1/2 lg:gap-6">

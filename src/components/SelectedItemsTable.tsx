@@ -26,7 +26,7 @@ export default function SelectedItemsTable({
         })}
         {handleDelete && <div className="w-6" />}
       </div>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-8 lg:gap-2">
         {dataRows.map((dataRow, idx) => {
           const dataRowCopy = { ...dataRow }
           const dataRowIndex = idx
