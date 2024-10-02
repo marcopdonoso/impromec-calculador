@@ -1,15 +1,15 @@
 import MyRadiogroup, { RadioGroupItem } from '@/components/MyRadiogroup'
-import { InstallationLayerTypes } from '@/models/project.model'
+import { InstallationLayerType } from '@/models/project.model'
 
 export default function InstallationLayerSelector() {
   const items: RadioGroupItem[] = [
     {
       label: 'Cables en una sola capa',
-      value: 'singleLayer' as InstallationLayerTypes,
+      value: 'singleLayer' as InstallationLayerType,
     },
     {
       label: 'Cables en varias capas',
-      value: 'multiLayer' as InstallationLayerTypes,
+      value: 'multiLayer' as InstallationLayerType,
     },
   ]
 

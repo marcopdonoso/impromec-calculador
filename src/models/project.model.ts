@@ -1,7 +1,7 @@
 import { CableInTray } from './cable.model'
 import { Tray, TrayType } from './tray.model'
 
-export type InstallationLayerTypes = 'singleLayer' | 'multiLayer'
+export type InstallationLayerType = 'singleLayer' | 'multiLayer'
 interface Results {
   moreConvenientOption: Tray | null
   otherRecommendedOptions: Tray[] | null
@@ -10,7 +10,7 @@ export interface Sector {
   name: string | null
   trayTypeSelection: TrayType
   reservePercentage: number
-  installationLayerSelection: InstallationLayerTypes
+  installationLayerSelection: InstallationLayerType
   cablesInTray: CableInTray[] | null
   results: Results | null
 }
