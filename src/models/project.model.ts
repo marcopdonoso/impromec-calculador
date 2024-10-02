@@ -1,17 +1,24 @@
 import { CableInTray } from './cable.model'
+import { Tray, TrayType } from './tray.model'
 
+export type InstallationLayerTypes = 'singleLayer' | 'multiLayer'
+interface Results {
+  moreConvenientOption: Tray | null
+  otherRecommendedOptions: Tray[] | null
+}
 export interface Sector {
-  name: string
-  trayType: 'escalerilla' | 'canal'
+  name: string | null
+  trayTypeSelection: TrayType
   reservePercentage: number
-  installationLayer: 'singleLayer' | 'multiLayer'
-  cablesInTray: CableInTray[]
+  installationLayerSelection: InstallationLayerTypes
+  cablesInTray: CableInTray[] | null
+  results: Results | null
 }
 
 export interface Project {
   id: `${string}-${string}-${string}-${string}-${string}`
-  name: string
+  projectName: string
   company: string
-  location: string
+  projectLocation: string
   sectors: Sector[] | null
 }

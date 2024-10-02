@@ -11,6 +11,7 @@ import { useState } from 'react'
 
 export interface RadioGroupItem {
   label: string
+  value: any
   image?: string
 }
 interface MyRadiogroupProps extends RadioGroupProps {
@@ -23,7 +24,7 @@ export default function MyRadiogroup({
   className,
   ...props
 }: MyRadiogroupProps) {
-  const [selected, setSelected] = useState(items[0].label)
+  const [selected, setSelected] = useState(items[0].value)
 
   return (
     <RadioGroup
@@ -46,11 +47,11 @@ export default function MyRadiogroup({
                 `inline-block size-40 rounded-lg bg-gray-background bg-cover bg-no-repeat p-3 lg:size-48`
             )}
             style={bgStyle}
-            onClick={() => setSelected(item.label)}
+            onClick={() => setSelected(item.value)}
           >
             <div className="flex items-center gap-2">
               <Radio
-                value={item.label}
+                value={item.value}
                 className="group flex size-4 items-center justify-center rounded-full border border-gray-placeholder_icon bg-gray-white outline-none data-[checked]:border-green-success data-[checked]:bg-green-success lg:size-5"
               >
                 <span className="invisible size-2 rounded-full bg-gray-white group-data-[checked]:visible lg:size-[10px]" />
