@@ -1,8 +1,8 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import MyListbox from '@/components/MyListbox'
-import { cableArrangement } from '@/constants/cable-arrangement.constants'
 import { cables } from '@/constants/cables.constants'
+import { CableArrangementType } from '@/models/cable.model'
 import { Option } from '@/models/listbox.model'
 
 export default function AddCableForm() {
@@ -15,6 +15,18 @@ export default function AddCableForm() {
     text: `${cable.nominalSectionAWG} AWG`,
     value: cable.externalDiameterMM,
   }))
+
+  const cableArrangement: Option[] = [
+    {
+      text: 'Horizontal',
+      value: 'horizontal' as CableArrangementType,
+    },
+    {
+      text: 'Trébol',
+      value: 'clover' as CableArrangementType,
+    },
+  ]
+
   return (
     <div className="mt-8 rounded-2xl border border-gray-input bg-gray-white px-2 py-5 lg:mt-6 lg:p-8">
       <h6 className="body_medium_medium mb-6">Cable 1</h6>

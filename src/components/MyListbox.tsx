@@ -13,13 +13,10 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { useState } from 'react'
 
-type ListBoxVariant = 'small' | 'medium' | 'large' | 'full' | 'sorting'
+type ListBoxVariant = 'standard' | 'sorting'
 
 const variants: Record<ListBoxVariant, string> = {
-  small: 'flex-col w-40 lg:w-[14vw] lg:min-w-28',
-  medium: 'flex-col w-[19vw] min-w-28',
-  large: 'flex-col w-80 lg:w-[32vw] lg:min-w-28',
-  full: 'flex-col w-full',
+  standard: 'flex-col w-full',
   sorting: 'w-fit flex-row items-center gap-1',
 }
 
@@ -32,7 +29,7 @@ interface MyListboxProps {
 }
 
 export default function MyListbox({
-  variant = 'full',
+  variant = 'standard',
   label,
   options,
   className,

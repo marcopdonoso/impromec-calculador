@@ -31,7 +31,7 @@ export default function AddedCablesTable() {
     {
       cable: cable3,
       quantity: 20,
-      arrangement: 'trébol',
+      arrangement: 'clover',
     },
   ]
 
