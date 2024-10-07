@@ -88,4 +88,8 @@ export const appLinks = {
     name: '[Editar proyecto]',
     path: '/dashboard/calculator/edit-project',
   },
+  calculatorProjectsList: {
+    name: 'Mis Proyectos',
+    path: '/dashboard/calculator/projects-list',
+  },
 }

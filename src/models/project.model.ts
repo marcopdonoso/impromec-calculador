@@ -21,4 +21,5 @@ export interface Project {
   company: string
   projectLocation: string
   sectors: Sector[] | null
+  createdAt: string
 }

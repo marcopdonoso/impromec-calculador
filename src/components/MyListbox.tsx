@@ -26,6 +26,7 @@ interface MyListboxProps {
   options: Option[]
   className?: string
   name?: string
+  onChange?: (selectedOption: Option) => void
 }
 
 export default function MyListbox({
@@ -34,9 +35,18 @@ export default function MyListbox({
   options,
   className,
   name,
+  onChange,
 }: MyListboxProps) {
   const [selected, setSelected] = useState(options[0])
   const [isOpen, setIsOpen] = useState(false)
+
+  const handleSelect = (option: Option) => {
+    setSelected(option)
+    setIsOpen(false)
+    if (onChange) {
+      onChange(option)
+    }
+  }
 
   return (
     <Field className={clsx('flex', variants[variant], className)}>
@@ -99,7 +109,7 @@ export default function MyListbox({
                 key={option.text}
                 value={option}
                 className="cursor-default select-none truncate border-t border-gray-background px-5 py-2 text-sm first:border-t-0 data-[focus]:bg-gray-button_primary data-[focus]:text-gray-white lg:text-base"
-                onClick={() => setIsOpen(false)}
+                onClick={() => handleSelect(option)}
               >
                 {option.text}
               </ListboxOption>
