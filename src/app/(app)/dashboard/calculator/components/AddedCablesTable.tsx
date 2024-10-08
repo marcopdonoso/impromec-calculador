@@ -1,10 +1,15 @@
-'use client'
 import SelectedItemsTable from '@/components/SelectedItemsTable'
 import { cables } from '@/constants/cables.constants'
 import { Cable, CableInTray } from '@/models/cable.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
 
-export default function AddedCablesTable() {
+interface AddedCablesTableProps {
+  handleDelete?: (index: number) => void
+}
+
+export default function AddedCablesTable({
+  handleDelete,
+}: AddedCablesTableProps) {
   const headers = [
     'Cables',
     'Calibre en mm²',
@@ -55,17 +60,11 @@ export default function AddedCablesTable() {
     }
   })
 
-  const handleDelete = (dataRowIndex: number) => {
-    console.log('delete ' + dataRowIndex) // TODO: Agregar lógica de eliminado de cable seleccionado para el cálculo
-  }
-
   return (
-    <div className="px-2 lg:px-0">
-      <SelectedItemsTable
-        headers={headers}
-        dataRows={dataRows}
-        handleDelete={handleDelete}
-      />
-    </div>
+    <SelectedItemsTable
+      headers={headers}
+      dataRows={dataRows}
+      handleDelete={handleDelete}
+    />
   )
 }

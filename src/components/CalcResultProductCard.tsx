@@ -23,7 +23,7 @@ export default function CalcResultProductCard({
   firstOption,
 }: CalcResultProductCardProps) {
   return (
-    <div className="w-80 rounded-lg bg-gray-input px-4 py-5 lg:w-[66vw] lg:p-6">
+    <div className="w-full rounded-lg bg-gray-input px-4 py-5 lg:p-6">
       <div className="lg:flex lg:items-center lg:justify-between">
         <p className="text-sm font-medium lg:text-2xl lg:font-semibold">
           {title}

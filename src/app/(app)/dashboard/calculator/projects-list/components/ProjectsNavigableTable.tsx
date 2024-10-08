@@ -88,7 +88,6 @@ export default function ProjectsNavigableTable({
       createdAt: '2021/10/6',
     },
   ]
-
   const noProjects: Project[] = []
 
   interface dataRow {
@@ -97,7 +96,7 @@ export default function ProjectsNavigableTable({
     createdAt: string
   }
 
-  const dataRows: dataRow[] = noProjects.map((project) => {
+  const dataRows: dataRow[] = projects.map((project) => {
     return {
       projectName: project.projectName,
       sectorsNumber: `${project.sectors?.length ?? 0} Sectores`,

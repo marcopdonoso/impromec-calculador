@@ -68,5 +68,3 @@ export default function SelectedItemsTable({
     </div>
   )
 }
-
-// flex lg:h-16 w-80 flex-col lg:flex-row rounded-2xl border border-gray-input px-3 lg:w-full lg:px-10 lg:items-center

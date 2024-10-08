@@ -24,7 +24,7 @@ interface MyListboxProps {
   variant?: ListBoxVariant
   label?: string
   options: Option[]
-  className?: string
+  backgroundColor?: string
   name?: string
   onChange?: (selectedOption: Option) => void
 }
@@ -33,7 +33,7 @@ export default function MyListbox({
   variant = 'standard',
   label,
   options,
-  className,
+  backgroundColor,
   name,
   onChange,
 }: MyListboxProps) {
@@ -49,7 +49,7 @@ export default function MyListbox({
   }
 
   return (
-    <Field className={clsx('flex', variants[variant], className)}>
+    <Field className={clsx('flex', variants[variant])}>
       <Label
         className={clsx(
           'font-medium text-gray-text',
@@ -62,10 +62,11 @@ export default function MyListbox({
         <ListboxButton
           onClick={() => setIsOpen(!isOpen)}
           className={clsx(
-            'relative bg-gray-white text-gray-text',
+            'relative text-gray-text',
             variant === 'sorting'
               ? 'w-fit pr-10 text-end'
-              : 'mt-1 h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:mt-2 lg:text-base'
+              : 'mt-1 h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:mt-2 lg:text-base',
+            backgroundColor ? backgroundColor : 'bg-gray-white'
           )}
         >
           {selected.text}
