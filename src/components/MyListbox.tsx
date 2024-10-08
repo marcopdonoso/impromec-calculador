@@ -25,6 +25,7 @@ interface MyListboxProps {
   label?: string
   options: Option[]
   backgroundColor?: string
+  className?: string
   name?: string
   onChange?: (selectedOption: Option) => void
 }
@@ -34,6 +35,7 @@ export default function MyListbox({
   label,
   options,
   backgroundColor,
+  className,
   name,
   onChange,
 }: MyListboxProps) {
@@ -49,7 +51,7 @@ export default function MyListbox({
   }
 
   return (
-    <Field className={clsx('flex', variants[variant])}>
+    <Field className={clsx('flex w-full', variants[variant], className)}>
       <Label
         className={clsx(
           'font-medium text-gray-text',

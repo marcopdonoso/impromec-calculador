@@ -115,9 +115,9 @@ export default function ResultsPage() {
         <Collapsible.Trigger className="mb-6 flex w-full items-center justify-between">
           <p className="body_small_medium">Otras opciones recomendadas</p>
           {isOpen ? (
-            <ChevronDownIcon className="w-5" />
-          ) : (
             <ChevronUpIcon className="w-5" />
+          ) : (
+            <ChevronDownIcon className="w-5" />
           )}
         </Collapsible.Trigger>
         <Collapsible.Content>

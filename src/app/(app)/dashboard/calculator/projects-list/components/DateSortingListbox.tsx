@@ -28,7 +28,7 @@ export default function DateSortingListbox({
       label="Ordenar por:"
       variant="sorting"
       options={options}
-      className="mb-6 w-full justify-end"
+      className="mb-6 justify-end"
       onChange={handleSortChange}
     />
   )
