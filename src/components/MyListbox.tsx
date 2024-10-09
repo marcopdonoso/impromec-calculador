@@ -55,8 +55,9 @@ export default function MyListbox({
       {label && (
         <Label
           className={clsx(
-            'mb-1 font-medium text-gray-text lg:mb-2',
-            variant !== 'sorting' && 'truncate text-sm lg:text-base'
+            'font-medium text-gray-text',
+            variant !== 'sorting' &&
+              'mb-1 truncate text-sm lg:mb-2 lg:text-base'
           )}
         >
           {label}
