@@ -52,14 +52,16 @@ export default function MyListbox({
 
   return (
     <Field className={clsx('flex w-full', variants[variant], className)}>
-      <Label
-        className={clsx(
-          'font-medium text-gray-text',
-          variant !== 'sorting' && 'truncate text-sm lg:text-base'
-        )}
-      >
-        {label}
-      </Label>
+      {label && (
+        <Label
+          className={clsx(
+            'mb-1 font-medium text-gray-text lg:mb-2',
+            variant !== 'sorting' && 'truncate text-sm lg:text-base'
+          )}
+        >
+          {label}
+        </Label>
+      )}
       <Listbox name={name} value={selected} onChange={setSelected}>
         <ListboxButton
           onClick={() => setIsOpen(!isOpen)}
@@ -67,7 +69,7 @@ export default function MyListbox({
             'relative text-gray-text',
             variant === 'sorting'
               ? 'w-fit pr-10 text-end'
-              : 'mt-1 h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:mt-2 lg:text-base',
+              : 'h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:text-base',
             backgroundColor ? backgroundColor : 'bg-gray-white'
           )}
         >
