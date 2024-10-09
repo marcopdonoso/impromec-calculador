@@ -1,8 +1,8 @@
 'use client'
 import Button from '@/components/Button'
-import CalcResultProductCard from '@/components/CalcResultProductCard'
 import MyListbox from '@/components/MyListbox'
 import SelectedItemCard from '@/components/SelectedItemCard'
+import TrayRecommendationCard from '@/components/TrayRecommendationCard'
 import {
   ArrowDownTrayIcon,
   ChevronDownIcon,
@@ -98,7 +98,7 @@ export default function ResultsPage() {
         <p className="body_small_medium">Opción más conveniente</p>
       </div>
 
-      <CalcResultProductCard
+      <TrayRecommendationCard
         title="Bandeja Recta Liviana (60 mm x 100 mm)"
         subtitle="Hasta 96.33 kg/ml"
         image="/img/escalerilla.png"
@@ -122,7 +122,7 @@ export default function ResultsPage() {
         </Collapsible.Trigger>
         <Collapsible.Content>
           <div className="flex flex-col gap-4">
-            <CalcResultProductCard
+            <TrayRecommendationCard
               title="Bandeja Recta Liviana (60 mm x 100 mm)"
               subtitle="Hasta 96.33 kg/ml"
               image="/img/escalerilla.png"
@@ -131,7 +131,7 @@ export default function ResultsPage() {
               height={60}
               width={100}
             />
-            <CalcResultProductCard
+            <TrayRecommendationCard
               title="Bandeja Recta Liviana (60 mm x 100 mm)"
               subtitle="Hasta 96.33 kg/ml"
               image="/img/escalerilla.png"
