@@ -28,7 +28,7 @@ export default function Message({
   return (
     <div
       className={clsx(
-        'flex items-baseline gap-4 rounded-lg px-4 py-8 shadow-shadow lg:p-9',
+        'flex gap-4 rounded-lg px-4 py-8 shadow-shadow lg:pl-9 lg:pr-20',
         {
           'bg-yellow_alt shadow': variant === 'info',
           'bg-green-success_alt': variant === 'success',
@@ -37,7 +37,7 @@ export default function Message({
       )}
     >
       <div>{icon}</div>
-      <div className="flex flex-col gap-4">
+      <div className="flex w-full flex-col gap-4">
         <p className="body_medium_medium text-gray-text lg:body_large_semibold">
           {title}
         </p>
@@ -45,7 +45,7 @@ export default function Message({
           className={clsx('body_small_regular lg:body_medium_regular', {
             'text-green-success': variant === 'success',
             'text-red': variant === 'error',
-            'text-gray-text': variant === 'info' || 'backgroundedInfo',
+            'text-gray-text': variant === 'info',
           })}
         >
           {children}

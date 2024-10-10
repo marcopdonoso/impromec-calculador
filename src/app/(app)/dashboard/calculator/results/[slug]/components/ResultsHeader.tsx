@@ -10,7 +10,7 @@ export default function ResultsHeader() {
         height={218}
         className="mb-6 h-24 w-auto lg:mb-10 lg:h-28"
       />
-      <div className="mb-8 flex w-full flex-col items-center gap-2 lg:mb-16">
+      <div className="flex w-full flex-col items-center gap-2">
         <h4 className="body_medium_medium text-center lg:heading_h4">
           ¡Hemos calculado tu bandeja ideal!
         </h4>

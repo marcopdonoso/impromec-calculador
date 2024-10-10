@@ -10,6 +10,7 @@ import { useState } from 'react'
 import AddedCablesTable from '../../components/AddedCablesTable'
 import ModalOverlay from '../../components/ModalOverlay'
 import ProjectOverviewContent from '../../components/ProjectOverviewContent'
+import CalcDataAndResultsHeader from './components/CalcDataAndResultsHeader'
 import DeleteProjectModal from './components/DeleteProjectModal'
 import LoadAreaTotals from './components/LoadAreaTotals'
 import MostConvenientIconLabel from './components/MostConvenientIconLabel'
@@ -17,8 +18,8 @@ import MyProjectsLinkButton from './components/MyProjectsLinkButton'
 import OtherTrayOptionsCollapsible from './components/OtherTrayOptionsCollapsible'
 import ProjectOverviewTitle from './components/ProjectOverviewTitle'
 import ResultsHeader from './components/ResultsHeader'
-import SectorsListbox from './components/SectorsListbox'
 import SelectedTrayCard from './components/SelectedTrayCard'
+import UnfinishedSectorsListMessages from './components/UnfinishedSectorsListMessages'
 
 export default function ResultsPage() {
   const [isDeleteProjectModalVisible, setIsDeleteProjectModalVisible] =
@@ -27,7 +28,14 @@ export default function ResultsPage() {
   return (
     <section className="flex min-h-screen flex-col items-center px-4 pb-20 pt-12 lg:px-28">
       <div className="flex w-full max-w-4xl flex-col">
-        <ResultsHeader />
+        <div className="mb-8 w-full lg:mb-16">
+          <ResultsHeader />
+        </div>
+
+        <div className="mb-8 w-full lg:mb-16">
+          <UnfinishedSectorsListMessages />
+        </div>
+
         <div className="mb-6 flex w-full justify-end">
           <MyProjectsLinkButton />
         </div>
@@ -39,7 +47,7 @@ export default function ResultsPage() {
           </div>
 
           <div className="mb-6 w-full">
-            <SectorsListbox />
+            <CalcDataAndResultsHeader />
           </div>
 
           <div className="mb-6 w-full">
