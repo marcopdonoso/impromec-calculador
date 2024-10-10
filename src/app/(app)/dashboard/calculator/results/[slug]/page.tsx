@@ -28,11 +28,8 @@ export default function ResultsPage() {
   return (
     <section className="flex min-h-screen flex-col items-center px-4 pb-20 pt-12 lg:px-28">
       <div className="flex w-full max-w-4xl flex-col">
-        <div className="mb-8 w-full lg:mb-16">
+        <div className="mb-8 flex w-full flex-col gap-8 lg:mb-10 lg:gap-10">
           <ResultsHeader />
-        </div>
-
-        <div className="mb-8 w-full lg:mb-16">
           <UnfinishedSectorsListMessages />
         </div>
 

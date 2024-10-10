@@ -41,7 +41,7 @@ export default function Message({
         <p className="body_medium_medium text-gray-text lg:body_large_semibold">
           {title}
         </p>
-        <p
+        <div
           className={clsx('body_small_regular lg:body_medium_regular', {
             'text-green-success': variant === 'success',
             'text-red': variant === 'error',
@@ -49,7 +49,7 @@ export default function Message({
           })}
         >
           {children}
-        </p>
+        </div>
       </div>
     </div>
   )
