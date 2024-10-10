@@ -1,14 +1,9 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
-import DeleteSingleSectorMessage from './components/DeleteSingleSectorMessage'
+import { Suspense } from 'react'
+import DeleteSingleSectorMessageWrapper from './components/DeleteSingleSectorMessageWrapper'
 
-interface AddSectorPageProps {
-  deleteSingleSector?: boolean
-}
-
-export default function AddSectorPage({
-  deleteSingleSector,
-}: AddSectorPageProps) {
+export default function AddSectorPage() {
   return (
     <section className="flex min-h-screen w-full max-w-4xl flex-col px-4 pt-8">
       <Input
@@ -20,7 +15,9 @@ export default function AddSectorPage({
         <Button>Guardar sector</Button>
         <Button variant="secondary">Volver atrás</Button>
       </div>
-      {deleteSingleSector && <DeleteSingleSectorMessage />}
+      <Suspense>
+        <DeleteSingleSectorMessageWrapper />
+      </Suspense>
     </section>
   )
 }
