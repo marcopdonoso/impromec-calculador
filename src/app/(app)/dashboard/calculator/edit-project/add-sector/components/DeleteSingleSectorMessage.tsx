@@ -1,3 +1,4 @@
+'use client'
 import Message from '@/components/Message'
 import { useRouter } from 'next/navigation'
 
