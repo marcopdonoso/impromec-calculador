@@ -6,8 +6,11 @@ import {
   PencilIcon,
   PhoneIcon,
 } from '@heroicons/react/24/outline'
+import { useState } from 'react'
 import AddedCablesTable from '../../components/AddedCablesTable'
+import ModalOverlay from '../../components/ModalOverlay'
 import ProjectOverviewContent from '../../components/ProjectOverviewContent'
+import DeleteProjectModal from './components/DeleteProjectModal'
 import LoadAreaTotals from './components/LoadAreaTotals'
 import MostConvenientIconLabel from './components/MostConvenientIconLabel'
 import MyProjectsLinkButton from './components/MyProjectsLinkButton'
@@ -18,6 +21,9 @@ import SectorsListbox from './components/SectorsListbox'
 import SelectedTrayCard from './components/SelectedTrayCard'
 
 export default function ResultsPage() {
+  const [isDeleteProjectModalVisible, setIsDeleteProjectModalVisible] =
+    useState(false)
+
   return (
     <section className="flex min-h-screen flex-col items-center px-4 pb-20 pt-12 lg:px-28">
       <div className="flex w-full max-w-4xl flex-col">
@@ -80,9 +86,21 @@ export default function ResultsPage() {
           <Button variant="add" icon={<PencilIcon />}>
             Editar
           </Button>
-          <Button variant="destructive">Eliminar Proyecto</Button>
+          <Button
+            variant="destructive"
+            onClick={() => setIsDeleteProjectModalVisible(true)}
+          >
+            Eliminar Proyecto
+          </Button>
         </div>
       </div>
+
+      <ModalOverlay isModalVisible={isDeleteProjectModalVisible}>
+        <DeleteProjectModal
+          isDeleteProjectModalVisible={isDeleteProjectModalVisible}
+          setIsDeleteProjectModalVisible={setIsDeleteProjectModalVisible}
+        />
+      </ModalOverlay>
     </section>
   )
 }

@@ -5,6 +5,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { useState } from 'react'
 import DeleteSectorModal from './DeleteSectorModal'
+import ModalOverlay from './ModalOverlay'
 import SectorsListItemOptions from './SectorsListItemOptions'
 
 interface SectorsListItemProps {
@@ -74,22 +75,13 @@ export default function SectorsListItem({
           Cancelar
         </Button>
       </div>
-      <div
-        className={clsx(
-          'fixed inset-0 z-40 flex items-center justify-center bg-gray-button_primary bg-opacity-20',
-          {
-            ['block']: isDeleteModalVisible,
-            ['hidden']: !isDeleteModalVisible,
-          }
-        )}
-      >
-        <div className="z-50">
-          <DeleteSectorModal
-            showModal={isDeleteModalVisible}
-            setShowModal={setIsDeleteModalVisible}
-          />
-        </div>
-      </div>
+
+      <ModalOverlay isModalVisible={isDeleteModalVisible}>
+        <DeleteSectorModal
+          showModal={isDeleteModalVisible}
+          setShowModal={setIsDeleteModalVisible}
+        />
+      </ModalOverlay>
     </div>
   )
 }
