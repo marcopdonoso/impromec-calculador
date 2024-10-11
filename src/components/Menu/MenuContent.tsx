@@ -1,7 +1,13 @@
 import { Transition } from '@headlessui/react'
 import { Bars3Icon, XCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { useCallback, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import Button from '../Button'
 import AuthButtons from './AuthButtons'
 import Logo from './Logo'
@@ -11,12 +17,12 @@ import UserSection from './UserSection'
 
 interface MenuContentProps {
   showMenu: boolean
-  toggleMenu: () => void
+  setIsMenuOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function MenuContent({
   showMenu,
-  toggleMenu,
+  setIsMenuOpen,
 }: MenuContentProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -63,18 +69,18 @@ export default function MenuContent({
         ) : (
           <div>
             <Bars3Icon
-              onClick={toggleMenu}
+              onClick={() => setIsMenuOpen(false)}
               role="button"
               className="mb-3 w-7 text-gray-text lg:hidden"
             />
             <div className="hidden lg:block">
-              <AuthButtons toggleMenu={toggleMenu} />
+              <AuthButtons setIsMenuOpen={setIsMenuOpen} />
             </div>
           </div>
         )}
 
         <hr className="my-5 text-gray-input lg:hidden" />
-        <Navbar className="flex flex-col" toggleMenu={toggleMenu} />
+        <Navbar className="flex flex-col" setIsMenuOpen={setIsMenuOpen} />
         <hr className="my-5 text-gray-input lg:hidden" />
         {user ? (
           <div
@@ -86,12 +92,14 @@ export default function MenuContent({
           </div>
         ) : (
           <div className="mb-6 flex grow flex-col-reverse lg:hidden">
-            <AuthButtons toggleMenu={toggleMenu} />
+            <AuthButtons setIsMenuOpen={setIsMenuOpen} />
           </div>
         )}
         <div className="lg:hidden">
           <Button
-            onClick={toggleMenu}
+            onClick={() => {
+              setIsMenuOpen(false)
+            }}
             type="button"
             variant="secondary"
             className="w-full"
