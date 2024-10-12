@@ -6,9 +6,9 @@ import Link from 'next/link'
 export default function CalculatorMain() {
   return (
     <main className="mt-14 flex w-full flex-col gap-4 lg:mt-20">
-      <Link href={''}>
+      <Link href={'/dashboard/calculator/projects-list'}>
         <Button variant="icon_right" icon={<ChevronRightIcon />}>
-          Mis proyectos (0)
+          Mis proyectos [(0)]
         </Button>
       </Link>
       <Link href={appLinks.calculatorNewProject.path}>

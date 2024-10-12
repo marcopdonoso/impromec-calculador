@@ -13,6 +13,9 @@ export default function InstallationLayerSelector() {
     },
   ]
 
+  // TODO: CAMBIAR A VERIFICACIÓN REAL
+  const isCablesArrayEmpty = false
+
   return (
     <div>
       <div className="mx-2 mb-5 flex h-12 items-center rounded-lg bg-gray-background px-5 lg:mx-0 lg:mb-8">
@@ -24,6 +27,7 @@ export default function InstallationLayerSelector() {
         <MyRadiogroup
           items={items}
           className="flex flex-col gap-4 lg:flex-row lg:justify-around"
+          disabled={isCablesArrayEmpty}
         />
       </div>
     </div>
