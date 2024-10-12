@@ -22,7 +22,7 @@ export default function ExitModal({
     },
     {
       variant: 'destructive',
-      children: 'Eliminar',
+      children: 'Salir',
       onClick: onConfirm,
     },
   ]
@@ -30,7 +30,7 @@ export default function ExitModal({
     <Modal
       icon="info"
       title="¿Seguro que deseas salir?"
-      paragraph="Si sales del proceso de calculo, la información ingresada se perderá"
+      paragraph="Si sales del proceso de cálculo, la información ingresada se perderá."
       buttons={modalButtons}
       showModal={showModal}
       setShowModal={setShowModal}

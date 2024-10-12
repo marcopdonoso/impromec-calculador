@@ -1,3 +1,4 @@
+import { User } from '@/models/user.model'
 import { Transition } from '@headlessui/react'
 import { Bars3Icon, XCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
@@ -26,7 +27,18 @@ export default function MenuContent({
 }: MenuContentProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const user = null // TODO CREAR STORE PARA ALMACENAR EL USUARIO
+
+  // TODO: Eliminar datos falsos y reemplazar por datos de sesión
+  const mockedUser: User = {
+    id: '1-1-1-1-1',
+    name: 'Usuario Falso',
+    email: 'usuario@gmail.com',
+    company: 'Impromec',
+    category: 'Comerciante',
+    phone: '123123123',
+    location: 'Cochabamba',
+  }
+  const user: User | null = mockedUser
 
   useEffect(() => {
     const handleResize = () => {
@@ -88,7 +100,10 @@ export default function MenuContent({
               'lg:hidden': !showUserMenu,
             })}
           >
-            <UserMenu />
+            <UserMenu
+              setIsMenuOpen={setIsMenuOpen}
+              setShowUserMenu={setShowUserMenu}
+            />
           </div>
         ) : (
           <div className="mb-6 flex grow flex-col-reverse lg:hidden">
