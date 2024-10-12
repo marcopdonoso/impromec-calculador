@@ -108,7 +108,7 @@ export default function MenuContent({
             Cerrar
           </Button>
         </div>
-        <div className="h-11 w-20">
+        <div className="h-11 w-auto">
           <Logo className="hidden lg:block" />
         </div>
       </div>

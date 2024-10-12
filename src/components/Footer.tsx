@@ -1,4 +1,3 @@
-'use client'
 import Logo from './Menu/Logo'
 import Navbar from './Menu/Navbar'
 
@@ -7,7 +6,7 @@ export default function Footer() {
     <section className="bg-gray-button_primary px-4 pb-4 pt-8 lg:px-28 lg:pb-8 lg:pt-14">
       <div className="lg:flex lg:justify-between">
         <div className="lg:flex lg:flex-col lg:justify-start">
-          <div className="mb-8 h-14 lg:flex lg:w-24 lg:justify-start">
+          <div className="mb-8 flex h-14 justify-center lg:justify-start">
             <Logo />
           </div>
           <p className="mb-14 text-justify text-sm text-gray-white lg:mb-20 lg:w-[25vw] lg:text-base">
