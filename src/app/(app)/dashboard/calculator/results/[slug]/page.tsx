@@ -1,6 +1,9 @@
 'use client'
 import Button from '@/components/Button'
-import TrayRecommendationCard from '@/components/TrayRecommendationCard'
+import TrayRecommendationCard, {
+  TrayRecommendationCardProps,
+} from '@/components/TrayRecommendationCard'
+import { Results } from '@/models/project.model'
 import {
   ArrowDownTrayIcon,
   PencilIcon,
@@ -24,6 +27,67 @@ import UnfinishedSectorsListMessages from './components/UnfinishedSectorsListMes
 export default function ResultsPage() {
   const [isDeleteProjectModalVisible, setIsDeleteProjectModalVisible] =
     useState(false)
+
+  // TODO: Borrar data mockeada
+  const results: Results = {
+    moreConvenientOption: {
+      id: '1-1-1-1-1',
+      productName: 'Curva horizontal 90° (300 mm)',
+      productDescription:
+        'Curva horizontal 90º. Radio = 300 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
+      productCode: 'BPC-E-R-60-100-1-N',
+      productType: 'bandeja',
+      trayType: 'canal',
+      technicalDetails: {
+        typeLoad: 'super liviana',
+        thicknessInMM: 0.75,
+        widthInMM: 100,
+        heightInMM: 60,
+        usefulAreaInMM2: 5400,
+        loadResistanceInKgM: 150,
+        material: 'acero galvanizado ASTM A653',
+        availableFinishes: [
+          'galvanizado grado G90: 275g/m2',
+          'pintura electrostática',
+        ],
+      },
+    },
+    otherRecommendedOptions: [
+      {
+        id: '2-2-2-2-2',
+        productName: 'Curva horizontal 90° (600 mm)',
+        productDescription:
+          'Curva horizontal 90º. Radio = 600 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
+        productCode: 'BPC-E-R-100-100-1-N',
+        productType: 'bandeja',
+        trayType: 'escalerilla',
+        technicalDetails: {
+          typeLoad: 'super liviana',
+          thicknessInMM: 2,
+          widthInMM: 100,
+          heightInMM: 100,
+          usefulAreaInMM2: 8000,
+          loadResistanceInKgM: 150,
+          material: 'acero galvanizado ASTM A653',
+          availableFinishes: [
+            'galvanizado grado G90: 275g/m2',
+            'pintura electrostática',
+          ],
+        },
+      },
+    ],
+  }
+
+  const moreConvenientOptionToCard: TrayRecommendationCardProps | null =
+    results.moreConvenientOption && {
+      title: results.moreConvenientOption?.productName,
+      subtitle: `Hasta ${results.moreConvenientOption?.technicalDetails.loadResistanceInKgM} kg/ml`,
+      description: `${results.moreConvenientOption.technicalDetails.thicknessInMM} mm de espesor. Material acabado con ${results.moreConvenientOption.technicalDetails.availableFinishes[0]}`,
+      height: results.moreConvenientOption.technicalDetails.heightInMM,
+      width: results.moreConvenientOption.technicalDetails.widthInMM,
+      image: `/img/${results.moreConvenientOption.trayType}.png`,
+      alt: `bandeja portacable de tipo ${results.moreConvenientOption.trayType}`,
+    }
 
   return (
     <section className="flex min-h-screen flex-col items-center px-4 pb-20 pt-12 lg:px-28">
@@ -59,16 +123,18 @@ export default function ResultsPage() {
 
           <MostConvenientIconLabel />
 
-          <TrayRecommendationCard
-            title="Bandeja Recta Liviana (60 mm x 100 mm)"
-            subtitle="Hasta 96.33 kg/ml"
-            image="/img/escalerilla.png"
-            alt="bandeja_portacable_tipo_escalerilla"
-            description="1 mm de espesor. Recubierta con zinc (galvanizado) de grado G90: 275g/m2."
-            height={60}
-            width={100}
-            firstOption
-          />
+          {moreConvenientOptionToCard && (
+            <TrayRecommendationCard
+              title={moreConvenientOptionToCard.title}
+              subtitle={moreConvenientOptionToCard.subtitle}
+              image={moreConvenientOptionToCard.image}
+              alt={moreConvenientOptionToCard.alt}
+              description={moreConvenientOptionToCard.description}
+              height={moreConvenientOptionToCard.height}
+              width={moreConvenientOptionToCard.width}
+              firstOption
+            />
+          )}
 
           <hr className="my-6 text-gray-placeholder lg:my-12" />
 

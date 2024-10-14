@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import ListItem from './ListItem'
 
-interface TrayRecommendationCardProps {
+export interface TrayRecommendationCardProps {
   title: string
   subtitle: string
   image?: string

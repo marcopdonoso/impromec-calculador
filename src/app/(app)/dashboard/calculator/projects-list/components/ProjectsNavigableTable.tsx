@@ -14,11 +14,11 @@ export default function ProjectsNavigableTable({
     {
       id: '1-1-1-1-1',
       projectName: 'Instalación Electrobol de su planta de azucar yeah',
-      company: 'Electrobol S.A',
+      projectCompany: 'Electrobol S.A',
       projectLocation: 'La Paz',
       sectors: [
         {
-          name: 'Sala de servidores',
+          sectorName: 'Sala de servidores',
           trayTypeSelection: 'escalerilla',
           reservePercentage: 40,
           installationLayerSelection: 'singleLayer',
@@ -27,21 +27,49 @@ export default function ProjectsNavigableTable({
           ],
           results: {
             moreConvenientOption: {
+              id: '1-1-1-1-1',
+              productName: 'Curva horizontal 90° (300 mm)',
+              productDescription:
+                'Curva horizontal 90º. Radio = 300 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
+              productCode: 'BPC-E-R-60-100-1-N',
+              productType: 'bandeja',
               trayType: 'escalerilla',
-              thicknessInMM: 2,
-              widthInMM: 100,
-              heightInMM: 60,
-              usefulAreaInMM2: 5400,
-              loadResistanceInKgM: 150,
+              technicalDetails: {
+                typeLoad: 'super liviana',
+                thicknessInMM: 2,
+                widthInMM: 100,
+                heightInMM: 60,
+                usefulAreaInMM2: 5400,
+                loadResistanceInKgM: 150,
+                material: 'acero galvanizado ASTM A653',
+                availableFinishes: [
+                  'galvanizado grado G90: 275g/m2',
+                  'pintura electrostática',
+                ],
+              },
             },
             otherRecommendedOptions: [
               {
+                id: '2-2-2-2-2',
+                productName: 'Curva horizontal 90° (600 mm)',
+                productDescription:
+                  'Curva horizontal 90º. Radio = 600 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
+                productCode: 'BPC-E-R-100-100-1-N',
+                productType: 'bandeja',
                 trayType: 'escalerilla',
-                thicknessInMM: 2,
-                widthInMM: 100,
-                heightInMM: 100,
-                usefulAreaInMM2: 5400,
-                loadResistanceInKgM: 160,
+                technicalDetails: {
+                  typeLoad: 'super liviana',
+                  thicknessInMM: 2,
+                  widthInMM: 100,
+                  heightInMM: 100,
+                  usefulAreaInMM2: 8000,
+                  loadResistanceInKgM: 150,
+                  material: 'acero galvanizado ASTM A653',
+                  availableFinishes: [
+                    'galvanizado grado G90: 275g/m2',
+                    'pintura electrostática',
+                  ],
+                },
               },
             ],
           },
@@ -52,11 +80,11 @@ export default function ProjectsNavigableTable({
     {
       id: '2-2-2-2-2',
       projectName: 'Instalación YPFB porque si muy bonito todo yeah',
-      company: 'YPFB',
+      projectCompany: 'YPFB',
       projectLocation: 'Cochabamba',
       sectors: [
         {
-          name: 'Sala de máquinas',
+          sectorName: 'Sala de máquinas',
           trayTypeSelection: 'canal',
           reservePercentage: 40,
           installationLayerSelection: 'singleLayer',
@@ -65,21 +93,49 @@ export default function ProjectsNavigableTable({
           ],
           results: {
             moreConvenientOption: {
+              id: '1-1-1-1-1',
+              productName: 'Curva horizontal 90° (300 mm)',
+              productDescription:
+                'Curva horizontal 90º. Radio = 300 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
+              productCode: 'BPC-E-R-60-100-1-N',
+              productType: 'bandeja',
               trayType: 'escalerilla',
-              thicknessInMM: 2,
-              widthInMM: 100,
-              heightInMM: 60,
-              usefulAreaInMM2: 5400,
-              loadResistanceInKgM: 150,
+              technicalDetails: {
+                typeLoad: 'super liviana',
+                thicknessInMM: 2,
+                widthInMM: 100,
+                heightInMM: 60,
+                usefulAreaInMM2: 5400,
+                loadResistanceInKgM: 150,
+                material: 'acero galvanizado ASTM A653',
+                availableFinishes: [
+                  'galvanizado grado G90: 275g/m2',
+                  'pintura electrostática',
+                ],
+              },
             },
             otherRecommendedOptions: [
               {
+                id: '2-2-2-2-2',
+                productName: 'Curva horizontal 90° (600 mm)',
+                productDescription:
+                  'Curva horizontal 90º. Radio = 600 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
+                productCode: 'BPC-E-R-100-100-1-N',
+                productType: 'bandeja',
                 trayType: 'escalerilla',
-                thicknessInMM: 2,
-                widthInMM: 100,
-                heightInMM: 100,
-                usefulAreaInMM2: 5400,
-                loadResistanceInKgM: 160,
+                technicalDetails: {
+                  typeLoad: 'super liviana',
+                  thicknessInMM: 2,
+                  widthInMM: 100,
+                  heightInMM: 100,
+                  usefulAreaInMM2: 8000,
+                  loadResistanceInKgM: 150,
+                  material: 'acero galvanizado ASTM A653',
+                  availableFinishes: [
+                    'galvanizado grado G90: 275g/m2',
+                    'pintura electrostática',
+                  ],
+                },
               },
             ],
           },

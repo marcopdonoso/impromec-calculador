@@ -1,5 +1,4 @@
 'use client'
-import { Option } from '@/models/listbox.model'
 import {
   Field,
   Label,
@@ -18,6 +17,11 @@ type ListBoxVariant = 'standard' | 'sorting'
 const variants: Record<ListBoxVariant, string> = {
   standard: 'flex-col w-full',
   sorting: 'w-fit flex-row items-center gap-1',
+}
+
+export interface Option {
+  text: string
+  value: string | number
 }
 
 interface MyListboxProps {

@@ -1,5 +1,4 @@
-import MyListbox from '@/components/MyListbox'
-import { Option } from '@/models/listbox.model'
+import MyListbox, { Option } from '@/components/MyListbox'
 
 interface DateSortingListboxProps {
   setIsSortedByRecent: (isSortedByRecent: boolean) => void

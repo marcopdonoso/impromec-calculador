@@ -1,5 +1,5 @@
 import MyRadiogroup, { RadioGroupItem } from '@/components/MyRadiogroup'
-import { TrayType } from '@/models/tray.model'
+import { TrayType } from '@/models/product.model'
 import clsx from 'clsx'
 
 export default function TrayTypeSelector({

@@ -1,9 +1,8 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
-import MyListbox from '@/components/MyListbox'
+import MyListbox, { Option } from '@/components/MyListbox'
 import { cables } from '@/constants/cables.constants'
 import { CableArrangementType } from '@/models/cable.model'
-import { Option } from '@/models/listbox.model'
 
 export default function AddCableForm() {
   const cableGaugesMM2: Option[] = cables.map((cable) => ({
