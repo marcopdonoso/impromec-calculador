@@ -3,15 +3,19 @@ import { loggedNavbarLinks } from '@/constants/links.constants'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 interface NavbarProps {
   className?: string
   footer?: boolean
-  toggleMenu?: () => void
+  setIsMenuOpen?: Dispatch<SetStateAction<boolean>>
 }
 
-export default function Navbar({ className, footer, toggleMenu }: NavbarProps) {
+export default function Navbar({
+  className,
+  footer,
+  setIsMenuOpen,
+}: NavbarProps) {
   const [activeLink, setActiveLink] = useState<string | null>(null)
   const pathname = usePathname()
 
@@ -36,7 +40,7 @@ export default function Navbar({ className, footer, toggleMenu }: NavbarProps) {
             href={navlink.path}
             onClick={() => {
               setActiveLink(navlink.path)
-              toggleMenu && toggleMenu()
+              setIsMenuOpen && setIsMenuOpen(false)
             }}
             className={clsx(
               'w-52 py-3 pl-4 text-sm hover:bg-gray-button_primary hover:text-gray-white lg:w-auto lg:p-0 lg:text-base lg:font-medium',

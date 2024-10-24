@@ -1,4 +1,4 @@
-import { Option } from '@/models/listbox.model'
+import { Option } from '@/components/MyListbox'
 
 export const specializationAreas: Option[] = [
   {

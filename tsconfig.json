@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/dashboard/loading.tsx"
+    "src/app/dashboard/loading.tsx",
+    "src/app/(app)/dashboard/calculator/results/[slug]/components/DataForCalculationTitle.tsx"
   ],
   "exclude": ["node_modules"]
 }

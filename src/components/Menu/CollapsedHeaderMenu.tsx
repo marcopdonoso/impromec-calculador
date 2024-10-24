@@ -1,10 +1,11 @@
 import useCurrentPageName from '@/hooks/useCurrentPageName'
 import { Bars3Icon } from '@heroicons/react/24/outline'
+import { Dispatch, SetStateAction } from 'react'
 
 export default function CollapsedHeaderMenu({
-  handleClick,
+  setIsMenuOpen,
 }: {
-  handleClick: () => void
+  setIsMenuOpen: Dispatch<SetStateAction<boolean>>
 }) {
   const currPageName = useCurrentPageName()
 
@@ -12,7 +13,9 @@ export default function CollapsedHeaderMenu({
     <div className="flex w-screen bg-gray-white p-4 shadow-md">
       <Bars3Icon
         role="button"
-        onClick={handleClick}
+        onClick={() => {
+          setIsMenuOpen(true)
+        }}
         className="w-7 basis-7 text-gray-text"
       />
       <p className="grow text-center font-medium text-gray-text">
@@ -22,5 +25,3 @@ export default function CollapsedHeaderMenu({
     </div>
   )
 }
-
-// pathname.split('/').slice(-1)[0]

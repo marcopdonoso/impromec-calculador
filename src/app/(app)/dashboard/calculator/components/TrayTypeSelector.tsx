@@ -1,4 +1,5 @@
 import MyRadiogroup, { RadioGroupItem } from '@/components/MyRadiogroup'
+import { TrayType } from '@/models/tray.model'
 import clsx from 'clsx'
 
 export default function TrayTypeSelector({
@@ -7,8 +8,12 @@ export default function TrayTypeSelector({
   className?: string
 }) {
   const trayTypes: RadioGroupItem[] = [
-    { label: 'Escalerilla', image: 'escalerilla' },
-    { label: 'Canal', image: 'canal' },
+    {
+      label: 'Escalerilla',
+      value: 'escalerilla' as TrayType,
+      image: 'escalerilla',
+    },
+    { label: 'Canal', value: 'canal' as TrayType, image: 'canal' },
   ]
   return (
     <div

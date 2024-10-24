@@ -1,5 +1,4 @@
 'use client'
-import { Option } from '@/models/listbox.model'
 import {
   Field,
   Label,
@@ -13,52 +12,71 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { useState } from 'react'
 
-type ListBoxVariant = 'small' | 'medium' | 'large' | 'full' | 'sorting'
+type ListBoxVariant = 'standard' | 'sorting'
 
 const variants: Record<ListBoxVariant, string> = {
-  small: 'flex-col w-40 lg:w-[14vw] lg:min-w-28',
-  medium: 'flex-col w-[19vw] min-w-28',
-  large: 'flex-col w-80 lg:w-[32vw] lg:min-w-28',
-  full: 'flex-col w-full',
+  standard: 'flex-col w-full',
   sorting: 'w-fit flex-row items-center gap-1',
+}
+
+export interface Option {
+  text: string
+  value: string | number
 }
 
 interface MyListboxProps {
   variant?: ListBoxVariant
   label?: string
   options: Option[]
+  backgroundColor?: string
   className?: string
   name?: string
+  onChange?: (selectedOption: Option) => void
 }
 
 export default function MyListbox({
-  variant = 'full',
+  variant = 'standard',
   label,
   options,
+  backgroundColor,
   className,
   name,
+  onChange,
 }: MyListboxProps) {
   const [selected, setSelected] = useState(options[0])
   const [isOpen, setIsOpen] = useState(false)
 
+  const handleSelect = (option: Option) => {
+    setSelected(option)
+    setIsOpen(false)
+    if (onChange) {
+      onChange(option)
+    }
+  }
+
   return (
-    <Field className={clsx('flex', variants[variant], className)}>
-      <Label
-        className={clsx(
-          'font-medium text-gray-text',
-          variant !== 'sorting' && 'truncate text-sm lg:text-base'
-        )}
-      >
-        {label}
-      </Label>
+    <Field className={clsx('flex w-full', variants[variant], className)}>
+      {label && (
+        <Label
+          className={clsx(
+            'text-sm font-medium text-gray-text lg:text-base',
+            variant !== 'sorting' && 'mb-1 truncate lg:mb-2'
+          )}
+        >
+          {label}
+        </Label>
+      )}
       <Listbox name={name} value={selected} onChange={setSelected}>
         <ListboxButton
           onClick={() => setIsOpen(!isOpen)}
           className={clsx(
-            'relative bg-gray-white text-gray-text',
+            'relative text-sm text-gray-text lg:text-base',
             variant === 'sorting'
               ? 'w-fit pr-10 text-end'
-              : 'mt-1 h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:mt-2 lg:text-base'
+              : 'h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left focus:outline-none',
+            backgroundColor
+              ? backgroundColor
+              : variant === 'standard' && 'bg-gray-white'
           )}
         >
           {selected.text}
@@ -102,7 +120,7 @@ export default function MyListbox({
                 key={option.text}
                 value={option}
                 className="cursor-default select-none truncate border-t border-gray-background px-5 py-2 text-sm first:border-t-0 data-[focus]:bg-gray-button_primary data-[focus]:text-gray-white lg:text-base"
-                onClick={() => setIsOpen(false)}
+                onClick={() => handleSelect(option)}
               >
                 {option.text}
               </ListboxOption>

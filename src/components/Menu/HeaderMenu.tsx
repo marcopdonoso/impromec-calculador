@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CollapsedHeaderMenu from './CollapsedHeaderMenu'
 import MenuContent from './MenuContent'
 import MenuOverlay from './MenuOverlay'
@@ -21,17 +21,13 @@ export default function HeaderMenu() {
     }
   }, [isMenuOpen])
 
-  const showMenuToggler = useCallback(() => {
-    setIsMenuOpen((prev) => !prev)
-  }, [])
-
   return (
     <div>
       <div className="lg:hidden">
-        <CollapsedHeaderMenu handleClick={showMenuToggler} />
+        <CollapsedHeaderMenu setIsMenuOpen={setIsMenuOpen} />
       </div>
-      <MenuOverlay showMenu={isMenuOpen} toggleMenu={showMenuToggler} />
-      <MenuContent showMenu={isMenuOpen} toggleMenu={showMenuToggler} />
+      <MenuOverlay showMenu={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      <MenuContent showMenu={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
     </div>
   )
 }

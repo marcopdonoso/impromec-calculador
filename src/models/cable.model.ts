@@ -5,8 +5,10 @@ export interface Cable {
   externalAreaMM2: number
   weightPerMeterKG: number
 }
+
+export type CableArrangementType = 'horizontal' | 'clover'
 export interface CableInTray {
   cable: Cable
   quantity: number
-  arrangement?: 'horizontal' | 'trébol'
+  arrangement?: CableArrangementType
 }

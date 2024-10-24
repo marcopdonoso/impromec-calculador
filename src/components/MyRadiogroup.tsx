@@ -11,6 +11,7 @@ import { useState } from 'react'
 
 export interface RadioGroupItem {
   label: string
+  value: any
   image?: string
 }
 interface MyRadiogroupProps extends RadioGroupProps {
@@ -23,7 +24,7 @@ export default function MyRadiogroup({
   className,
   ...props
 }: MyRadiogroupProps) {
-  const [selected, setSelected] = useState(items[0].label)
+  const [selected, setSelected] = useState(items[0].value)
 
   return (
     <RadioGroup
@@ -43,19 +44,31 @@ export default function MyRadiogroup({
             key={item.label}
             className={clsx(
               item.image &&
-                `inline-block size-40 rounded-lg bg-gray-background bg-cover bg-no-repeat p-3 lg:size-48`
+                `inline-block size-40 rounded-lg bg-gray-background bg-cover bg-no-repeat p-3 lg:size-48`,
+              {
+                'text-gray-text_inactive': props.disabled,
+                'text-gray-dark': !props.disabled,
+              }
             )}
             style={bgStyle}
-            onClick={() => setSelected(item.label)}
+            onClick={() => setSelected(item.value)}
+            disabled={props.disabled}
           >
             <div className="flex items-center gap-2">
               <Radio
-                value={item.label}
-                className="group flex size-4 items-center justify-center rounded-full border border-gray-placeholder_icon bg-gray-white outline-none data-[checked]:border-green-success data-[checked]:bg-green-success lg:size-5"
+                value={item.value}
+                className={clsx(
+                  'group flex size-4 items-center justify-center rounded-full border bg-gray-white outline-none data-[checked]:border-green-success data-[checked]:bg-green-success lg:size-5',
+                  {
+                    'cursor-not-allowed border-gray-input data-[checked]:cursor-default':
+                      props.disabled,
+                    'border-gray-placeholder_icon': !props.disabled,
+                  }
+                )}
               >
                 <span className="invisible size-2 rounded-full bg-gray-white group-data-[checked]:visible lg:size-[10px]" />
               </Radio>
-              <Label className={'text-sm text-gray-dark lg:text-base'}>
+              <Label className={clsx('text-sm lg:text-base')}>
                 {item.label}
               </Label>
             </div>

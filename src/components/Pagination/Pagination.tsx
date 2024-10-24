@@ -30,6 +30,10 @@ export default function Pagination({ totalPages, onChange }: PaginationProps) {
     onChange(currPage)
   }, [currPage, onChange])
 
+  useEffect(() => {
+    setCurrPage(1)
+  }, [totalPages])
+
   return (
     <div className="flex gap-2">
       <PaginationButton

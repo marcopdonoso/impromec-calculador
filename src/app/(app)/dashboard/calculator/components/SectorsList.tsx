@@ -4,7 +4,7 @@ import SectorsListItem from './SectorsListItem'
 
 export default function SectorsList() {
   return (
-    <div className="px-2">
+    <div className="px-2 lg:px-0">
       <SectorsListItem sectorName="[Sala de servidores]" sectorNumber={1} />
       <Button variant="add" icon={<PlusCircleIcon />}>
         Agregar sector

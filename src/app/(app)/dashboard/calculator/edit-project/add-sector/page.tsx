@@ -1,5 +1,7 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
+import { Suspense } from 'react'
+import DeleteSingleSectorMessageWrapper from './components/DeleteSingleSectorMessageWrapper'
 
 export default function AddSectorPage() {
   return (
@@ -13,6 +15,9 @@ export default function AddSectorPage() {
         <Button>Guardar sector</Button>
         <Button variant="secondary">Volver atrás</Button>
       </div>
+      <Suspense>
+        <DeleteSingleSectorMessageWrapper />
+      </Suspense>
     </section>
   )
 }

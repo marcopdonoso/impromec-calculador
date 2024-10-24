@@ -32,7 +32,7 @@ export default function CheckboxList({
   }
 
   return (
-    <fieldset className="flex w-80 flex-col rounded-lg border border-gray-input px-8 py-4 text-gray-text lg:w-[19vw] lg:min-w-max">
+    <fieldset className="flex w-full flex-col rounded-lg border border-gray-input bg-gray-white px-8 py-4 text-gray-text lg:min-w-max">
       <h4 className="text-sm font-medium lg:text-lg lg:font-semibold">
         {legend}
       </h4>
