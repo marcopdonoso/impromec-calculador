@@ -13,47 +13,31 @@ export default function OtherTrayOptionsCollapsible() {
   const results: Results = {
     moreConvenientOption: {
       id: '1-1-1-1-1',
-      productName: 'Curva horizontal 90° (300 mm)',
-      productDescription:
+      trayName: 'Curva horizontal 90° (300 mm)',
+      trayDescription:
         'Curva horizontal 90º. Radio = 300 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-      productCode: 'BPC-E-R-60-100-1-N',
-      productType: 'bandeja',
       trayType: 'escalerilla',
       technicalDetails: {
-        typeLoad: 'super liviana',
         thicknessInMM: 2,
         widthInMM: 100,
         heightInMM: 60,
         usefulAreaInMM2: 5400,
         loadResistanceInKgM: 150,
-        material: 'acero galvanizado ASTM A653',
-        availableFinishes: [
-          'galvanizado grado G90: 275g/m2',
-          'pintura electrostática',
-        ],
       },
     },
     otherRecommendedOptions: [
       {
         id: '2-2-2-2-2',
-        productName: 'Curva horizontal 90° (600 mm)',
-        productDescription:
+        trayName: 'Curva horizontal 90° (600 mm)',
+        trayDescription:
           'Curva horizontal 90º. Radio = 600 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-        productCode: 'BPC-E-R-100-100-1-N',
-        productType: 'bandeja',
         trayType: 'escalerilla',
         technicalDetails: {
-          typeLoad: 'super liviana',
           thicknessInMM: 2,
           widthInMM: 100,
           heightInMM: 100,
           usefulAreaInMM2: 8000,
           loadResistanceInKgM: 150,
-          material: 'acero galvanizado ASTM A653',
-          availableFinishes: [
-            'galvanizado grado G90: 275g/m2',
-            'pintura electrostática',
-          ],
         },
       },
     ],
@@ -63,9 +47,9 @@ export default function OtherTrayOptionsCollapsible() {
     results.otherRecommendedOptions &&
     results.otherRecommendedOptions.map((tray) => {
       return {
-        title: tray.productName,
+        title: tray.trayName,
         subtitle: `Hasta ${tray.technicalDetails.loadResistanceInKgM} kg/ml`,
-        description: `${tray.technicalDetails.thicknessInMM} mm de espesor. Material acabado con ${tray.technicalDetails.availableFinishes[0]}`,
+        description: `${tray.technicalDetails.thicknessInMM} mm de espesor. Recubierta con zinc (galvanizado) de grado G90: 275g/m2.`,
         height: tray.technicalDetails.heightInMM,
         width: tray.technicalDetails.widthInMM,
         image: `/img/${tray.trayType}.png`,

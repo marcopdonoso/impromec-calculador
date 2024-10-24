@@ -1,63 +1,103 @@
-type ProductType = 'bandeja' | 'accesorio'
-
 interface BaseProduct {
-  id: string
-  productName: string
-  productDescription: string
-  productCode: string
-  productType: ProductType
-  productImages?: string[]
-  productDocs?: string[]
+  id: number
+  documentId: string
+  name: string
+  description: string
+  code: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  type: string
 }
 
-export type TrayType = 'escalerilla' | 'canal'
-
-type TrayTypeLoad =
-  | 'super liviana'
-  | 'liviana'
-  | 'semipesada'
-  | 'pesada'
-  | 'super pesada'
-
-type AccesoryType = 'montaje' | 'complemento'
-
-type AvailableFinishesType =
-  | 'galvanizado grado G90: 275g/m2'
-  | 'pintura electrostática'
-
-type MaterialType =
-  | 'acero galvanizado ASTM A653'
-  | 'acero inoxidable'
-  | 'acero negro'
-  | 'caucho'
-  | 'plástico ABS'
-
-interface TrayTechnicalDetails {
-  typeLoad: TrayTypeLoad
-  thicknessInMM: number
-  widthInMM: number
-  heightInMM: number
-  usefulAreaInMM2: number
-  loadResistanceInKgM: number
-  material: MaterialType
-  availableFinishes: AvailableFinishesType[]
+interface Dimension {
+  id: number
+  documentId: string
+  name: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
 }
 
-interface AccesoryTechnicalDetails {
-  material: MaterialType
-  dimensions: string
+interface Category {
+  id: number
+  documentId: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  name: string
+  heights: Dimension[]
+  widths: Dimension[]
 }
 
-export interface Tray extends BaseProduct {
-  productType: 'bandeja'
-  trayType: TrayType
-  technicalDetails: TrayTechnicalDetails
+interface Doc {
+  id: number
+  documentId: string
+  name: string
+  alternativeText: null
+  caption: null
+  width: null
+  height: null
+  formats: null
+  hash: string
+  ext: string
+  mime: string
+  size: number
+  url: string
+  previewUrl: null
+  provider: string
+  provider_metadata: null
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
 }
 
-interface Accesory extends BaseProduct {
-  productType: 'accesorio'
-  accesorieType: AccesoryType
-  technicalDetails: AccesoryTechnicalDetails
+interface FormatData {
+  name: string
+  hash: string
+  ext: string
+  mime: string
+  path: null
+  width: number
+  height: number
+  size: number
+  sizeInBytes: number
+  url: string
+}
+interface Formats {
+  thumbnail: FormatData
+  small: FormatData
+  medium: FormatData
 }
 
-export type Product = Tray | Accesory
+interface Image {
+  id: number
+  documentId: string
+  name: string
+  alternativeText: null
+  caption: null
+  width: number
+  height: number
+  formats: Formats
+  hash: string
+  ext: string
+  mime: string
+  size: number
+  url: string
+  previewUrl: null
+  provider: string
+  provider_metadata: null
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+}
+
+export interface ProductToCard extends BaseProduct {
+  images: Image[]
+}
+
+export interface ProductDetails extends BaseProduct {
+  categories: Category[]
+  images: Image[]
+  docs: Doc[]
+}

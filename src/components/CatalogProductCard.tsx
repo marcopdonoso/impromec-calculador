@@ -8,6 +8,7 @@ interface CatalogProductCardProps {
   secondaryText: string
   id?: string
   onClick?: (id: string) => void
+  priority?: boolean
 }
 
 export default function CatalogProductCard({
@@ -17,6 +18,7 @@ export default function CatalogProductCard({
   secondaryText,
   id,
   onClick,
+  priority,
 }: CatalogProductCardProps) {
   return (
     <div
@@ -31,6 +33,7 @@ export default function CatalogProductCard({
           src={image ?? '/svg/landscape-placeholder.svg'}
           alt={alt ?? 'product'}
           className="object-contain"
+          priority={priority ?? false}
         />
       </div>
       <div className="flex flex-col gap-1 overflow-hidden">

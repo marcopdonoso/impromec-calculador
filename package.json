@@ -23,7 +23,8 @@
     "react-click-away-listener": "^2.2.3",
     "react-dom": "^18.3.1",
     "react-email": "3.0.0",
-    "react-phone-number-input": "^3.4.5"
+    "react-phone-number-input": "^3.4.5",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@types/node": "^20.16.1",

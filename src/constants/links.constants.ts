@@ -96,4 +96,8 @@ export const appLinks = {
     name: '[Resultados]',
     path: '/dashboard/calculator/results',
   },
+  productsHome: {
+    name: 'Productos',
+    path: '/dashboard/products',
+  },
 }

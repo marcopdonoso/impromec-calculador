@@ -1,5 +1,5 @@
 import { CableInTray } from './cable.model'
-import { Tray, TrayType } from './product.model'
+import { Tray, TrayType } from './tray.model'
 
 export type InstallationLayerType = 'singleLayer' | 'multiLayer'
 export interface Results {

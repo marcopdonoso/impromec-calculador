@@ -59,9 +59,8 @@ export default function MyListbox({
       {label && (
         <Label
           className={clsx(
-            'font-medium text-gray-text',
-            variant !== 'sorting' &&
-              'mb-1 truncate text-sm lg:mb-2 lg:text-base'
+            'text-sm font-medium text-gray-text lg:text-base',
+            variant !== 'sorting' && 'mb-1 truncate lg:mb-2'
           )}
         >
           {label}
@@ -71,11 +70,13 @@ export default function MyListbox({
         <ListboxButton
           onClick={() => setIsOpen(!isOpen)}
           className={clsx(
-            'relative text-gray-text',
+            'relative text-sm text-gray-text lg:text-base',
             variant === 'sorting'
               ? 'w-fit pr-10 text-end'
-              : 'h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left text-sm focus:outline-none lg:text-base',
-            backgroundColor ? backgroundColor : 'bg-gray-white'
+              : 'h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left focus:outline-none',
+            backgroundColor
+              ? backgroundColor
+              : variant === 'standard' && 'bg-gray-white'
           )}
         >
           {selected.text}
