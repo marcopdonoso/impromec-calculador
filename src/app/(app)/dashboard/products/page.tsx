@@ -5,12 +5,11 @@ import CheckboxList from '@/components/CheckboxList'
 import InputSearch from '@/components/InputSearch'
 import MyListbox, { Option } from '@/components/MyListbox'
 import Pagination from '@/components/Pagination/Pagination'
-import { ProductToCard } from '@/models/product.model'
 import { trayTypes } from '@/models/tray.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useState } from 'react'
+import { useFilters } from './hooks/useFilters'
+import { useProducts } from './hooks/useProducts'
 
 interface TrayToCard {
   id: string
@@ -19,72 +18,36 @@ interface TrayToCard {
   image?: string
 }
 
-interface Pagination {
-  page: number
-  pageSize: number
-  pageCount: number
-  total: number
-}
-
-interface Meta {
-  pagination: Pagination
-}
-
 export default function ProductsPage() {
   const paginationSize = 6
   const [currPage, setCurrPage] = useState(1)
-  const [products, setProducts] = useState<ProductToCard[] | null>()
-  const [paginationMetadata, setPaginationMetadata] =
-    useState<Pagination | null>()
   const [sortValue, setSortValue] = useState('asc')
-  const [trayTypesFilter, setTrayTypesFilter] = useState<string[]>([
-    'escalerilla',
-    'canal',
-  ])
-  const [query, setQuery] = useState<string | null>()
-  const [value] = useDebounce(query, 300)
+  const [trayTypesFilter, setTrayTypesFilter] = useState<string[]>([])
 
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const search = searchParams.get('query')
-    setQuery(search)
-  }, [searchParams])
-
-  // TODO: Cambiar a fetching de datos definitivo
-  useEffect(() => {
-    const searchFilter = value ? `&filters[name][$containsi]=${value}` : ''
-
-    const filtersMapping = trayTypesFilter.map((filterValue, idx) => {
-      return `filters[$or][${idx}][type][$eqi]=${filterValue}`
-    })
-
-    const filters = `${filtersMapping.join('&')}${searchFilter}`
-
-    void (async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?${filters}&populate[images][populate]&sort=name:${sortValue}&pagination[page]=${currPage}&pagination[pageSize]=${paginationSize}`
-      )
-      if (!res.ok) return
-      const data = await res.json()
-      const products: ProductToCard[] = data.data
-      const metadata: Meta = data.meta
-      const pagination: Pagination = metadata.pagination
-      setProducts(products)
-      setPaginationMetadata(pagination)
-    })()
-  }, [currPage, value, sortValue, trayTypesFilter])
-
-  if (!products || !paginationMetadata) return <p>Loading...</p>
-
-  const trays: TrayToCard[] = products.map((product) => {
-    return {
-      id: product.documentId,
-      name: product.name,
-      type: `Tipo ${capitalizeFirstLetter(product.type)}`,
-      image: `${process.env.NEXT_PUBLIC_BASE_URL}${product.images[0].url}`,
-    }
+  const { filters } = useFilters({
+    trayTypesFilter,
   })
+
+  const { products, paginationMetadata, loading, error } = useProducts({
+    filters,
+    sortValue,
+    currPage,
+    paginationSize,
+  })
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error}</p>
+
+  const trays: TrayToCard[] | null = products
+    ? products.map((product) => {
+        return {
+          id: product.documentId,
+          name: product.name,
+          type: `Tipo ${capitalizeFirstLetter(product.type)}`,
+          image: `${process.env.NEXT_PUBLIC_BASE_URL}${product.images[0].url}`,
+        }
+      })
+    : null
 
   const trayTypeListoptions = trayTypes.map((trayType) =>
     capitalizeFirstLetter(trayType)
@@ -139,7 +102,7 @@ export default function ProductsPage() {
               />
             </div>
             <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-4">
-              {trays.map((tray, idx) => {
+              {trays?.map((tray, idx) => {
                 return (
                   <CatalogProductCard
                     key={tray.id}
@@ -157,7 +120,7 @@ export default function ProductsPage() {
         </div>
         <div className="flex w-full justify-center">
           <Pagination
-            totalPages={paginationMetadata.pageCount}
+            totalPages={paginationMetadata?.pageCount ?? 0}
             onChange={onPageChange}
           />
         </div>

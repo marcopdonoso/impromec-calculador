@@ -101,3 +101,10 @@ export interface ProductDetails extends BaseProduct {
   images: Image[]
   docs: Doc[]
 }
+
+export interface PaginationMetadata {
+  page: number
+  pageSize: number
+  pageCount: number
+  total: number
+}
