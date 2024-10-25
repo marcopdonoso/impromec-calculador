@@ -3,8 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
+        protocol: 'https',
+        hostname: 'impromec-catalog-production.up.railway.app',
         port: '1337',
         pathname: '/uploads/***',
       },

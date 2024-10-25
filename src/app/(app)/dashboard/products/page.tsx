@@ -44,7 +44,7 @@ export default function ProductsPage() {
           id: product.documentId,
           name: product.name,
           type: `Tipo ${capitalizeFirstLetter(product.type)}`,
-          image: `${process.env.NEXT_PUBLIC_BASE_URL}${product.images[0].url}`,
+          image: `${process.env.NEXT_PUBLIC_CATALOG_BASE_URL}${product.images[0].url}`,
         }
       })
     : null
