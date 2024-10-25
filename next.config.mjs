@@ -5,7 +5,6 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'impromec-catalog-production.up.railway.app',
-        port: '1337',
         pathname: '/uploads/***',
       },
     ],
