@@ -11,7 +11,7 @@ export async function fetchProducts({
   paginationSize,
 }: FetchProductsProps) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?${filters}&populate[images][populate]&sort=name:${sortValue}&pagination[page]=${currPage}&pagination[pageSize]=${paginationSize}`
+    `${process.env.NEXT_PUBLIC_CATALOG_BASE_URL}/api/products?${filters}&populate[images][populate]&sort=name:${sortValue}&pagination[page]=${currPage}&pagination[pageSize]=${paginationSize}`
   )
   if (!res.ok) throw new Error('Error al traer los productos')
 
