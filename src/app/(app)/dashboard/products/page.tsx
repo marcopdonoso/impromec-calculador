@@ -5,8 +5,10 @@ import CheckboxList from '@/components/CheckboxList'
 import InputSearch from '@/components/InputSearch'
 import MyListbox, { Option } from '@/components/MyListbox'
 import Pagination from '@/components/Pagination/Pagination'
+import { appLinks } from '@/constants/links.constants'
 import { trayTypes } from '@/models/tray.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
+import Link from 'next/link'
 import { useState } from 'react'
 import { useFilters } from './hooks/useFilters'
 import { useProducts } from './hooks/useProducts'
@@ -44,7 +46,9 @@ export default function ProductsPage() {
           id: product.documentId,
           name: product.name,
           type: `Tipo ${capitalizeFirstLetter(product.type)}`,
-          image: `${process.env.NEXT_PUBLIC_CATALOG_BASE_URL}${product.images[0].url}`,
+          image: product.images
+            ? product.images[0].url
+            : '/svg/landscape-placeholder.svg',
         }
       })
     : null
@@ -104,15 +108,19 @@ export default function ProductsPage() {
             <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-4">
               {trays?.map((tray, idx) => {
                 return (
-                  <CatalogProductCard
+                  <Link
+                    href={`${appLinks.productsHome.path}/${tray.id}`}
                     key={tray.id}
-                    image={tray.image}
-                    alt={tray.name}
-                    primaryText={tray.name}
-                    secondaryText={tray.type}
-                    id={tray.id}
-                    priority={idx < 4}
-                  />
+                  >
+                    <CatalogProductCard
+                      image={tray.image}
+                      alt={tray.name}
+                      primaryText={tray.name}
+                      secondaryText={tray.type}
+                      id={tray.id}
+                      priority={idx < 4}
+                    />
+                  </Link>
                 )
               })}
             </div>
@@ -128,5 +136,3 @@ export default function ProductsPage() {
     </div>
   )
 }
-
-// http://localhost:1337/api/products?populate[categories][populate][0]=heights&populate[categories][populate][1]=widths&populate[images][populate]&populate[docs][populate]

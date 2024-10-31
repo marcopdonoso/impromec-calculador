@@ -28,6 +28,9 @@ interface Category {
   name: string
   heights: Dimension[]
   widths: Dimension[]
+  loadResistanceInKgM: number
+  thicknessInMM: number
+  loadingDiagrams: Image[]
 }
 
 interface Doc {
