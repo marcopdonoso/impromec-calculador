@@ -4,6 +4,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/drc513m7f/image/upload/***/***',
+      },
+      {
+        protocol: 'https',
         hostname: 'impromec-catalog-production.up.railway.app',
         pathname: '/uploads/***',
       },

@@ -4,7 +4,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useState } from 'react'
 
-interface ImageProps {
+export interface ImageProps {
   src: string
   alt: string
 }
@@ -38,8 +38,8 @@ export default function Carousel({ images }: CarouselProps) {
   }
 
   return (
-    <div>
-      <div className="relative size-72 lg:size-[44vw]">
+    <div className="w-fit">
+      <div className="relative size-64 lg:size-[600px]">
         <Transition
           show={show}
           enter="transition-opacity duration-200"
@@ -49,14 +49,16 @@ export default function Carousel({ images }: CarouselProps) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Image
-            priority
-            src={images[currentImageIndex].src}
-            alt={images[currentImageIndex].alt}
-            fill
-            className="rounded-lg border border-gray-input lg:rounded-2xl lg:border-2"
-            sizes="(max-width: 640px) 90vw, (max-width: 1536px) 50vw"
-          />
+          <div className="flex size-64 items-center rounded-lg border border-gray-input bg-gray-white px-4 lg:rounded-2xl lg:border-2">
+            <Image
+              priority
+              src={images[currentImageIndex].src}
+              alt={images[currentImageIndex].alt}
+              height={751}
+              width={415}
+              className="h-auto w-full"
+            />
+          </div>
         </Transition>
         <button
           onClick={prevImage}

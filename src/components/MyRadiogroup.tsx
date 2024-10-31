@@ -16,15 +16,24 @@ export interface RadioGroupItem {
 }
 interface MyRadiogroupProps extends RadioGroupProps {
   items: RadioGroupItem[]
+  onChange?: (selected: any) => void
   className?: string
 }
 
 export default function MyRadiogroup({
   items,
+  onChange,
   className,
   ...props
 }: MyRadiogroupProps) {
   const [selected, setSelected] = useState(items[0].value)
+
+  const handleSelect = (value: any) => {
+    setSelected(value)
+    if (onChange) {
+      onChange(value)
+    }
+  }
 
   return (
     <RadioGroup
@@ -51,7 +60,7 @@ export default function MyRadiogroup({
               }
             )}
             style={bgStyle}
-            onClick={() => setSelected(item.value)}
+            onClick={() => handleSelect(item.value)}
             disabled={props.disabled}
           >
             <div className="flex items-center gap-2">
