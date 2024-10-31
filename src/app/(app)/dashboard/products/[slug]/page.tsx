@@ -101,11 +101,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <p className="body_medium_medium">Acero Galvanizado ASTM A653</p>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-gray-input bg-gray-white px-4 py-5 text-start lg:mt-2 lg:px-10 lg:py-6">
+        <div className="mt-4 rounded-2xl border border-gray-input bg-gray-white px-4 pt-5 text-start lg:mt-2 lg:px-10 lg:pt-6">
           <p className="body_small_medium text-gray-placeholder lg:body_medium_medium">
             Certificación:
           </p>
-          <ul className="mt-1 lg:mt-6">
+          <ul className="mt-1 flex flex-col gap-1 lg:mt-6">
             <ListItem>
               Materia prima de grado estructural, certificada y fabricada bajo
               normativa ASTM A653.
@@ -119,7 +119,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               destructivas supervisadas por IBNORCA.
             </ListItem>
           </ul>
-          <div className="mt-4 flex w-full items-center justify-center gap-4 lg:mt-6 lg:justify-start">
+          <div className="flex w-full items-center justify-center gap-4 lg:justify-start">
             <Image
               src={'/svg/logo_nema.svg'}
               alt="logo_nema"
@@ -132,7 +132,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               alt="logo_nema"
               width={201.49}
               height={40}
-              className="h-auto w-36 lg:w-52"
+              className="h-auto w-28 lg:w-40"
             />
           </div>
         </div>
