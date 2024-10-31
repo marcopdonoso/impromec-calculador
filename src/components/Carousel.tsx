@@ -39,7 +39,7 @@ export default function Carousel({ images }: CarouselProps) {
 
   return (
     <div className="w-fit">
-      <div className="relative size-64 lg:size-[600px]">
+      <div className="relative size-[80vw] max-h-[448px] max-w-md lg:size-[40vw] lg:max-h-none lg:max-w-none">
         <Transition
           show={show}
           enter="transition-opacity duration-200"
@@ -49,7 +49,7 @@ export default function Carousel({ images }: CarouselProps) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="flex size-64 items-center rounded-lg border border-gray-input bg-gray-white px-4 lg:rounded-2xl lg:border-2">
+          <div className="flex size-[80vw] max-h-[448px] max-w-md items-center rounded-lg border border-gray-input bg-gray-white px-4 lg:size-[40vw] lg:max-h-none lg:max-w-none lg:rounded-2xl lg:border-2">
             <Image
               priority
               src={images[currentImageIndex].src}
@@ -80,7 +80,7 @@ export default function Carousel({ images }: CarouselProps) {
           {images.map((image, index) => (
             <div
               key={index}
-              className="relative size-[calc((44vw-48px)/3)]"
+              className="relative flex size-[calc((44vw-48px)/3)] items-center rounded-2xl border-2 border-gray-input"
               role="button"
               onClick={() => {
                 setShow(false)
@@ -93,9 +93,10 @@ export default function Carousel({ images }: CarouselProps) {
               <Image
                 src={image.src}
                 alt={image.alt}
-                fill
-                className="rounded-2xl border-2 border-gray-input"
-                sizes="(max-width: 1024px) 90vw, (max-width: 1536px) 50vw"
+                height={751}
+                width={415}
+                className="h-auto w-full"
+                priority
               />
             </div>
           ))}
