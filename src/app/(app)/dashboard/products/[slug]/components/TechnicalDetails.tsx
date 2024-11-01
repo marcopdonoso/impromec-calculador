@@ -46,7 +46,7 @@ export default function TechnicalDetails({ product }: TechnicalDetailsProps) {
         <p className="body_small_regular lg:body_medium_medium">Disponible</p>
       </div>
 
-      <div className="body_small_regular flex flex-col gap-6 pt-6 lg:body_medium_regular lg:text-justify">
+      <div className="body_small_regular flex flex-col gap-6 pt-6 text-justify lg:body_medium_regular">
         <p>{product.description}</p>
         <p>
           Diseñamos nuestros productos priorizando la seguridad, resistencia y

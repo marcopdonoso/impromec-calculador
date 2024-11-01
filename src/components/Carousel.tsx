@@ -76,11 +76,11 @@ export default function Carousel({ images }: CarouselProps) {
         </button>
       </div>
       {
-        <div className="mt-6 hidden justify-center gap-6 lg:flex">
+        <div className="hidden lg:mt-6 lg:flex lg:max-w-[40vw] lg:flex-wrap lg:justify-start lg:gap-6">
           {images.map((image, index) => (
             <div
               key={index}
-              className="relative flex size-[calc((44vw-48px)/3)] items-center rounded-2xl border-2 border-gray-input"
+              className="relative flex size-[calc((40vw-48px)/3)] items-center rounded-2xl border-2 border-gray-input"
               role="button"
               onClick={() => {
                 setShow(false)

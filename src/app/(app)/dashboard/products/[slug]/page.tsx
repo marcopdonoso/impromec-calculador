@@ -7,9 +7,9 @@ import { appLinks } from '@/constants/links.constants'
 import { ProductDetails } from '@/models/product.model'
 import { fetchProductById } from '@/services/productService'
 import {
-  ArrowDownTrayIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  FolderOpenIcon,
 } from '@heroicons/react/24/outline'
 import * as Collapsible from '@radix-ui/react-collapsible'
 import Image from 'next/image'
@@ -50,6 +50,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     }
   })
 
+  const docsUrls = product.docs?.map((doc) => {
+    return `${doc.url}`
+  })
+
+  const onDownloadTechFilesClick = () => {
+    docsUrls?.map((url) => window.open(url))
+  }
+
   return (
     <div className="min-h-screen">
       <Breadcrumbs className="hidden lg:block" />
@@ -81,19 +89,23 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         </div>
 
         <div className="mt-4 flex items-center justify-between lg:mt-7">
-          <p className="body_large_semibold lg:heading_h6">Ficha técnica</p>
-          <Button
-            variant="icon_right"
-            icon={<ArrowDownTrayIcon />}
-            className="lg:hidden"
-          />
-          <Button
-            variant="icon_right"
-            icon={<ArrowDownTrayIcon />}
-            className="hidden lg:block lg:w-[340px]"
-          >
-            Descargar documentación técnica
-          </Button>
+          <p className="body_large_semibold lg:heading_h6">
+            Documentación técnica
+          </p>
+          <a onClick={onDownloadTechFilesClick}>
+            <Button
+              variant="icon_right"
+              icon={<FolderOpenIcon />}
+              className="lg:hidden"
+            />
+            <Button
+              variant="icon_right"
+              icon={<FolderOpenIcon />}
+              className="hidden lg:block lg:w-80"
+            >
+              Abrir documentación técnica
+            </Button>
+          </a>
         </div>
 
         <div className="mt-3 rounded-2xl border border-gray-input bg-gray-white px-4 py-5 lg:mt-12 lg:flex lg:justify-between lg:px-10 lg:py-6">
