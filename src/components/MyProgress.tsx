@@ -12,15 +12,15 @@ const MyProgress = ({ label }: { label?: string }) => {
           clearInterval(interval)
           return 100
         }
-        return prevProgress + 20
+        return prevProgress + 100
       })
-    }, 500)
+    }, 300)
 
     return () => clearInterval(interval)
   }, [])
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <p className="mb-8 font-medium">{label ?? 'Cargando...'}</p>
       <Progress.Root
         className="h-4 w-64 overflow-hidden rounded-full bg-gray-background"
