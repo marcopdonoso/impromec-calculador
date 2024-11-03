@@ -80,7 +80,7 @@ export default function Carousel({ images }: CarouselProps) {
           {images.map((image, index) => (
             <div
               key={index}
-              className="relative flex size-[calc((40vw-48px)/3)] items-center rounded-2xl border-2 border-gray-input"
+              className="relative flex size-[calc((40vw-48px)/3)] items-center rounded-2xl border-2 border-gray-input bg-gray-white"
               role="button"
               onClick={() => {
                 setShow(false)

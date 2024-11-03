@@ -23,6 +23,7 @@ export function useProducts({
 
   // TODO: Cambiar a fetching de datos definitivo
   useEffect(() => {
+    setLoading(true)
     void (async () => {
       try {
         const { products, pagination } = await fetchProducts({

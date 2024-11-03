@@ -37,7 +37,6 @@ export default function ProductsPage() {
     paginationSize,
   })
 
-  if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error}</p>
 
   const trays: TrayToCard[] | null = products
@@ -105,6 +104,7 @@ export default function ProductsPage() {
                 onChange={onChangeSort}
               />
             </div>
+
             <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-4">
               {trays?.map((tray, idx) => {
                 return (
