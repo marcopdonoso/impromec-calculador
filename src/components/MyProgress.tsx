@@ -24,11 +24,6 @@ const MyProgress = ({ label }: { label?: string }) => {
       <p className="mb-8 font-medium">{label ?? 'Cargando...'}</p>
       <Progress.Root
         className="h-4 w-64 overflow-hidden rounded-full bg-gray-background"
-        style={{
-          // Fix overflow clipping in Safari
-          // https://gist.github.com/domske/b66047671c780a238b51c51ffde8d3a0
-          transform: 'translateZ(0)',
-        }}
         value={progress}
       >
         <Progress.Indicator
