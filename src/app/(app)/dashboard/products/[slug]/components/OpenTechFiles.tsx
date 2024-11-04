@@ -1,6 +1,6 @@
 import Button from '@/components/Button'
 import { ProductDetails } from '@/models/product.model'
-import { FolderOpenIcon } from '@heroicons/react/24/outline'
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 
 interface OpenTechFilesProps {
   product: ProductDetails
@@ -20,12 +20,12 @@ export default function OpenTechFiles({ product }: OpenTechFilesProps) {
       <a onClick={onDownloadTechFilesClick}>
         <Button
           variant="icon_right"
-          icon={<FolderOpenIcon />}
+          icon={<ArrowDownTrayIcon />}
           className="lg:hidden"
         />
         <Button
           variant="icon_right"
-          icon={<FolderOpenIcon />}
+          icon={<ArrowDownTrayIcon />}
           className="hidden lg:block lg:w-80"
         >
           Abrir documentación técnica

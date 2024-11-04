@@ -10,6 +10,7 @@ import { trayTypes } from '@/models/tray.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
 import Link from 'next/link'
 import { useState } from 'react'
+import ProductsSkeleton from './components/ProductsSkeleton'
 import { useFilters } from './hooks/useFilters'
 import { useProducts } from './hooks/useProducts'
 
@@ -106,23 +107,27 @@ export default function ProductsPage() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-4">
-              {trays?.map((tray, idx) => {
-                return (
-                  <Link
-                    href={`${appLinks.productsHome.path}/${tray.id}`}
-                    key={tray.id}
-                  >
-                    <CatalogProductCard
-                      image={tray.image}
-                      alt={tray.name}
-                      primaryText={tray.name}
-                      secondaryText={tray.type}
-                      id={tray.id}
-                      priority={idx < 4}
-                    />
-                  </Link>
-                )
-              })}
+              {!loading ? (
+                trays?.map((tray, idx) => {
+                  return (
+                    <Link
+                      href={`${appLinks.productsHome.path}/${tray.id}`}
+                      key={tray.id}
+                    >
+                      <CatalogProductCard
+                        image={tray.image}
+                        alt={tray.name}
+                        primaryText={tray.name}
+                        secondaryText={tray.type}
+                        id={tray.id}
+                        priority={idx < 4}
+                      />
+                    </Link>
+                  )
+                })
+              ) : (
+                <ProductsSkeleton />
+              )}
             </div>
           </div>
         </div>
