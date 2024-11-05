@@ -31,14 +31,14 @@ export default function ProductsPage() {
     trayTypesFilter,
   })
 
-  const { products, paginationMetadata, loading, error } = useProducts({
+  const { products, paginationMetadata, error, loading } = useProducts({
     filters,
     sortValue,
     currPage,
     paginationSize,
   })
 
-  if (error) return <p>Error: {error}</p>
+  if (error) throw error
 
   const trays: TrayToCard[] | null = products
     ? products.map((product) => {

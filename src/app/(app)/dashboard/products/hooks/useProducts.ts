@@ -35,7 +35,9 @@ export function useProducts({
         setProducts(products)
         setPaginationMetadata(pagination)
       } catch (error) {
-        if (error instanceof Error) setError(error.message)
+        if (error instanceof Error) {
+          setError(error.message)
+        }
       } finally {
         setLoading(false)
       }
