@@ -7,12 +7,16 @@ interface InputPassProps {
   label?: string
   placeholder?: string
   className?: string
+  disabled?: boolean
+  defaultValue?: string
 }
 
 export default function InputPass({
   label,
   placeholder,
   className,
+  disabled,
+  defaultValue,
 }: InputPassProps) {
   const [showPass, setShowPass] = useState(false)
   return (
@@ -21,6 +25,8 @@ export default function InputPass({
       className={className}
       type={!showPass ? 'password' : 'text'}
       placeholder={placeholder}
+      disabled={disabled}
+      defaultValue={defaultValue}
     >
       <button
         className="absolute bottom-4 right-4"

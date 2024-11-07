@@ -14,7 +14,7 @@ export async function fetchProducts({
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_CATALOG_BASE_URL}/api/products?${filters}&populate[images][populate]&sort=name:${sortValue}&pagination[page]=${currPage}&pagination[pageSize]=${paginationSize}`
   )
-  if (!res.ok) throw new Error('Error al traer los productos')
+  if (!res.ok) throw new Error(`Error ${res.status} al traer los productos`)
 
   const data = await res.json()
   return {
@@ -27,7 +27,7 @@ export async function fetchProductById(id: string) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_CATALOG_BASE_URL}/api/products/${id}?populate[categories][populate][0]=heights&populate[categories][populate][1]=widths&populate[categories][populate][2]=loadingDiagrams&populate[images][populate]&populate[docs][populate]`
   )
-  if (!res.ok) throw new Error('Error al traer el producto')
+  if (!res.ok) throw new Error(`Error ${res.status} al traer el producto`)
 
   const data = await res.json()
   return { product: data.data }

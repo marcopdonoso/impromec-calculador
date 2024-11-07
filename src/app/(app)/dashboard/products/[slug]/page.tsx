@@ -15,7 +15,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const { product, loading, error } = useProduct({ slug: params.slug })
 
   if (loading) return <LoadingPage />
-  if (error) return <p>Error: {error}</p>
+  if (error) throw error
 
   if (!product) return
 

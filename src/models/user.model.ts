@@ -1,3 +1,4 @@
+import { Option } from '@/components/MyListbox'
 import { Project } from './project.model'
 
 export interface User {
@@ -5,7 +6,7 @@ export interface User {
   name: string
   email: string
   company?: string
-  category: string
+  category: Option
   phone: string
   location: string
   avatar?: string
