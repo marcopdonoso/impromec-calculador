@@ -34,7 +34,10 @@ export default function MenuContent({
     name: 'Usuario Falso',
     email: 'usuario@gmail.com',
     company: 'Impromec',
-    category: 'Comerciante',
+    category: {
+      text: 'Comercialización',
+      value: 'commercial',
+    },
     phone: '123123123',
     location: 'Cochabamba',
   }
