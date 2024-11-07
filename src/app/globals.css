@@ -20,4 +20,10 @@
     -ms-overflow-style: auto; /* IE and Edge */
     scrollbar-width: auto; /* Firefox */
   }
+  /* Clip circle - 40% */
+  @layer utilities {
+    .clip-bottom-40 {
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0% 100%);
+    }
+  }
 }

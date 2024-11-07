@@ -32,6 +32,8 @@ interface MyListboxProps {
   className?: string
   name?: string
   onChange?: (selectedOption: Option) => void
+  defaultValue?: Option
+  disabled?: boolean
 }
 
 export default function MyListbox({
@@ -42,8 +44,10 @@ export default function MyListbox({
   className,
   name,
   onChange,
+  defaultValue,
+  disabled,
 }: MyListboxProps) {
-  const [selected, setSelected] = useState(options[0])
+  const [selected, setSelected] = useState(defaultValue ?? options[0])
   const [isOpen, setIsOpen] = useState(false)
 
   const handleSelect = (option: Option) => {
@@ -66,11 +70,17 @@ export default function MyListbox({
           {label}
         </Label>
       )}
-      <Listbox name={name} value={selected} onChange={setSelected}>
+      <Listbox
+        name={name}
+        value={selected}
+        onChange={setSelected}
+        disabled={disabled}
+      >
         <ListboxButton
           onClick={() => setIsOpen(!isOpen)}
           className={clsx(
-            'relative text-sm text-gray-text lg:text-base',
+            'relative text-sm lg:text-base',
+            disabled ? 'text-gray-text_inactive' : 'text-gray-text',
             variant === 'sorting'
               ? 'w-fit pr-10 text-end'
               : 'h-12 w-full truncate rounded-lg border border-gray-input px-5 text-left focus:outline-none',

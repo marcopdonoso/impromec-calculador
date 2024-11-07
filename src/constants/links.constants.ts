@@ -100,4 +100,8 @@ export const appLinks = {
     name: 'Productos',
     path: '/dashboard/products',
   },
+  profile: {
+    name: 'Mi Perfil',
+    path: '/dashboard/profile',
+  },
 }

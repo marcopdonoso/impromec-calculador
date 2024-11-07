@@ -1,5 +1,4 @@
 import { authLinks } from '@/constants/links.constants'
-import 'react-phone-number-input/style.css'
 import AuthFormCard from '../components/AuthFormCard'
 import RegisterForm from './components/RegisterForm'
 
