@@ -7,7 +7,7 @@ export default function ProfilePage() {
       <div className="hidden lg:block">
         <Breadcrumbs />
       </div>
-      <div className="px-2 pb-20 pt-14 lg:px-28 lg:pt-16">
+      <div className="px-2 pb-20 pt-14 lg:px-28 lg:pb-32 lg:pt-16">
         <ProfileForm />
       </div>
     </div>

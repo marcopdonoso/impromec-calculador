@@ -1,6 +1,7 @@
 import Button from '@/components/Button'
 import clsx from 'clsx'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
+import DeleteAccountModal from './DeleteAccountModal'
 
 interface ButtonsGroupProps {
   isFormDisabled: boolean
@@ -11,6 +12,8 @@ export default function ButtonsGroup({
   isFormDisabled,
   setIsFormDisabled,
 }: ButtonsGroupProps) {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
   const onCancelEdit = () => {
     window.location.reload()
   }
@@ -25,7 +28,9 @@ export default function ButtonsGroup({
           <Button onClick={() => setIsFormDisabled(false)}>
             Editar perfil
           </Button>
-          <Button variant="destructive">Eliminar cuenta</Button>
+          <Button variant="destructive" onClick={() => setIsModalVisible(true)}>
+            Eliminar cuenta
+          </Button>
         </>
       ) : (
         <>
@@ -35,6 +40,10 @@ export default function ButtonsGroup({
           </Button>
         </>
       )}
+      <DeleteAccountModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+      />
     </div>
   )
 }
