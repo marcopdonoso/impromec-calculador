@@ -104,4 +104,8 @@ export const appLinks = {
     name: 'Mi Perfil',
     path: '/dashboard/profile',
   },
+  profileChangePassword: {
+    name: 'Cambiar contraseña',
+    path: '/dashboard/profile/change-password',
+  },
 }

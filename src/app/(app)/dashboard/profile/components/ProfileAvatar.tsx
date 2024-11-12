@@ -6,9 +6,9 @@ import Image from 'next/image'
 import { ChangeEvent } from 'react'
 
 interface ProfileAvatarProps {
-  newImageFile: File | null
-  isFormDisabled: boolean
-  handleNewImageFileChange: (e: ChangeEvent<HTMLInputElement>) => void
+  newImageFile?: File | null
+  isFormDisabled?: boolean
+  handleNewImageFileChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function ProfileAvatar({
@@ -34,7 +34,7 @@ export default function ProfileAvatar({
 
   const avatarImage = newImageFile
     ? URL.createObjectURL(newImageFile)
-    : (user.avatar ?? null)
+    : user.avatar
 
   return (
     <div
