@@ -8,15 +8,15 @@ import MyPhoneInput from '@/components/MyPhoneInput'
 import { specializationAreas } from '@/constants/specialization-areas.constants'
 import { registerUser } from '@/services/user.service'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const registerSchema = z
   .object({
-    name: z.string().min(3, 'Mínimo 3 caracteres'),
-    email: z.string().email('Correo inválido'),
+    name: z.string().min(3, 'Ingresa un nombre y apellido.'),
+    email: z.string().email('El formato del correo electrónico es inválido.'),
     company: z.string().optional(),
     category: z.object({
       text: z.string(),
@@ -28,11 +28,11 @@ const registerSchema = z
         'projects',
       ]),
     }),
-    phone: z.string().min(7, 'Número inválido'),
-    location: z.string().min(3, 'Mínimo 3 caracteres'),
+    phone: z.string().min(7, 'Ingresa un número válido.'),
+    location: z.string().min(3, 'Ingresa una locación.'),
     password: z
       .string()
-      .min(8, 'Mínimo 8 caracteres')
+      .min(8, 'Debe contener 8+caracteres')
       .regex(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         'Debe contener letras, números y símbolos'
@@ -40,7 +40,7 @@ const registerSchema = z
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Las contrasenas no coinciden',
+    message: 'Las contraseñas no coinciden.',
     path: ['confirmPassword'],
   })
 
@@ -109,7 +109,7 @@ export default function RegisterForm() {
         <MyPhoneInput />
         <Input label="Locación" placeholder="Cochabamba, Bolivia" />
       </div>
-      <div className="flex w-full flex-col items-center gap-6 lg:mb-24 lg:flex-row lg:gap-8">
+      <div className="mb-20 flex w-full flex-col items-center gap-6 lg:mb-24 lg:flex-row lg:gap-8">
         <InputPass
           label="Contraseña"
           placeholder="8+caracteres: letras, números, símbolos"
@@ -117,7 +117,6 @@ export default function RegisterForm() {
         <InputPass
           label="Confirmar contraseña"
           placeholder="Repite la contraseña"
-          className="mb-20 lg:mb-0"
         />
       </div>
       <Button className="lg:w-[32vw]">Registrarme</Button>
