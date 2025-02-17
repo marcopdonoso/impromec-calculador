@@ -2,13 +2,7 @@ import { User } from '@/models/user.model'
 import { Transition } from '@headlessui/react'
 import { Bars3Icon, XCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Button from '../Button'
 import AuthButtons from './AuthButtons'
 import Logo from './Logo'
@@ -54,9 +48,9 @@ export default function MenuContent({
     }
   }, [])
 
-  const handleUserSectionClick = useCallback(() => {
-    setShowUserMenu((prevShowUserMenu) => !prevShowUserMenu)
-  }, [])
+  const handleUserSectionClick = () => {
+    setShowUserMenu(true)
+  }
 
   return (
     <Transition
@@ -77,7 +71,10 @@ export default function MenuContent({
           <div
             onClick={handleUserSectionClick}
             role="button"
-            className="pointer-events-none lg:pointer-events-auto"
+            className={clsx('pointer-events-none', {
+              'lg:pointer-events-none': showUserMenu,
+              'lg:pointer-events-auto': !showUserMenu,
+            })}
           >
             <UserSection user={user} />
           </div>
@@ -106,6 +103,7 @@ export default function MenuContent({
             <UserMenu
               setIsMenuOpen={setIsMenuOpen}
               setShowUserMenu={setShowUserMenu}
+              showUserMenu={showUserMenu}
             />
           </div>
         ) : (
