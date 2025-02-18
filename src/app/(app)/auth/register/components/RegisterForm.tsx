@@ -8,6 +8,7 @@ import MyPhoneInput from '@/components/MyPhoneInput'
 import { authLinks } from '@/constants/links.constants'
 import { specializationAreas } from '@/constants/specialization-areas.constants'
 import { registerUser } from '@/services/user.service'
+import { XCircleIcon } from '@heroicons/react/24/solid'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -243,6 +244,16 @@ export default function RegisterForm() {
           )}
         />
       </div>
+
+      {error && (
+        <div className="flex items-center gap-3">
+          <XCircleIcon className="h-5 w-5 text-red" />
+          <p className="body_small_regular text-red lg:body_medium_regular">
+            {error}
+          </p>
+        </div>
+      )}
+
       <Button className="lg:w-[32vw]" type="submit" disabled={loading}>
         {loading ? 'Registrando...' : 'Registrarme'}
       </Button>
