@@ -1,44 +1,39 @@
 'use client'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
-import Input from './Input'
+import { forwardRef, useState } from 'react'
+import Input, { InputProps } from './Input'
 
-interface InputPassProps {
-  label?: string
-  placeholder?: string
-  className?: string
-  disabled?: boolean
-  defaultValue?: string
-}
+interface InputPassProps extends InputProps {}
 
-export default function InputPass({
-  label,
-  placeholder,
-  className,
-  disabled,
-  defaultValue,
-}: InputPassProps) {
-  const [showPass, setShowPass] = useState(false)
-  return (
-    <Input
-      label={label}
-      className={className}
-      type={!showPass ? 'password' : 'text'}
-      placeholder={placeholder}
-      disabled={disabled}
-      defaultValue={defaultValue}
-    >
-      <button
-        className="absolute bottom-4 right-4"
-        onClick={() => setShowPass(!showPass)}
-        type="button"
+const InputPass = forwardRef<HTMLInputElement, InputPassProps>(
+  ({ label, placeholder, className, error, ...props }, ref) => {
+    const [showPass, setShowPass] = useState(false)
+    return (
+      <Input
+        label={label}
+        className={className}
+        type={showPass ? 'text' : 'password'}
+        placeholder={placeholder}
+        error={error}
+        ref={ref}
+        {...props}
       >
-        {!showPass ? (
-          <EyeSlashIcon className="w-4 text-gray-text" />
-        ) : (
-          <EyeIcon className="w-4 text-gray-text" />
-        )}
-      </button>
-    </Input>
-  )
-}
+        <button
+          type="button"
+          className="absolute bottom-4 right-4"
+          onClick={() => setShowPass(!showPass)}
+        >
+          {!showPass ? (
+            <EyeSlashIcon className="w-4 text-gray-text" />
+          ) : (
+            <EyeIcon className="w-4 text-gray-text" />
+          )}
+        </button>
+      </Input>
+    )
+  }
+)
+
+InputPass.displayName = 'InputPass'
+
+export default InputPass

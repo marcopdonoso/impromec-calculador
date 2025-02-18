@@ -1,12 +1,22 @@
-import { Option } from '@/components/MyListbox'
+export type CategoryValue =
+  | 'commercial'
+  | 'construction'
+  | 'industry'
+  | 'installations'
+  | 'projects'
 
-export const specializationAreas: Option[] = [
+export interface OptionCategory {
+  text: string
+  value: CategoryValue
+}
+
+export const specializationAreas: OptionCategory[] = [
   {
-    text: 'Comercialización',
+    text: 'Comercial',
     value: 'commercial',
   },
   {
-    text: 'Construcciones',
+    text: 'Construcción',
     value: 'construction',
   },
   {
