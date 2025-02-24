@@ -1,4 +1,5 @@
-import MyListbox from '@/components/MyListbox'
+import MyListbox, { Option } from '@/components/MyListbox'
+import { useState } from 'react'
 
 export default function SectorsListbox() {
   // TODO: Delete mockup data
@@ -7,7 +8,18 @@ export default function SectorsListbox() {
     { text: '[Sector 2: Sala de máquinas]', value: '[1]' },
   ]
 
+  const [selectedSector, setSelectedSector] = useState<Option | null>(null)
+
+  const handleSectorChange = (selectedOption: Option) => {
+    setSelectedSector(selectedOption)
+  }
+
   return (
-    <MyListbox options={sectorsList} backgroundColor="bg-gray-background" />
+    <MyListbox
+      options={sectorsList}
+      backgroundColor="bg-gray-background"
+      value={selectedSector}
+      onChange={handleSectorChange}
+    />
   )
 }

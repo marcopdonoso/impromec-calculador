@@ -1,8 +1,11 @@
 'use client'
 import Input from '@/components/Input'
-import MyListbox from '@/components/MyListbox'
+import MyListbox, { Option } from '@/components/MyListbox'
 import MyPhoneInput from '@/components/MyPhoneInput'
-import { specializationAreas } from '@/constants/specialization-areas.constants'
+import {
+  OptionCategory,
+  specializationAreas,
+} from '@/constants/specialization-areas.constants'
 import { User } from '@/models/user.model'
 import { ChangeEvent, useState } from 'react'
 import { Value } from 'react-phone-number-input'
@@ -28,11 +31,18 @@ export default function ProfilePage() {
 
   const [isFormDisabled, setIsFormDisabled] = useState(true)
   const [newImageFile, setNewImageFile] = useState<File | null>(null)
+  const [category, setCategory] = useState<Option | OptionCategory>(
+    user.category
+  )
 
   const handleNewImageFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setNewImageFile(e.target.files[0])
     }
+  }
+
+  const handleCategoryChange = (selectedCategory: Option | OptionCategory) => {
+    setCategory(selectedCategory)
   }
   return (
     <>
@@ -70,13 +80,15 @@ export default function ProfilePage() {
             <MyListbox
               label="Área de especialización"
               options={specializationAreas}
-              defaultValue={user.category}
+              value={category}
+              onChange={handleCategoryChange}
               disabled={isFormDisabled}
             />
 
             <MyPhoneInput
-              initialValue={user.phone as Value}
+              value={user.phone as Value}
               disabled={isFormDisabled}
+              onChange={(value) => console.log(value)} // TODO cambiar a manejo correcto
             />
           </div>
 

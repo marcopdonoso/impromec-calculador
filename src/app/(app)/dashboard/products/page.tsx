@@ -102,6 +102,11 @@ export default function ProductsPage() {
                 label="Ordenar por:"
                 options={sortListboxOptions}
                 className="justify-end"
+                value={
+                  sortListboxOptions.find(
+                    (option) => option.value === sortValue
+                  ) || sortListboxOptions[0]
+                }
                 onChange={onChangeSort}
               />
             </div>
