@@ -29,12 +29,12 @@ export interface Option {
 interface MyListboxProps {
   variant?: ListBoxVariant
   label?: string
-  options: OptionCategory[]
+  options: OptionCategory[] | Option[]
   backgroundColor?: string
   className?: string
   name?: string
-  value: OptionCategory | null
-  onChange: (selectedOption: OptionCategory) => void
+  value: OptionCategory | Option | null
+  onChange: (selectedOption: OptionCategory | Option) => void
   disabled?: boolean
   error?: string
 }
@@ -57,7 +57,7 @@ export default function MyListbox({
 
   if (!options.length) return <div>No hay opciones disponibles</div>
 
-  const handleSelect = (option: OptionCategory) => {
+  const handleSelect = (option: OptionCategory | Option) => {
     onChange(option)
     setIsOpen(false)
   }

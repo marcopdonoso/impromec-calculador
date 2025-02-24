@@ -1,4 +1,4 @@
-import { Option } from '@/components/MyListbox'
+import { OptionCategory } from '@/constants/specialization-areas.constants'
 import { Project } from './project.model'
 
 export interface User {
@@ -6,7 +6,7 @@ export interface User {
   name: string
   email: string
   company?: string
-  category: Option
+  category: OptionCategory
   phone: string
   location: string
   avatar?: string

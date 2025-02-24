@@ -12,6 +12,8 @@ interface TechnicalDetailsProps {
 
 export default function TechnicalDetails({ product }: TechnicalDetailsProps) {
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0)
+  const [selectedHeight, setSelectedHeight] = useState<Option | null>(null)
+  const [selectedWidth, setSelectedWidth] = useState<Option | null>(null)
 
   const heightsListboxOptions: Option[] = product.categories[
     selectedCategoryIdx
@@ -77,11 +79,15 @@ export default function TechnicalDetails({ product }: TechnicalDetailsProps) {
           variant="standard"
           label="Altura"
           options={heightsListboxOptions}
+          value={selectedHeight}
+          onChange={setSelectedHeight}
         />
         <MyListbox
           variant="standard"
           label="Ancho"
           options={widthsListboxOptions}
+          value={selectedWidth}
+          onChange={setSelectedWidth}
         />
       </div>
     </div>

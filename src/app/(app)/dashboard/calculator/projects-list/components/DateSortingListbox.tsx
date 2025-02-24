@@ -1,4 +1,5 @@
 import MyListbox, { Option } from '@/components/MyListbox'
+import { useState } from 'react'
 
 interface DateSortingListboxProps {
   setIsSortedByRecent: (isSortedByRecent: boolean) => void
@@ -7,6 +8,8 @@ interface DateSortingListboxProps {
 export default function DateSortingListbox({
   setIsSortedByRecent,
 }: DateSortingListboxProps) {
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null)
+
   const options: Option[] = [
     {
       text: 'Fecha (más reciente)',
@@ -19,6 +22,7 @@ export default function DateSortingListbox({
   ]
 
   const handleSortChange = (option: Option) => {
+    setSelectedOption(option)
     setIsSortedByRecent(option.value === 'recent')
   }
 
@@ -28,6 +32,7 @@ export default function DateSortingListbox({
       variant="sorting"
       options={options}
       className="mb-6 justify-end"
+      value={selectedOption}
       onChange={handleSortChange}
     />
   )
