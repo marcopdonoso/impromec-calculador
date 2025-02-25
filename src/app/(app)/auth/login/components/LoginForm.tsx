@@ -2,10 +2,12 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import InputPass from '@/components/InputPass'
-import { authLinks } from '@/constants/links.constants'
+import { appLinks, authLinks } from '@/constants/links.constants'
 import { loginUser } from '@/services/user.service'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { setCookie } from 'cookies-next'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -16,6 +18,7 @@ const loginSchema = z.object({
 })
 
 export default function LoginForm() {
+  const router = useRouter()
   const [error, setError] = useState('')
   const {
     register,
@@ -34,8 +37,14 @@ export default function LoginForm() {
     }
 
     if (res.data) {
-      console.log(res.data)
+      const token = res.data.access_token
+      setCookie('token', token, {
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60 * 60 * 24 * 30,
+      })
     }
+    router.push(appLinks.home.path)
   }
   return (
     <form
