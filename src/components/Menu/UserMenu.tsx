@@ -1,5 +1,7 @@
 'use client'
+import { authLinks } from '@/constants/links.constants'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction } from 'react'
 import ClickAwayListener from 'react-click-away-listener'
 
@@ -12,8 +14,13 @@ export default function UserMenu({
   setShowUserMenu: Dispatch<SetStateAction<boolean>>
   showUserMenu: boolean
 }) {
-  const handleCloseSession = () => {
-    console.log('Cerrar sesión')
+  const router = useRouter()
+  const handleCloseSession = async () => {
+    await fetch('/api/logout', { method: 'GET' })
+    router.push(authLinks.login.path)
+    router.refresh()
+    setIsMenuOpen(false)
+    setShowUserMenu(false)
   }
 
   const handleLinkButtonClick = () => {
