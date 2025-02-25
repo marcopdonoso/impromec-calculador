@@ -1,4 +1,4 @@
-import { User } from '@/models/user.model'
+import { useUserStore } from '@/store/useStore'
 import { Transition } from '@headlessui/react'
 import { Bars3Icon, XCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
@@ -21,21 +21,7 @@ export default function MenuContent({
 }: MenuContentProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-
-  // TODO: Eliminar datos falsos y reemplazar por datos de sesión
-  const mockedUser: User = {
-    id: '1-1-1-1-1',
-    name: 'Usuario Falso',
-    email: 'usuario@gmail.com',
-    company: 'Impromec',
-    category: {
-      text: 'Comercialización',
-      value: 'commercial',
-    },
-    phone: '123123123',
-    location: 'Cochabamba',
-  }
-  const user: User | null = mockedUser
+  const { user } = useUserStore()
 
   useEffect(() => {
     const handleResize = () => {
