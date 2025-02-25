@@ -1,4 +1,8 @@
-import { ApiResponse, RegisterUserData } from '@/models/api.model'
+import {
+  ApiResponse,
+  LoginUserData,
+  RegisterUserData,
+} from '@/models/api.model'
 import axios from 'axios'
 import { api } from './api.service'
 
@@ -47,6 +51,23 @@ export const requestVerificationEmail = async (
         Authorization: `Bearer ${token}`,
       },
     })
+    return { data: response.data }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        error: {
+          message: error.response?.data?.message || 'Error desconocido',
+          statusCode: error.response?.status || 500,
+        },
+      }
+    }
+    return { error: { message: 'Error de conexión', statusCode: 503 } }
+  }
+}
+
+export const loginUser = async (data: LoginUserData): Promise<ApiResponse> => {
+  try {
+    const response = await api.post('/auth/login', data)
     return { data: response.data }
   } catch (error) {
     if (axios.isAxiosError(error)) {
