@@ -81,3 +81,22 @@ export const loginUser = async (data: LoginUserData): Promise<ApiResponse> => {
     return { error: { message: 'Error de conexión', statusCode: 503 } }
   }
 }
+
+export const forgotPassword = async (email: string): Promise<ApiResponse> => {
+  try {
+    const response = await api.post('/auth/forgot-password', {
+      email,
+    })
+    return { data: response.data }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        error: {
+          message: error.response?.data?.message || 'Error desconocido',
+          statusCode: error.response?.status || 500,
+        },
+      }
+    }
+    return { error: { message: 'Error de conexión', statusCode: 503 } }
+  }
+}
