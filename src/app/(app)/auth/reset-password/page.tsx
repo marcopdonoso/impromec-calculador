@@ -1,4 +1,5 @@
 import { authLinks } from '@/constants/links.constants'
+import { Suspense } from 'react'
 import AuthFormCard from '../components/AuthFormCard'
 import ResetPasswordForm from './components/ResetPasswordForm'
 
@@ -13,7 +14,9 @@ export default function ResetPasswordPage() {
         footerLinkText="Registrate"
         fullwidth={false}
       >
-        <ResetPasswordForm />
+        <Suspense fallback={<p>Cargando...</p>}>
+          <ResetPasswordForm />
+        </Suspense>
       </AuthFormCard>
     </main>
   )
