@@ -10,58 +10,70 @@ import { FaceFrownIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function VerifyEmailContent() {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
   const router = useRouter()
 
-  const [status, setStatus] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-
-  const hasVerified = useRef(false)
+  const [status, setStatus] = useState<'loading' | 'success' | 'error' | null>(
+    null
+  )
+  const [message, setMessage] = useState<string | null>(null)
 
   useEffect(() => {
-    if (token && !hasVerified.current) {
-      hasVerified.current = true
-      verifyEmail()
-    }
+    if (token) verifyEmail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   const verifyEmail = async () => {
-    setStatus(null)
-    setError(null)
+    setStatus('loading')
+    setMessage(null)
 
     const result = await verifyEmailToken(token as string)
 
     if (result.data) {
-      setStatus(result.data.message)
-    } else if (result.error) {
-      const errorMsg = result.error?.message
-      if (errorMsg.includes('ya está verificado')) {
-        setStatus('Tu correo ya ha sido verificado. Inicia sesión.')
+      setStatus('success')
+      setMessage(result.data.message)
+      return
+    }
+
+    if (result.error) {
+      setStatus('error')
+      setMessage(result.error.message)
+
+      const statusCode = result.error.statusCode
+
+      if (statusCode === 409) {
+        setStatus('success')
       }
-      setError(errorMsg)
+      return
     }
   }
 
-  const requestLinkHanlder = async () => {
-    setError(null)
+  const requestLinkHandler = async () => {
+    setStatus('loading')
+    setMessage(null)
 
     const result = await requestVerificationEmail(token as string)
 
     if (result.data) {
       router.push(authLinks.successfulReg.path)
-    } else if (result.error) {
-      setError(result.error?.message)
+    }
+
+    if (result.error) {
+      setStatus('error')
+      setMessage(result.error.message)
+      return
     }
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-7">
-      {status && (
+      {status === 'loading' && <p className="text-gray-500">Verificando...</p>}
+
+      {status === 'success' && (
         <div className="flex flex-col items-center gap-6">
           <Image
             src={'/svg/smile.svg'}
@@ -71,30 +83,25 @@ export default function VerifyEmailContent() {
             className="size-[70px]"
           />
           <h4 className="body_large_semibold text-center lg:heading_h4">
-            {status}
+            {message}
           </h4>
+          <Link href={authLinks.login.path} className="w-full">
+            <Button className="w-full">Iniciar sesión</Button>
+          </Link>
         </div>
       )}
-      {error && (
+
+      {status === 'error' && (
         <div className="flex flex-col items-center gap-6">
           <FaceFrownIcon className="size-[70px]" />
           <h4 className="body_large_semibold text-center lg:heading_h4">
-            {error}
+            {message}
           </h4>
-        </div>
-      )}
-      <div className="min-w-[300px]">
-        {status?.includes('verificado') && (
-          <Link href={authLinks.login.path}>
-            <Button className="w-full">Iniciar sesión</Button>
-          </Link>
-        )}
-        {error && !status?.includes('verificado') && (
-          <Button className="w-full" onClick={requestLinkHanlder}>
+          <Button className="w-full" onClick={requestLinkHandler}>
             Solicitar un nuevo enlace
           </Button>
-        )}
-      </div>
+        </div>
+      )}
     </main>
   )
 }
