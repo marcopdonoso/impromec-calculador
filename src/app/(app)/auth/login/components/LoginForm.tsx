@@ -46,8 +46,9 @@ export default function LoginForm() {
         maxAge: 60 * 60 * 24 * 30,
       })
       setUser(user)
+      router.push(appLinks.home.path)
+      router.refresh()
     }
-    router.push(appLinks.home.path)
   }
   return (
     <form
@@ -75,7 +76,7 @@ export default function LoginForm() {
         ¿Olvidaste tu contraseña?
       </Link>
       {error && <p className="mb-4 text-center text-red">{error}</p>}
-      <Button>Iniciar sesión</Button>
+      <Button type="submit">Iniciar sesión</Button>
     </form>
   )
 }
