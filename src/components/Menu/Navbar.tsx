@@ -1,5 +1,9 @@
 'use client'
-import { loggedNavbarLinks } from '@/constants/links.constants'
+import {
+  loggedNavbarLinks,
+  noLoggedNavbarLinks,
+} from '@/constants/links.constants'
+import { useUserStore } from '@/store/useStore'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -18,9 +22,9 @@ export default function Navbar({
 }: NavbarProps) {
   const [activeLink, setActiveLink] = useState<string | null>(null)
   const pathname = usePathname()
+  const { user } = useUserStore()
 
-  // TODO: REEMPLAZAR POR LÓGICA DE REDIRECCIONAMIENTO
-  const navlinks = loggedNavbarLinks
+  const navlinks = user ? loggedNavbarLinks : noLoggedNavbarLinks
 
   useEffect(() => {
     setActiveLink(pathname)
