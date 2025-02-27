@@ -1,3 +1,8 @@
+export interface LoginUserData {
+  email: string
+  password: string
+}
+
 export interface RegisterUserData {
   name: string
   email: string
