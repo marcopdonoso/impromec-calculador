@@ -1,4 +1,6 @@
+import { appLinks } from '@/constants/links.constants'
 import Image from 'next/image'
+import Link from 'next/link'
 import Button from '../Button'
 
 export default function ProductsSection() {
@@ -34,7 +36,9 @@ export default function ProductsSection() {
         />
       </div>
       <div className="w-full px-4 text-center">
-        <Button className="lg:w-[32vw]">Ver todos los productos</Button>
+        <Link href={appLinks.productsHome.path}>
+          <Button className="lg:w-[32vw]">Ver todos los productos</Button>
+        </Link>
       </div>
     </section>
   )

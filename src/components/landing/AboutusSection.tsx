@@ -1,4 +1,6 @@
+import { appLinks } from '@/constants/links.constants'
 import Image from 'next/image'
+import Link from 'next/link'
 import Button from '../Button'
 
 export default function AboutusSection() {
@@ -17,7 +19,9 @@ export default function AboutusSection() {
           Hemos creado Impromec Calculador, una herramienta que te ayudará a
           calcular la bandeja ideal para tu instalación.{' '}
         </p>
-        <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
+        <Link href={appLinks.calculatorHome.path}>
+          <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
+        </Link>
         <Image
           src={'/svg/aboutus_desktop.svg'}
           alt="figuras con los colores de impromec"
