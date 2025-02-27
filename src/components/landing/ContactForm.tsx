@@ -18,16 +18,43 @@ export default function ContactForm() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
 
-  const { register, handleSubmit, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm({
     resolver: zodResolver(schema),
     mode: 'onChange',
   })
 
-  const onSubmit = (data: { name: string; email: string; message: string }) => {
-    console.log(data)
+  const onSubmit = async (data: {
+    name: string
+    email: string
+    message: string
+  }) => {
     setError(null)
-    setSuccess('Mensaje enviado correctamente')
-    reset()
+    setSuccess(null)
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (res.ok) {
+      setSuccess('Mensaje enviado con éxito')
+      setTimeout(() => {
+        setSuccess(null)
+      }, 3000)
+      reset()
+    } else {
+      setError('Error al enviar el mensaje')
+      setTimeout(() => {
+        setError(null)
+      }, 3000)
+    }
   }
 
   return (
@@ -69,8 +96,8 @@ export default function ContactForm() {
             {success}
           </p>
         )}
-        <Button className="mt-16" type="submit">
-          Enviar Correo
+        <Button className="mt-16" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Enviando...' : 'Enviar'}
         </Button>
       </form>
     </div>
