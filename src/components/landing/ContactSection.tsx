@@ -19,15 +19,21 @@ export default function ContactSection() {
         </p>
 
         <div className="mb-8 flex flex-col gap-8">
-          <IconTextFeature icon="/svg/Icon_location.svg" alt="">
+          <IconTextFeature icon="/svg/Icon_location.svg" alt="location">
             Estamos en Planta Industrial &ldquo;El Abra&rdquo; Av. Cristo de la
-            Concordia esq. Fairos, 1/2 cuadra al Norte Cochabamba - Bolivia
+            Concordia esq. Fairos, 1/2 cuadra al Norte Cochabamba - Bolivia.{' '}
+            <a
+              href="https://maps.app.goo.gl/vbLiHMKQ1d8re5SR8"
+              target="_blank"
+              className="body_medium_bold underline"
+            >
+              Ver Mapa
+            </a>
           </IconTextFeature>
-          <IconTextFeature icon="/svg/Icon_phone.svg" alt="">
-            Llámanos ahora: 4061219 - 72216766 - 67400666 - 65342591
-            {/* TODO REEMPLAZAR POR TELEFONOS DEFINITIVOS */}
+          <IconTextFeature icon="/svg/Icon_phone.svg" alt="phone">
+            Llámanos ahora: 72216766 - 65342591 - 72287592
           </IconTextFeature>
-          <IconTextFeature icon="/svg/Icon_letter.svg" alt="">
+          <IconTextFeature icon="/svg/Icon_letter.svg" alt="email">
             Escríbenos a nuestro correo: contacto@impromec.com
           </IconTextFeature>
         </div>

@@ -1,3 +1,5 @@
+import { appLinks } from '@/constants/links.constants'
+import Link from 'next/link'
 import Button from '../Button'
 import TopImage from './TopImage'
 
@@ -15,7 +17,9 @@ export default function TopSection() {
           ideal para tu instalación. Ahorra tiempo, reduce errores y mejora la
           eficiencia de tus proyectos.
         </p>
-        <Button className="lg:w-[32vw]">Comenzar ahora</Button>
+        <Link href={appLinks.calculatorHome.path}>
+          <Button className="lg:w-[32vw]">Comenzar ahora</Button>
+        </Link>
       </section>
       <TopImage />
     </>

@@ -1,4 +1,6 @@
+import { appLinks } from '@/constants/links.constants'
 import Image from 'next/image'
+import Link from 'next/link'
 import Button from '../Button'
 import CalculatorFeatures from '../CalculatorFeatures'
 
@@ -21,7 +23,9 @@ export default function CalculatorSection() {
           <span className="text-red">Calcula tu Bandeja Portacables</span> ideal
         </p>
         <CalculatorFeatures className={'lg:max-w-[32vw]'} />
-        <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
+        <Link href={appLinks.calculatorHome.path}>
+          <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
+        </Link>
       </div>
       <Image
         src={'/img/calculator_desktop.webp'}
