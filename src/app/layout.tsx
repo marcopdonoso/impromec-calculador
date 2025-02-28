@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer'
 import HeaderMenu from '@/components/Menu/HeaderMenu'
+import UserRestorer from '@/components/UserRestorer'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} flex min-h-screen flex-col text-gray-text`}
       >
+        <UserRestorer />
         <header>
           <HeaderMenu />
         </header>

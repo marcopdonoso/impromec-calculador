@@ -1,6 +1,6 @@
 'use client'
 import { authLinks } from '@/constants/links.constants'
-import { useUserStore } from '@/store/useStore'
+import { logoutUser } from '@/services/user.service'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction } from 'react'
@@ -17,8 +17,7 @@ export default function UserMenu({
 }) {
   const router = useRouter()
   const handleCloseSession = async () => {
-    await fetch('/api/logout', { method: 'GET' })
-    useUserStore.getState().setUser(null)
+    await logoutUser()
     router.push(authLinks.login.path)
     router.refresh()
     setIsMenuOpen(false)

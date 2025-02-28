@@ -3,6 +3,7 @@ import {
   LoginUserData,
   RegisterUserData,
 } from '@/models/api.model'
+import { useUserStore } from '@/store/useStore'
 import axios from 'axios'
 import { api } from './api.service'
 
@@ -131,4 +132,26 @@ export const resetPassword = async (
     }
     return { error: { message: 'Error de conexión', statusCode: 503 } }
   }
+}
+
+export const getUserProfile = async (): Promise<ApiResponse> => {
+  try {
+    const response = await api.get('/auth/me')
+    return { data: response.data }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        error: {
+          message: error.response?.data?.message || 'Error desconocido',
+          statusCode: error.response?.status || 500,
+        },
+      }
+    }
+    return { error: { message: 'Error de conexión', statusCode: 503 } }
+  }
+}
+
+export const logoutUser = async () => {
+  await fetch('/api/logout', { method: 'GET' })
+  useUserStore.getState().setUser(null)
 }
