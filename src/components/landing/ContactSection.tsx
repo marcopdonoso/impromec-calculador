@@ -20,12 +20,14 @@ export default function ContactSection() {
 
         <div className="mb-8 flex flex-col gap-8">
           <IconTextFeature icon="/svg/Icon_location.svg" alt="location">
-            Estamos en Planta Industrial &ldquo;El Abra&rdquo; Av. Cristo de la
-            Concordia esq. Fairos, 1/2 cuadra al Norte Cochabamba - Bolivia.{' '}
+            <p>
+              Av. López 003, ½ cuadra al norte de Av. Villarroel, Cochabamba,
+              Bolivia.
+            </p>
             <a
               href="https://maps.app.goo.gl/vbLiHMKQ1d8re5SR8"
               target="_blank"
-              className="body_medium_bold underline"
+              className="text-gray-button_primary underline"
             >
               Ver Mapa
             </a>

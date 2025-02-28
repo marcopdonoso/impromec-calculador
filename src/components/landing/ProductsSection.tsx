@@ -36,7 +36,7 @@ export default function ProductsSection() {
         />
       </div>
       <div className="w-full px-4 text-center">
-        <Link href={appLinks.productsHome.path}>
+        <Link href={appLinks.productsHome.path} className="w-full">
           <Button className="lg:w-[32vw]">Ver todos los productos</Button>
         </Link>
       </div>

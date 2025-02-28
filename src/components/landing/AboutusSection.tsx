@@ -19,7 +19,7 @@ export default function AboutusSection() {
           Hemos creado Impromec Calculador, una herramienta que te ayudará a
           calcular la bandeja ideal para tu instalación.{' '}
         </p>
-        <Link href={appLinks.calculatorHome.path}>
+        <Link href={appLinks.calculatorHome.path} className="w-full">
           <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
         </Link>
         <Image

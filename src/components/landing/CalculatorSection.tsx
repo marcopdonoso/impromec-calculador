@@ -23,7 +23,7 @@ export default function CalculatorSection() {
           <span className="text-red">Calcula tu Bandeja Portacables</span> ideal
         </p>
         <CalculatorFeatures className={'lg:max-w-[32vw]'} />
-        <Link href={appLinks.calculatorHome.path}>
+        <Link href={appLinks.calculatorHome.path} className="w-full">
           <Button className="lg:w-[32vw]">Usar Impromec Calculador</Button>
         </Link>
       </div>
