@@ -17,9 +17,6 @@ const InputPass = forwardRef<HTMLInputElement, InputPassProps>(
         placeholder={placeholder}
         error={error}
         ref={ref}
-        autoComplete={
-          props.name === 'confirmPassword' ? 'new-password' : 'current-password'
-        }
         {...props}
       >
         <button
