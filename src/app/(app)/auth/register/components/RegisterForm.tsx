@@ -61,7 +61,7 @@ const registerSchema = z
       })
       .min(8, 'Debe contener 8+caracteres')
       .regex(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W_]).{8,}$/,
         'Debe contener letras, números y símbolos'
       ),
     confirmPassword: z.string({

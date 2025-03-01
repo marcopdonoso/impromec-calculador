@@ -20,14 +20,12 @@ export default function ContactSection() {
 
         <div className="mb-8 flex flex-col gap-8">
           <IconTextFeature icon="/svg/Icon_location.svg" alt="location">
-            <p>
-              Av. López 003, ½ cuadra al norte de Av. Villarroel, Cochabamba,
-              Bolivia.
-            </p>
+            Av. López 003, ½ cuadra al norte de Av. Villarroel, Cochabamba,
+            Bolivia.
             <a
               href="https://maps.app.goo.gl/vbLiHMKQ1d8re5SR8"
               target="_blank"
-              className="text-gray-button_primary underline"
+              className="block text-gray-button_primary underline"
             >
               Ver Mapa
             </a>
