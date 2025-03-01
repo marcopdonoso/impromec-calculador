@@ -7,7 +7,7 @@ export async function GET() {
     value: '',
     expires: new Date(0),
     path: '/',
-    sameSite: 'strict',
+    sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
   })
