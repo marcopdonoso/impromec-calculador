@@ -1,15 +1,8 @@
+import { deleteCookie } from 'cookies-next'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
-  const response = NextResponse.json({ message: 'Logged out' }, { status: 200 })
+export async function GET(req: any, res: any) {
+  deleteCookie('token', { req, res, path: '/', sameSite: 'strict' })
 
-  response.cookies.set('token', '', {
-    expires: new Date(0),
-    path: '/',
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-  })
-
-  return response
+  return NextResponse.json({ message: 'Logged out' }, { status: 200 })
 }

@@ -26,7 +26,7 @@ const InputPass = forwardRef<HTMLInputElement, InputPassProps>(
         />
         <button
           type="button"
-          className="absolute inset-y-10 right-4"
+          className="absolute inset-y-10 right-4 lg:inset-y-12"
           onClick={handleShowPass}
         >
           {!showPass ? (

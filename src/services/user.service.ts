@@ -5,6 +5,7 @@ import {
 } from '@/models/api.model'
 import { useUserStore } from '@/store/useStore'
 import axios from 'axios'
+import { deleteCookie } from 'cookies-next'
 import { api } from './api.service'
 
 export const registerUser = async (
@@ -152,6 +153,17 @@ export const getUserProfile = async (): Promise<ApiResponse> => {
 }
 
 export const logoutUser = async () => {
-  await fetch('/api/logout', { method: 'GET' })
-  useUserStore.getState().setUser(null)
+  try {
+    await fetch('/api/logout', {
+      method: 'GET',
+      credentials: 'include',
+    })
+
+    deleteCookie('token', { path: '/', sameSite: 'strict' })
+
+    useUserStore.getState().setUser(null)
+  } catch (error) {
+    deleteCookie('token', { path: '/', sameSite: 'strict' })
+    useUserStore.getState().setUser(null)
+  }
 }
