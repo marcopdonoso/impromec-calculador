@@ -10,6 +10,7 @@ import { trayTypes } from '@/models/tray.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
 import Link from 'next/link'
 import { useState } from 'react'
+import NoSearchResults from './components/NoSearchResults'
 import ProductsSkeleton from './components/ProductsSkeleton'
 import { useFilters } from './hooks/useFilters'
 import { useProducts } from './hooks/useProducts'
@@ -88,7 +89,7 @@ export default function ProductsPage() {
         </h4>
         <InputSearch placeholder="Buscar" />
         <div className="mb-8 lg:mb-20 lg:flex lg:flex-grow lg:gap-8">
-          <div className="mt-6 w-full lg:mt-[72px] lg:w-fit">
+          <div className="my-6 w-full lg:mt-[72px] lg:w-fit">
             <CheckboxList
               legend="Tipo de bandeja"
               options={trayTypeListoptions}
@@ -96,23 +97,25 @@ export default function ProductsPage() {
             />
           </div>
           <div className="flex flex-col lg:w-full lg:items-end">
-            <div className="mb-8 mt-6 lg:my-6">
-              <MyListbox
-                variant="sorting"
-                label="Ordenar por:"
-                options={sortListboxOptions}
-                className="justify-end"
-                value={
-                  sortListboxOptions.find(
-                    (option) => option.value === sortValue
-                  ) || sortListboxOptions[0]
-                }
-                onChange={onChangeSort}
-              />
-            </div>
+            {!loading && trays && trays?.length > 0 && (
+              <div className="mb-8 lg:my-6">
+                <MyListbox
+                  variant="sorting"
+                  label="Ordenar por:"
+                  options={sortListboxOptions}
+                  className="justify-end"
+                  value={
+                    sortListboxOptions.find(
+                      (option) => option.value === sortValue
+                    ) || sortListboxOptions[0]
+                  }
+                  onChange={onChangeSort}
+                />
+              </div>
+            )}
 
             <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-4">
-              {!loading ? (
+              {!loading && trays && trays?.length > 0 ? (
                 trays?.map((tray, idx) => {
                   return (
                     <Link
@@ -130,18 +133,22 @@ export default function ProductsPage() {
                     </Link>
                   )
                 })
+              ) : !loading && trays?.length === 0 ? (
+                <NoSearchResults />
               ) : (
                 <ProductsSkeleton />
               )}
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center">
-          <Pagination
-            totalPages={paginationMetadata?.pageCount ?? 0}
-            onChange={onPageChange}
-          />
-        </div>
+        {!loading && trays && trays?.length > 0 && (
+          <div className="flex w-full justify-center">
+            <Pagination
+              totalPages={paginationMetadata?.pageCount ?? 0}
+              onChange={onPageChange}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
