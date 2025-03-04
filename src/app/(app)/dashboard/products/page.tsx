@@ -89,16 +89,16 @@ export default function ProductsPage() {
         </h4>
         <InputSearch placeholder="Buscar" />
         <div className="mb-8 lg:mb-20 lg:flex lg:flex-grow lg:gap-8">
-          <div className="my-6 w-full lg:mt-[72px] lg:w-fit">
+          <div className="mt-6 w-full lg:mt-[72px] lg:w-fit">
             <CheckboxList
               legend="Tipo de bandeja"
               options={trayTypeListoptions}
               onChange={onChangeTrayTypeCheckbox}
             />
           </div>
-          <div className="flex flex-col lg:w-full lg:items-end">
-            {!loading && trays && trays?.length > 0 && (
-              <div className="mb-8 lg:my-6">
+          <div className="flex flex-col pt-6 lg:w-full lg:items-end">
+            {!loading && trays && trays?.length > 0 ? (
+              <div className="mb-8 lg:mb-6">
                 <MyListbox
                   variant="sorting"
                   label="Ordenar por:"
@@ -112,6 +112,8 @@ export default function ProductsPage() {
                   onChange={onChangeSort}
                 />
               </div>
+            ) : (
+              <div className="h-14 lg:h-12" />
             )}
 
             <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-4">
