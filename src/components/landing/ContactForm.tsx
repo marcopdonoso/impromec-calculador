@@ -44,16 +44,18 @@ export default function ContactForm() {
     })
 
     if (res.ok) {
-      setSuccess('Mensaje enviado con éxito')
+      setSuccess(
+        'Mensaje enviado con éxito. Pronto nos pondremos en contacto contigo.'
+      )
       setTimeout(() => {
         setSuccess(null)
-      }, 3000)
+      }, 5000)
       reset()
     } else {
       setError('Error al enviar el mensaje')
       setTimeout(() => {
         setError(null)
-      }, 3000)
+      }, 5000)
     }
   }
 
