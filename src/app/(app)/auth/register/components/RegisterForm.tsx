@@ -3,6 +3,7 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import InputPass from '@/components/InputPass'
+import LocationAutocomplete from '@/components/LocationAutocomplete'
 import MyListbox from '@/components/MyListbox'
 import MyPhoneInput from '@/components/MyPhoneInput'
 import { authLinks } from '@/constants/links.constants'
@@ -203,17 +204,12 @@ export default function RegisterForm() {
           )}
         />
 
-        <Controller
+        <LocationAutocomplete
           name="location"
           control={control}
-          render={({ field }) => (
-            <Input
-              label="Locación"
-              placeholder="Cochabamba, Bolivia"
-              error={errors.location?.message}
-              {...field}
-            />
-          )}
+          label="Locación"
+          placeholder="Buscar ciudad..."
+          error={errors.location?.message}
         />
       </div>
 
