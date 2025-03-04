@@ -1,6 +1,11 @@
 'use client'
 import { XCircleIcon } from '@heroicons/react/24/solid'
-import PhoneInput, { Value } from 'react-phone-number-input'
+import { useEffect, useRef } from 'react'
+import PhoneInput, {
+  Country,
+  getCountryCallingCode,
+  Value,
+} from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 
 interface MyPhoneInputProps {
@@ -16,6 +21,26 @@ export default function MyPhoneInput({
   error,
   disabled,
 }: MyPhoneInputProps) {
+  const initializedRef = useRef(false)
+
+  // Manejar cambio de país con código prellenado
+  const handleCountryChange = (country: Country) => {
+    if (country) {
+      const countryCode = `+${getCountryCallingCode(country)}` as Value
+      onChange(countryCode)
+    }
+  }
+
+  // Este efecto se ejecuta solo la primera vez para establecer el código de país inicial
+  useEffect(() => {
+    if (!initializedRef.current && !value) {
+      const defaultCountry = 'BO'
+      const defaultCode = `+${getCountryCallingCode(defaultCountry)}` as Value
+      onChange(defaultCode)
+      initializedRef.current = true
+    }
+  }, [value, onChange])
+
   return (
     <div className="w-full">
       <label className="body_small_medium flex w-full flex-col justify-start gap-1 lg:body_medium_regular lg:gap-2">
@@ -26,6 +51,9 @@ export default function MyPhoneInput({
           placeholder="12345678"
           value={value}
           onChange={onChange}
+          onCountryChange={handleCountryChange}
+          international
+          withCountryCallingCode
           numberInputProps={{
             className:
               'h-12 w-full px-5 py-3 rounded-lg border border-gray-input bg-gray-white text-sm font-normal text-gray-text placeholder:text-sm placeholder:text-gray-placeholder focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive lg:text-base lg:placeholder:text-base',
