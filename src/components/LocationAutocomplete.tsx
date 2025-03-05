@@ -1,3 +1,4 @@
+import { getGeonames } from '@/services/geonames.service'
 import {
   Combobox,
   ComboboxButton,
@@ -58,29 +59,29 @@ export default function LocationAutocomplete({
     }, 300) // Debounce de 300ms
 
     return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query])
 
   // Función para buscar ciudades en la API de Geonames
   const fetchCities = async (searchTerm: string): Promise<City[]> => {
-    try {
-      const response = await fetch(
-        `https://secure.geonames.org/searchJSON?name_startsWith=${encodeURIComponent(searchTerm)}&countryBias=BO&maxRows=10&username=marcopdonoso&featureClass=P&style=FULL`
-      )
-      const data = await response.json()
+    const response = await getGeonames(searchTerm)
+    const data = response.data
 
-      if (data.geonames && Array.isArray(data.geonames)) {
-        return data.geonames.map((city: any) => ({
-          name: city.name,
-          country: city.countryName,
-          adminName1: city.adminName1,
-          geonameId: city.geonameId,
-        }))
-      }
-      return []
-    } catch (error) {
-      console.error('Error fetching cities:', error)
+    if (response.error) {
+      console.log(response.error)
       return []
     }
+
+    if (data.geonames && Array.isArray(data.geonames)) {
+      return data.geonames.map((city: any) => ({
+        name: city.name,
+        country: city.countryName,
+        adminName1: city.adminName1,
+        geonameId: city.geonameId,
+      }))
+    }
+
+    return []
   }
 
   // Formatea la ciudad para mostrar
