@@ -12,7 +12,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, className, children, error, ...props }, ref) => {
     return (
-      <div className="w-full">
+      <div className="relative w-full">
         <label
           className={clsx(
             'relative flex w-full flex-col justify-start gap-1 text-sm font-medium lg:gap-2 lg:text-base',
@@ -37,7 +37,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {children}
         </label>
         {error && (
-          <div className="flex items-center gap-3">
+          <div className="absolute left-0 top-[72px] flex items-center gap-3 lg:top-20">
             <XCircleIcon className="h-5 w-5 text-red" />
             <p className="body_small_regular text-red lg:body_medium_regular">
               {error}

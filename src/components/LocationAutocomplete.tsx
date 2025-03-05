@@ -95,7 +95,7 @@ export default function LocationAutocomplete({
       name={name}
       control={control}
       render={({ field }) => (
-        <div className="w-full">
+        <div className="relative w-full">
           <label className="body_small_medium mb-1 block lg:body_medium_medium lg:mb-2">
             {label}
           </label>
@@ -107,11 +107,11 @@ export default function LocationAutocomplete({
           >
             <div className="relative">
               <div
-                className={`relative w-full cursor-default overflow-hidden rounded-lg border bg-gray-white text-left ${error ? 'border-red' : 'border-gray-input'} focus-within:border-gray-placeholder`}
+                className={`relative h-12 w-full cursor-default overflow-hidden rounded-lg border bg-gray-white text-left ${error ? 'border-red' : 'border-gray-input'} focus-within:border-gray-placeholder`}
               >
                 <ComboboxInput
                   autoComplete="off"
-                  className="body_small_regular h-12 w-full border-none py-2 pl-5 pr-10 leading-5 text-gray-text lg:body_medium_regular focus:outline-none"
+                  className="body_small_regular h-12 w-full border-none py-2 pl-5 pr-10 leading-5 text-gray-text lg:body_medium_regular focus:outline-none focus:ring-0"
                   placeholder={placeholder}
                   displayValue={(city: City) =>
                     typeof city === 'string' ? city : formatCity(city)
@@ -173,7 +173,7 @@ export default function LocationAutocomplete({
             </div>
           </Combobox>
           {error && (
-            <div className="flex items-center gap-3">
+            <div className="absolute left-0 top-[72px] flex items-center gap-3 lg:top-20">
               <XCircleIcon className="h-5 w-5 text-red" />
               <p className="body_small_regular text-red lg:body_medium_regular">
                 {error}

@@ -29,7 +29,7 @@ const registerSchema = z
       .string({
         required_error: 'Ingresa un correo electrónico.',
       })
-      .email('El formato del correo electrónico es inválido.'),
+      .email('Formato de email inválido.'),
     company: z.string().optional(),
     category: z
       .object({
