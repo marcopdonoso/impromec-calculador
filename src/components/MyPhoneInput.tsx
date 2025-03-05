@@ -43,7 +43,7 @@ export default function MyPhoneInput({
 
   return (
     <div className="w-full">
-      <label className="body_small_medium flex w-full flex-col justify-start gap-1 lg:body_medium_regular lg:gap-2">
+      <label className="body_small_medium flex w-full flex-col justify-start gap-1 lg:body_medium_medium lg:gap-2">
         Número de teléfono
         <PhoneInput
           disabled={disabled}

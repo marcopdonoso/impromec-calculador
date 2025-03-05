@@ -7,7 +7,8 @@ import {
   ComboboxOptions,
   Transition,
 } from '@headlessui/react'
-import { ChevronUpDownIcon, XCircleIcon } from '@heroicons/react/24/solid'
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import { XCircleIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import { Fragment, useEffect, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
@@ -95,7 +96,9 @@ export default function LocationAutocomplete({
       control={control}
       render={({ field }) => (
         <div className="w-full">
-          <label className="body_small_medium mb-1 block">{label}</label>
+          <label className="body_small_medium mb-1 block lg:body_medium_medium lg:mb-2">
+            {label}
+          </label>
           <Combobox
             value={field.value}
             onChange={(city) => {
@@ -108,7 +111,7 @@ export default function LocationAutocomplete({
               >
                 <ComboboxInput
                   autoComplete="off"
-                  className="body_small_regular h-12 w-full border-none py-2 pl-5 pr-10 leading-5 text-gray-text focus:outline-none"
+                  className="body_small_regular h-12 w-full border-none py-2 pl-5 pr-10 leading-5 text-gray-text lg:body_medium_regular focus:outline-none"
                   placeholder={placeholder}
                   displayValue={(city: City) =>
                     typeof city === 'string' ? city : formatCity(city)
@@ -121,7 +124,7 @@ export default function LocationAutocomplete({
                 />
                 <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-3">
                   <ChevronUpDownIcon
-                    className="h-5 w-5 text-gray-text"
+                    className="h-5 w-5 stroke-1 text-gray-text lg:h-6 lg:w-6"
                     aria-hidden="true"
                   />
                 </ComboboxButton>
@@ -143,13 +146,13 @@ export default function LocationAutocomplete({
                   )}
                 >
                   {isLoading && (
-                    <div className="relative cursor-default select-none px-4 py-2 text-gray-text_inactive">
+                    <div className="body_small_regular relative cursor-default select-none px-4 py-2 text-gray-text_inactive lg:body_medium_regular">
                       Buscando ciudades...
                     </div>
                   )}
 
                   {!isLoading && cities.length === 0 && query.length >= 3 && (
-                    <div className="relative cursor-default select-none px-4 py-2 text-gray-text_inactive">
+                    <div className="body_small_regular relative cursor-default select-none px-4 py-2 text-gray-text_inactive lg:body_medium_regular">
                       No se encontraron ciudades.
                     </div>
                   )}
@@ -160,7 +163,7 @@ export default function LocationAutocomplete({
                       value={city}
                       className="group flex cursor-default select-none items-center gap-2 px-3 py-1.5 data-[focus]:bg-gray-text/10"
                     >
-                      <div className="pl-3 text-sm/6 text-gray-text">
+                      <div className="body_small_regular pl-3 text-sm/6 text-gray-text lg:body_medium_regular">
                         {formatCity(city)}
                       </div>
                     </ComboboxOption>
