@@ -8,6 +8,7 @@ import Pagination from '@/components/Pagination/Pagination'
 import { appLinks } from '@/constants/links.constants'
 import { trayTypes } from '@/models/tray.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
+import clsx from 'clsx'
 import Link from 'next/link'
 import { useState } from 'react'
 import NoSearchResults from './components/NoSearchResults'
@@ -143,14 +144,18 @@ export default function ProductsPage() {
             </div>
           </div>
         </div>
-        {!loading && trays && trays?.length > 0 && (
-          <div className="flex w-full justify-center">
-            <Pagination
-              totalPages={paginationMetadata?.pageCount ?? 0}
-              onChange={onPageChange}
-            />
-          </div>
-        )}
+        <div
+          className={clsx('flex w-full justify-center', {
+            hidden:
+              paginationMetadata?.pageCount === 1 ||
+              paginationMetadata?.pageCount === 0,
+          })}
+        >
+          <Pagination
+            totalPages={paginationMetadata?.pageCount ?? 0}
+            onChange={onPageChange}
+          />
+        </div>
       </div>
     </div>
   )
