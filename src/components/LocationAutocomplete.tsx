@@ -8,10 +8,10 @@ import {
   Transition,
 } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
-import { XCircleIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import { Fragment, useEffect, useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
+import Alert from './Alert'
 
 // Define el tipo de ciudad
 interface City {
@@ -123,10 +123,7 @@ export default function LocationAutocomplete({
                   onBlur={field.onBlur}
                 />
                 <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-3">
-                  <ChevronUpDownIcon
-                    className="h-5 w-5 stroke-1 text-gray-text lg:h-6 lg:w-6"
-                    aria-hidden="true"
-                  />
+                  <ChevronUpDownIcon className="h-5 w-5 stroke-1 text-gray-text lg:h-6 lg:w-6" />
                 </ComboboxButton>
               </div>
               <Transition
@@ -174,10 +171,7 @@ export default function LocationAutocomplete({
           </Combobox>
           {error && (
             <div className="absolute left-0 top-[72px] flex items-center gap-3 lg:top-20">
-              <XCircleIcon className="h-5 w-5 text-red" />
-              <p className="body_small_regular text-red lg:body_medium_regular">
-                {error}
-              </p>
+              <Alert paragraph={error} variant="error" />
             </div>
           )}
         </div>

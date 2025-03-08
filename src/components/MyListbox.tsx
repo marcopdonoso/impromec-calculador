@@ -10,9 +10,9 @@ import {
   Transition,
 } from '@headlessui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
-import { XCircleIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import { useState } from 'react'
+import Alert from './Alert'
 
 type ListBoxVariant = 'standard' | 'sorting'
 
@@ -101,7 +101,6 @@ export default function MyListbox({
                   'pointer-events-none absolute right-3 w-4',
                   variant === 'sorting' ? 'top-1' : 'top-4'
                 )}
-                aria-hidden="true"
               />
             ) : (
               <ChevronDownIcon
@@ -109,7 +108,6 @@ export default function MyListbox({
                   'pointer-events-none absolute right-3 w-4',
                   variant === 'sorting' ? 'top-1' : 'top-4'
                 )}
-                aria-hidden="true"
               />
             )}
           </ListboxButton>
@@ -144,14 +142,7 @@ export default function MyListbox({
           </Transition>
         </Listbox>
       </Field>
-      {error && (
-        <div className="flex items-center gap-3">
-          <XCircleIcon className="h-5 w-5 text-red" />
-          <p className="body_small_regular text-red lg:body_medium_regular">
-            {error}
-          </p>
-        </div>
-      )}
+      {error && <Alert variant="error" paragraph={error} />}
     </div>
   )
 }

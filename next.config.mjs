@@ -5,12 +5,17 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
-        pathname: '/drc513m7f/image/upload/***/***',
+        pathname: '/drc513m7f/image/upload/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'res.cloudinary.com',
+        pathname: '/drc513m7f/image/upload/**',
       },
       {
         protocol: 'https',
         hostname: 'impromec-catalog-production.up.railway.app',
-        pathname: '/uploads/***',
+        pathname: '/uploads/**',
       },
     ],
   },
