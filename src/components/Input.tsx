@@ -1,6 +1,6 @@
-import { XCircleIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import { forwardRef, InputHTMLAttributes } from 'react'
+import Alert from './Alert'
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -38,10 +38,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         </label>
         {error && (
           <div className="absolute left-0 top-[72px] flex items-center gap-3 lg:top-20">
-            <XCircleIcon className="h-5 w-5 text-red" />
-            <p className="body_small_regular text-red lg:body_medium_regular">
-              {error}
-            </p>
+            <Alert variant="error" paragraph={error} />
           </div>
         )}
       </div>

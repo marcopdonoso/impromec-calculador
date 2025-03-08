@@ -10,45 +10,59 @@ import { FaceFrownIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function VerifyEmailContent() {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
   const router = useRouter()
+  const hasVerified = useRef(false)
 
   const [status, setStatus] = useState<'loading' | 'success' | 'error' | null>(
     null
   )
   const [message, setMessage] = useState<string | null>(null)
+  const [alreadyVerified, setAlreadyVerified] = useState(false)
 
   useEffect(() => {
-    if (token) verifyEmail()
+    if (token && !hasVerified.current) {
+      hasVerified.current = true
+      verifyEmail()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   const verifyEmail = async () => {
-    setStatus('loading')
-    setMessage(null)
+    try {
+      setStatus('loading')
+      setMessage(null)
+      setAlreadyVerified(false)
 
-    const result = await verifyEmailToken(token as string)
+      const result = await verifyEmailToken(token as string)
 
-    if (result.data) {
-      setStatus('success')
-      setMessage(result.data.message)
-      return
-    }
+      if (hasVerified.current === false) return
 
-    if (result.error) {
-      setStatus('error')
-      setMessage(result.error.message)
-
-      const statusCode = result.error.statusCode
-
-      if (statusCode === 409) {
+      if (result.data) {
         setStatus('success')
+        setMessage(result.data.message)
+        return
       }
-      return
+
+      if (result.error) {
+        // Verificamos específicamente si el error es porque ya está verificado
+        if (result.error.statusCode === 409) {
+          setStatus('success')
+          setAlreadyVerified(true)
+          setMessage(result.error.message)
+        } else {
+          setStatus('error')
+          setMessage(result.error.message)
+        }
+      }
+    } catch (error) {
+      console.error('Error durante la verificación:', error)
+      setStatus('error')
+      setMessage('Ha ocurrido un error inesperado durante la verificación')
     }
   }
 
@@ -56,16 +70,21 @@ export default function VerifyEmailContent() {
     setStatus('loading')
     setMessage(null)
 
-    const result = await requestVerificationEmail(token as string)
+    try {
+      const result = await requestVerificationEmail(token as string)
 
-    if (result.data) {
-      router.push(authLinks.successfulReg.path)
-    }
+      if (result.data) {
+        router.push(authLinks.successfulReg.path)
+      }
 
-    if (result.error) {
+      if (result.error) {
+        setStatus('error')
+        setMessage(result.error.message)
+      }
+    } catch (error) {
+      console.error('Error al solicitar nuevo enlace:', error)
       setStatus('error')
-      setMessage(result.error.message)
-      return
+      setMessage('Ha ocurrido un error al solicitar un nuevo enlace')
     }
   }
 
@@ -84,6 +103,11 @@ export default function VerifyEmailContent() {
           />
           <h4 className="body_large_semibold text-center lg:heading_h4">
             {message}
+            {alreadyVerified && (
+              <span className="text-gray-600 mt-2 block text-sm font-normal">
+                Ya puedes iniciar sesión con tu cuenta.
+              </span>
+            )}
           </h4>
           <Link href={authLinks.login.path} className="w-full">
             <Button className="w-full">Iniciar sesión</Button>

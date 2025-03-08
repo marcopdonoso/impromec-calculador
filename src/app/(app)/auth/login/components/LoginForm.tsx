@@ -1,4 +1,5 @@
 'use client'
+import Alert from '@/components/Alert'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import InputPass from '@/components/InputPass'
@@ -12,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import ResendVerificationLink from './ResendVerificationLink'
 
 const loginSchema = z.object({
   email: z.string().email('Correo inválido'),
@@ -22,6 +24,8 @@ export default function LoginForm() {
   const { setUser } = useUserStore()
   const router = useRouter()
   const [error, setError] = useState('')
+  const [showResendVerification, setShowResendVerification] = useState(false)
+  const [currentEmail, setCurrentEmail] = useState('')
   const {
     register,
     handleSubmit,
@@ -35,7 +39,13 @@ export default function LoginForm() {
     setError('')
     const res = await loginUser(data)
     if (res.error) {
-      setError(res.error.message)
+      // Si el error es específicamente que la cuenta no está verificada
+      if (res.error.message?.includes('Cuenta no verificada')) {
+        setCurrentEmail(data.email)
+        setShowResendVerification(true)
+      } else {
+        setError(res.error.message)
+      }
     }
 
     if (res.data) {
@@ -75,7 +85,21 @@ export default function LoginForm() {
       >
         ¿Olvidaste tu contraseña?
       </Link>
-      {error && <p className="mb-4 text-center text-red">{error}</p>}
+
+      {showResendVerification && (
+        <div className="mb-4">
+          <ResendVerificationLink
+            email={currentEmail}
+            onClose={() => setShowResendVerification(false)}
+          />
+        </div>
+      )}
+
+      {error && !showResendVerification && (
+        <div className="mb-4">
+          <Alert paragraph={error} variant="error" />
+        </div>
+      )}
       <Button type="submit">Iniciar sesión</Button>
     </form>
   )

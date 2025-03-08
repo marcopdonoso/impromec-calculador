@@ -6,32 +6,18 @@ import Image from 'next/image'
 import { ChangeEvent } from 'react'
 
 interface ProfileAvatarProps {
+  user: User
   newImageFile?: File | null
   isFormDisabled?: boolean
   handleNewImageFileChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function ProfileAvatar({
+  user,
   newImageFile,
   isFormDisabled,
   handleNewImageFileChange,
 }: ProfileAvatarProps) {
-  // TODO: Eliminar datos falsos y reemplazar por datos de sesión
-  const mockedUser: User = {
-    id: '1-1-1-1-1',
-    name: 'Usuario Falso',
-    email: 'usuario@gmail.com',
-    company: 'Impromec',
-    category: {
-      text: 'Construcciones',
-      value: 'construction',
-    },
-    phone: '+5412312312',
-    location: 'Cochabamba',
-    // avatar: '/img/uf_image.webp',
-  }
-  const user: User | null = mockedUser
-
   const avatarImage = newImageFile
     ? URL.createObjectURL(newImageFile)
     : user.avatar

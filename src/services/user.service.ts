@@ -71,6 +71,27 @@ export const requestVerificationEmail = async (
   }
 }
 
+export const resendVerificationEmail = async (
+  email: string
+): Promise<ApiResponse> => {
+  try {
+    const response = await api.post('/auth/resend-verification-by-email', {
+      email,
+    })
+    return { data: response.data }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        error: {
+          message: error.response?.data?.message || 'Error desconocido',
+          statusCode: error.response?.status || 500,
+        },
+      }
+    }
+    return { error: { message: 'Error de conexión', statusCode: 503 } }
+  }
+}
+
 export const loginUser = async (data: LoginUserData): Promise<ApiResponse> => {
   try {
     const response = await api.post('/auth/login', data)
@@ -112,15 +133,16 @@ export const resetPassword = async (
   newPassword: string
 ): Promise<ApiResponse> => {
   try {
-    const response = await api.post(
-      '/auth/reset-password',
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password?token=${token}`,
       { newPassword },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       }
     )
+
     return { data: response.data }
   } catch (error) {
     if (axios.isAxiosError(error)) {

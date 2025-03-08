@@ -10,5 +10,7 @@ export interface User {
   phone: string
   location: string
   avatar?: string
+  updatedAt?: string
+  createdAt?: string
   projects?: Project[]
 }

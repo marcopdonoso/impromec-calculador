@@ -1,5 +1,4 @@
 'use client'
-import { XCircleIcon } from '@heroicons/react/24/solid'
 import { useEffect, useRef } from 'react'
 import PhoneInput, {
   Country,
@@ -7,6 +6,7 @@ import PhoneInput, {
   Value,
 } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
+import Alert from './Alert'
 
 interface MyPhoneInputProps {
   value?: Value
@@ -62,10 +62,7 @@ export default function MyPhoneInput({
       </label>
       {error && (
         <div className="absolute left-0 top-[72px] flex items-center gap-3 lg:top-20">
-          <XCircleIcon className="h-5 w-5 text-red" />
-          <p className="body_small_regular text-red lg:body_medium_regular">
-            {error}
-          </p>
+          <Alert variant="error" paragraph={error} />
         </div>
       )}
     </div>

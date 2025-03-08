@@ -6,7 +6,7 @@ import { api } from './api.service'
 
 export const getProfile = async (): Promise<ApiResponse<{ user: User }>> => {
   try {
-    const response = await api.get('user/profile')
+    const response = await api.get('/user/profile')
     return { data: { user: response.data } }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -25,7 +25,7 @@ export const updateProfile = async (
   userData: Partial<User>
 ): Promise<ApiResponse<{ user: User }>> => {
   try {
-    const response = await api.patch('user/profile', userData)
+    const response = await api.patch('/user/profile', userData)
     return { data: { user: response.data } }
   } catch (error) {
     if (axios.isAxiosError(error)) {

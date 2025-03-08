@@ -1,4 +1,5 @@
 'use client'
+import Alert from '@/components/Alert'
 import Button from '@/components/Button'
 import InputPass from '@/components/InputPass'
 import { authLinks } from '@/constants/links.constants'
@@ -47,7 +48,13 @@ export default function ResetPasswordForm() {
   })
 
   const onSubmit = async (data: { password: string }) => {
-    if (!token) return
+    if (!token) {
+      setError(
+        'No hay token de restablecimiento. Por favor, solicita un nuevo enlace.'
+      )
+      return
+    }
+
     const res = await resetPassword(token, data.password)
 
     if (res.error) {
@@ -89,11 +96,7 @@ export default function ResetPasswordForm() {
           error={errors.confirmPassword?.message}
         />
       </div>
-      {error && (
-        <p className="body_small_regular text-center text-red lg:body_medium_regular">
-          {error}
-        </p>
-      )}
+      {error && <Alert variant="error" paragraph={error} />}
       {successMessage && (
         <p className="body_small_regular text-center text-green-success lg:body_medium_regular">
           {successMessage}

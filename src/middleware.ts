@@ -10,8 +10,13 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(authLinks.login.path, request.url))
   }
 
-  // Si el usuario tiene token y está en /auth/**, redirigir a home
-  if (token && path.startsWith('/auth')) {
+  // Si el usuario tiene token y está en /auth/**, con excepción de forgot-password
+  if (
+    token &&
+    path.startsWith('/auth') &&
+    path !== authLinks.forgotPass.path &&
+    path !== authLinks.resetPass.path
+  ) {
     return NextResponse.redirect(new URL(appLinks.home.path, request.url))
   }
 

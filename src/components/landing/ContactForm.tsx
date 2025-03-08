@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import Alert from '../Alert'
 import Button from '../Button'
 import Input from '../Input'
 import TextArea from '../TextArea'
@@ -88,16 +89,8 @@ export default function ContactForm() {
           placeholder="Escribe tu mensaje aquí"
           {...register('message')}
         />
-        {error && (
-          <p className="body_medium_regular text-center font-medium text-red">
-            {error}
-          </p>
-        )}
-        {success && (
-          <p className="body_medium_regular text-center font-medium text-green-success">
-            {success}
-          </p>
-        )}
+        {error && <Alert variant="error" paragraph={error} />}
+        {success && <Alert variant="success" paragraph={success} />}
         <Button className="mt-16" type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Enviando...' : 'Enviar'}
         </Button>

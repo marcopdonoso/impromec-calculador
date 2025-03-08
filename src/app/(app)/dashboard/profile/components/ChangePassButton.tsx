@@ -11,7 +11,12 @@ export default function ChangePassButton({ disabled }: ChangePassButtonProps) {
   return (
     <div className="flex w-full flex-col gap-1 lg:gap-2">
       <p className="body_small_medium lg:body_medium_medium">Contraseña</p>
-      <Link className="w-full" href={appLinks.profileChangePassword.path}>
+      <Link
+        className={clsx('w-full', {
+          'pointer-events-none': disabled,
+        })}
+        href={appLinks.profileChangePassword.path}
+      >
         <button
           className="flex h-12 w-full items-center justify-between rounded-lg border border-gray-input bg-gray-white px-5 focus:border-gray-placeholder focus:outline-none focus:ring-0 disabled:text-gray-text_inactive"
           disabled={disabled}

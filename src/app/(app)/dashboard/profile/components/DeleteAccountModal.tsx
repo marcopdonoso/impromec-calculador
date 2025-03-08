@@ -5,11 +5,15 @@ import ModalOverlay from '../../calculator/components/ModalOverlay'
 interface DeleteAccountModalProps {
   isModalVisible: boolean
   setIsModalVisible: Dispatch<SetStateAction<boolean>>
+  onConfirmDelete: () => void
+  isDeleting: boolean
 }
 
 export default function DeleteAccountModal({
   isModalVisible,
   setIsModalVisible,
+  onConfirmDelete,
+  isDeleting,
 }: DeleteAccountModalProps) {
   const modalButtons: ModalButton[] = [
     {
@@ -19,7 +23,11 @@ export default function DeleteAccountModal({
         setIsModalVisible(false)
       },
     },
-    { variant: 'destructive', children: 'Eliminar cuenta', onClick: () => {} },
+    {
+      variant: 'destructive',
+      children: isDeleting ? 'Eliminando...' : 'Eliminar cuenta',
+      onClick: onConfirmDelete,
+    },
   ]
 
   return (
