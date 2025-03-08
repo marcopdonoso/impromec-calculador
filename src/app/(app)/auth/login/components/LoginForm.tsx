@@ -79,12 +79,14 @@ export default function LoginForm() {
           error={errors.password?.message}
         />
       </div>
-      <Link
-        href={authLinks.forgotPass.path}
-        className="body_small_regular mb-20 mt-1 w-full text-end text-gray-text_alt"
-      >
-        ¿Olvidaste tu contraseña?
-      </Link>
+      <div className="mb-20 mt-1 w-full text-end">
+        <Link
+          href={authLinks.forgotPass.path}
+          className="body_small_regular text-gray-text_alt"
+        >
+          ¿Olvidaste tu contraseña?
+        </Link>
+      </div>
 
       {showResendVerification && (
         <div className="mb-4">
