@@ -42,13 +42,15 @@ export default function ProfileAvatar({
         />
       </label>
       {avatarImage ? (
-        <Image
-          src={avatarImage}
-          alt="avatar"
-          height={80}
-          width={80}
-          className="h-20 w-auto rounded-full"
-        />
+        <div className="bg-gray-100 flex h-20 w-20 items-center justify-center overflow-hidden rounded-full">
+          <Image
+            src={avatarImage}
+            alt="avatar"
+            width={80}
+            height={80}
+            className="object-contain"
+          />
+        </div>
       ) : (
         <InitialsAvatar
           name={user.name}

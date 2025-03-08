@@ -6,12 +6,13 @@ export default function UserSection({ user }: { user: User }) {
   return (
     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4">
       {user.avatar ? (
-        <div className="relative size-11 overflow-hidden rounded-full">
+        <div className="bg-gray-100 flex size-11 items-center justify-center overflow-hidden rounded-full">
           <Image
             src={user.avatar}
-            alt="user_avatar"
-            fill
-            sizes="(max-width: 1024px) 30vw, (max-width: 1536px) 20vw"
+            alt="avatar"
+            width={44}
+            height={44}
+            className="object-contain"
           />
         </div>
       ) : (
