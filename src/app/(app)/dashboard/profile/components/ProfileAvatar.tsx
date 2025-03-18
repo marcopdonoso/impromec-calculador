@@ -36,7 +36,7 @@ export default function ProfileAvatar({
       >
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg, image/png, image/jpg, image/webp"
           onChange={handleNewImageFileChange}
           className="hidden"
         />
@@ -48,7 +48,7 @@ export default function ProfileAvatar({
             alt="avatar"
             width={80}
             height={80}
-            className="object-contain"
+            className="object-cover w-full h-full"
           />
         </div>
       ) : (
