@@ -33,7 +33,7 @@ export default function ButtonsGroup({
       const response = await deleteAccount()
       if (response.data) {
         await logoutUser()
-        router.push(authLinks.login.path)
+        router.push(authLinks.deletedAccount.path)
       }
     } catch (error) {
       console.log('Error al eliminar la cuenta:', error)

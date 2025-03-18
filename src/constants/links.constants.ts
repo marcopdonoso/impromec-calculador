@@ -65,6 +65,10 @@ export const authLinks = {
     name: 'Registro exitoso',
     path: '/auth/register-email-sended',
   },
+  deletedAccount: {
+    name: 'Cuenta eliminada',
+    path: '/auth/deleted-account',
+  },
 }
 
 export const appLinks = {
