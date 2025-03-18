@@ -62,7 +62,7 @@ export default function ChangePasswordPage() {
       reset()
       setTimeout(() => {
         router.push(appLinks.profile.path)
-      }, 2000)
+      }, 5000)
     }
 
     if (response.error) {
@@ -81,7 +81,7 @@ export default function ChangePasswordPage() {
       <div className="relative flex flex-col items-center justify-center rounded-2xl border border-gray-placeholder bg-gray-white px-2 pb-12 pt-16 lg:px-28 lg:pt-14">
         <ProfileAvatar user={user} isFormDisabled={true} />
 
-        <div className="w-full lg:flex lg:items-end lg:gap-8">
+        <div className="w-full lg:items-end lg:gap-8">
           {error && (
             <div className="mb-4 w-full">
               <Alert variant="error" paragraph={error} />
