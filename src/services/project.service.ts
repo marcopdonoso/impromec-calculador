@@ -263,6 +263,36 @@ export interface AddCableToProjectResponse {
   } | null
 }
 
+export interface DeleteCableFromSectorResponse {
+  data: {
+    sector: {
+      id: string
+      sectorName: string
+      cablesCount: number
+    }
+    project: {
+      id: string
+      projectName: string
+    }
+  } | null
+  error: {
+    message: string
+  } | null
+}
+
+export interface DeleteCableFromProjectResponse {
+  data: {
+    project: {
+      id: string
+      projectName: string
+      cablesCount: number
+    }
+  } | null
+  error: {
+    message: string
+  } | null
+}
+
 /**
  * Agrega un cable directamente a un proyecto (sin sectores)
  * @param projectId ID del proyecto
@@ -304,6 +334,101 @@ export const addCableToProject = async (
       data: null,
       error: {
         message: error.response?.data?.message || 'Error al agregar el cable'
+      }
+    }
+  }
+}
+
+/**
+ * Elimina un cable de un sector
+ * @param projectId ID del proyecto
+ * @param sectorId ID del sector
+ * @param cableId ID del cable a eliminar
+ * @returns Respuesta con la confirmación o error
+ */
+export const deleteCableFromSector = async (
+  projectId: string,
+  sectorId: string,
+  cableId: string
+): Promise<DeleteCableFromSectorResponse> => {
+  try {
+    const response = await api.delete<ApiResponse<{
+      sector: {
+        id: string
+        sectorName: string
+        cablesCount: number
+      },
+      project: {
+        id: string
+        projectName: string
+      }
+    }>>(`/projects/${projectId}/sectors/${sectorId}/cables/${cableId}`)
+    
+    if (response.data.success) {
+      return {
+        data: {
+          sector: response.data.sector,
+          project: response.data.project
+        },
+        error: null
+      }
+    } else {
+      return {
+        data: null,
+        error: {
+          message: response.data.message || 'Error al eliminar el cable'
+        }
+      }
+    }
+  } catch (error: any) {
+    return {
+      data: null,
+      error: {
+        message: error.response?.data?.message || 'Error al eliminar el cable'
+      }
+    }
+  }
+}
+
+/**
+ * Elimina un cable directamente de un proyecto (sin sectores)
+ * @param projectId ID del proyecto
+ * @param cableId ID del cable a eliminar
+ * @returns Respuesta con la confirmación o error
+ */
+export const deleteCableFromProject = async (
+  projectId: string,
+  cableId: string
+): Promise<DeleteCableFromProjectResponse> => {
+  try {
+    const response = await api.delete<ApiResponse<{
+      project: {
+        id: string
+        projectName: string
+        cablesCount: number
+      }
+    }>>(`/projects/${projectId}/cables/${cableId}`)
+    
+    if (response.data.success) {
+      return {
+        data: {
+          project: response.data.project
+        },
+        error: null
+      }
+    } else {
+      return {
+        data: null,
+        error: {
+          message: response.data.message || 'Error al eliminar el cable'
+        }
+      }
+    }
+  } catch (error: any) {
+    return {
+      data: null,
+      error: {
+        message: error.response?.data?.message || 'Error al eliminar el cable'
       }
     }
   }

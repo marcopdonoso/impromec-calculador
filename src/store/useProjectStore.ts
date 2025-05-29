@@ -1,6 +1,6 @@
 import { Project, Sector } from '@/models/project.model'
 import { CableInTray } from '@/models/cable.model'
-import { addCableToProject, addCableToSector, getProjectById } from '@/services/project.service'
+import { addCableToProject, addCableToSector, deleteCableFromProject, deleteCableFromSector, getProjectById } from '@/services/project.service'
 import { create } from 'zustand'
 
 interface ProjectState {
@@ -11,6 +11,7 @@ interface ProjectState {
   fetchProject: (projectId: string) => Promise<void>
   clearProject: () => void
   addCable: (projectId: string, sectorId: string | null, cableData: any) => Promise<CableInTray | null>
+  deleteCable: (projectId: string, sectorId: string | null, cableId: string) => Promise<boolean>
 }
 
 export const useProjectStore = create<ProjectState>((set, get) => ({
@@ -48,6 +49,41 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     }
   },
   clearProject: () => set({ currentProject: null, error: null }),
+  deleteCable: async (projectId, sectorId, cableId) => {
+    try {
+      set({ isLoading: true, error: null })
+      
+      // Si hay sectorId, eliminar el cable del sector
+      // Si no hay sectorId, eliminar el cable directamente del proyecto
+      const response = sectorId 
+        ? await deleteCableFromSector(projectId, sectorId, cableId)
+        : await deleteCableFromProject(projectId, cableId)
+
+      if (response.error) {
+        set({ 
+          error: response.error.message, 
+          isLoading: false
+        })
+        return false
+      }
+
+      // Volver a cargar el proyecto para obtener los datos actualizados
+      await get().fetchProject(projectId)
+      
+      set({ 
+        isLoading: false,
+        error: null
+      })
+      
+      return true
+    } catch (error) {
+      set({ 
+        error: 'Error al eliminar el cable', 
+        isLoading: false
+      })
+      return false
+    }
+  },
   addCable: async (projectId, sectorId, cableData) => {
     try {
       set({ isLoading: true, error: null })

@@ -22,7 +22,7 @@ interface AddCableFormData {
 export default function AddCableForm({ installationLayerType }: AddCableFormProps) {
   const params = useParams();
   const projectId = params.slug as string;
-  const { currentProject, addCable, isLoading, error } = useProjectStore();
+  const { currentProject, addCable, fetchProject, isLoading, error } = useProjectStore();
   const [selectedCableIndex, setSelectedCableIndex] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   // Verificar el valor de installationLayerType y determinar si es capa única
@@ -58,13 +58,21 @@ export default function AddCableForm({ installationLayerType }: AddCableFormProp
     },
   ];
 
+  // Establecer el primer cable como valor por defecto
+  const defaultCableIndex = 0;
+  
   const { control, handleSubmit, setValue, watch, reset } = useForm<AddCableFormData>({
     defaultValues: {
-      cableIndex: null,
+      cableIndex: defaultCableIndex,
       quantity: 1,
       arrangement: 'horizontal',
     },
   });
+  
+  // Establecer el valor inicial del cable seleccionado
+  useEffect(() => {
+    setSelectedCableIndex(defaultCableIndex);
+  }, []);
 
   // Observar cambios en el índice del cable seleccionado
   const watchCableIndex = watch('cableIndex');
@@ -97,7 +105,8 @@ export default function AddCableForm({ installationLayerType }: AddCableFormProp
   const onSubmit = async (data: AddCableFormData) => {
     setErrorMessage(null);
     
-    if (data.cableIndex === null) {
+    // Verificar que haya un índice de cable válido
+    if (data.cableIndex === null || data.cableIndex === undefined) {
       setErrorMessage('Debe seleccionar un calibre de cable');
       return;
     }
@@ -128,6 +137,9 @@ export default function AddCableForm({ installationLayerType }: AddCableFormProp
         // Éxito: reiniciar el formulario y mostrar mensaje
         reset();
         console.log('Cable agregado exitosamente');
+        
+        // Volver a cargar el proyecto para asegurar que la tabla se actualice
+        await fetchProject(projectId);
       }
     } catch (err) {
       setErrorMessage('Error al guardar el cable');

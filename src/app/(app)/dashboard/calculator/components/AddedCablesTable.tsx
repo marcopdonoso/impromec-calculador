@@ -3,7 +3,7 @@ import { CableInTray } from '@/models/cable.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
 
 interface AddedCablesTableProps {
-  handleDelete?: (index: number) => void
+  handleDelete: (cableId: string, dataRowIndex: number) => void
   cablesInTray: CableInTray[]
 }
 
@@ -25,6 +25,7 @@ export default function AddedCablesTable({
     'Calibre en AWG': string
     Cantidad: number
     Disposición?: string
+    id?: string // ID del cable para la eliminación
   }
 
   const dataRows: DataRow[] = cablesInTray.map((cableInTray, index) => {
@@ -36,14 +37,23 @@ export default function AddedCablesTable({
       Disposición:
         cableInTray.arrangement &&
         capitalizeFirstLetter(cableInTray.arrangement),
+      id: cableInTray.id // Guardar el ID del cable
     }
   })
+
+  const handleDeleteWithId = (dataRowIndex: number) => {
+    // Obtener el ID del cable desde los datos de la fila
+    const cableId = dataRows[dataRowIndex].id;
+    if (cableId) {
+      handleDelete(cableId, dataRowIndex);
+    }
+  };
 
   return (
     <SelectedItemsTable
       headers={headers}
       dataRows={dataRows}
-      handleDelete={handleDelete}
+      handleDelete={handleDeleteWithId}
     />
   )
 }
