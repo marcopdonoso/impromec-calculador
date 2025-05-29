@@ -16,11 +16,24 @@ export interface Sector {
   results: Results | null
 }
 
+export interface DefaultSector {
+  id: string
+  sectorName: string
+}
+
 export interface Project {
-  id: `${string}-${string}-${string}-${string}-${string}`
+  id: string
   projectName: string
   projectCompany: string
   projectLocation: string
-  sectors: Sector[] | null
-  createdAt: string
+  hasSectors: boolean
+  sectors?: Sector[] | null // Para proyectos con sectores (hasSectors: true)
+  defaultSector?: DefaultSector | null // Para proyectos sin sectores (hasSectors: false)
+  cables?: CableInTray[] | null // Para proyectos sin sectores (hasSectors: false)
+  // Propiedades adicionales para proyectos sin sectores
+  trayTypeSelection?: TrayType | null // Para proyectos sin sectores
+  reservePercentage?: number // Para proyectos sin sectores
+  installationLayerSelection?: InstallationLayerType | null // Para proyectos sin sectores
+  results?: Results | null // Para proyectos sin sectores
+  createdAt?: string
 }

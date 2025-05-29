@@ -7,7 +7,7 @@ import {
   RadioGroupProps,
 } from '@headlessui/react'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export interface RadioGroupItem {
   label: string
@@ -26,7 +26,7 @@ export default function MyRadiogroup({
   className,
   ...props
 }: MyRadiogroupProps) {
-  const [selected, setSelected] = useState(items[0].value)
+  const [selected, setSelected] = useState(props.defaultValue || items[0].value)
 
   const handleSelect = (value: any) => {
     setSelected(value)
@@ -34,6 +34,13 @@ export default function MyRadiogroup({
       onChange(value)
     }
   }
+  
+  // Asegurarse de que el valor seleccionado se actualice cuando cambia defaultValue
+  useEffect(() => {
+    if (props.defaultValue) {
+      setSelected(props.defaultValue);
+    }
+  }, [props.defaultValue]);
 
   return (
     <RadioGroup

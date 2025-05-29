@@ -7,9 +7,10 @@ import AddedCablesTable from './AddedCablesTable'
 
 interface CablesProps {
   cablesInTray: CableInTray[]
+  installationLayerType: string | null
 }
 
-export default function Cables({ cablesInTray }: CablesProps) {
+export default function Cables({ cablesInTray, installationLayerType }: CablesProps) {
   const handleDelete = (dataRowIndex: number) => {
     console.log('delete ' + dataRowIndex) // TODO: Agregar lógica de eliminado de cable seleccionado para el cálculo
   }
@@ -24,7 +25,7 @@ export default function Cables({ cablesInTray }: CablesProps) {
           <AddedCablesTable handleDelete={handleDelete} cablesInTray={cablesInTray} />
         </div>
       )}
-      <AddCableForm />
+      <AddCableForm installationLayerType={installationLayerType} />
       <div className="mt-4 px-2 lg:mt-6 lg:px-0">
         <Button variant="add" icon={<PlusCircleIcon />}>
           Agregar cable

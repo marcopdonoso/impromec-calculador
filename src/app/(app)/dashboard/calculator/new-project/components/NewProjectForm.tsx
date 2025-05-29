@@ -51,10 +51,8 @@ export default function NewProjectForm() {
           // Si tiene sectores, redirigir a la página para agregar sectores
           router.push(`/dashboard/calculator/edit-project/add-sector?projectId=${data.project.id}`)
         } else {
-          // Si no tiene sectores, por ahora no hacemos nada adicional
-          // En el futuro, redirigir a la página de edición del proyecto
-          // router.push(`/dashboard/calculator/edit-project/${data.project.id}`)
-          router.push(appLinks.calculatorHome.path)
+          // Si no tiene sectores, redirigir directamente a la página de edición del proyecto
+          router.push(`/dashboard/calculator/edit-project/${data.project.id}`)
         }
       }
     } catch (error) {

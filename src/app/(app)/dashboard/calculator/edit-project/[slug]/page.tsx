@@ -64,13 +64,27 @@ export default function EditProjectPage() {
     <section className="flex min-h-screen w-full max-w-4xl flex-col gap-6 px-2 pb-20 pt-8 lg:gap-12">
       <PreventNavigation backHref="/" />
 
-      {currentProject.sectors && currentProject.sectors.length > 0 && (
+      {/* Mostrar la lista de sectores solo si el proyecto tiene sectores */}
+      {currentProject.hasSectors && currentProject.sectors && currentProject.sectors.length > 0 && (
         <SectorsList sectors={currentProject.sectors} />
       )}
+      
+      {/* Mostrar la información general del proyecto */}
       <ProjectOverview project={currentProject} />
-      <DataForCalculation 
-        currentSector={currentProject.sectors && currentProject.sectors.length > 0 ? currentProject.sectors[0] : null} 
-      />
+      
+      {/* Mostrar los datos para cálculo según el tipo de proyecto */}
+      {currentProject.hasSectors ? (
+        // Para proyectos con sectores, pasar el primer sector
+        <DataForCalculation 
+          currentSector={currentProject.sectors && currentProject.sectors.length > 0 ? currentProject.sectors[0] : null} 
+        />
+      ) : (
+        // Para proyectos sin sectores, pasar el proyecto completo
+        <DataForCalculation 
+          currentProject={currentProject}
+        />
+      )}
+      
       <SaveAndCalc />
     </section>
   )
