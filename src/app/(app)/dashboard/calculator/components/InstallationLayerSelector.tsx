@@ -1,7 +1,15 @@
 import MyRadiogroup, { RadioGroupItem } from '@/components/MyRadiogroup'
 import { InstallationLayerType } from '@/models/project.model'
 
-export default function InstallationLayerSelector() {
+interface InstallationLayerSelectorProps {
+  installationLayerType?: InstallationLayerType | null
+  hasCables?: boolean | null
+}
+
+export default function InstallationLayerSelector({
+  installationLayerType,
+  hasCables = false,
+}: InstallationLayerSelectorProps) {
   const items: RadioGroupItem[] = [
     {
       label: 'Cables en una sola capa',
@@ -13,8 +21,11 @@ export default function InstallationLayerSelector() {
     },
   ]
 
-  // TODO: CAMBIAR A VERIFICACIÓN REAL
-  const isCablesArrayEmpty = false
+  // Usar el valor del backend o 'singleLayer' por defecto
+  const defaultValue = installationLayerType || 'singleLayer'
+  
+  // Verificar si hay cables
+  const isCablesArrayEmpty = !hasCables
 
   return (
     <div>
@@ -28,6 +39,7 @@ export default function InstallationLayerSelector() {
           items={items}
           className="flex flex-col gap-4 lg:flex-row lg:justify-around"
           disabled={isCablesArrayEmpty}
+          defaultValue={defaultValue}
         />
       </div>
     </div>

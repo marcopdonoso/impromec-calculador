@@ -1,6 +1,11 @@
+import { Project } from '@/models/project.model'
 import ProjectOverviewContent from './ProjectOverviewContent'
 
-export default function ProjectOverview() {
+interface ProjectOverviewProps {
+  project: Project
+}
+
+export default function ProjectOverview({ project }: ProjectOverviewProps) {
   return (
     <div className="px-2 lg:px-0">
       <div className="mb-4 flex h-12 items-center rounded-lg bg-gray-input px-5 lg:mb-8">
@@ -8,7 +13,7 @@ export default function ProjectOverview() {
           Resumen de tu proyecto
         </h4>
       </div>
-      <ProjectOverviewContent />
+      <ProjectOverviewContent project={project} />
     </div>
   )
 }

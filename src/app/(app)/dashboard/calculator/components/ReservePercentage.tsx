@@ -1,11 +1,15 @@
 import MySlider from '@/components/MySlider'
 import clsx from 'clsx'
 
+interface ReservePercentageProps {
+  className?: string
+  value?: number
+}
+
 export default function ReservePercentage({
   className,
-}: {
-  className?: string
-}) {
+  value = 30, // Valor por defecto si no se proporciona
+}: ReservePercentageProps) {
   return (
     <div
       className={clsx(
@@ -25,7 +29,7 @@ export default function ReservePercentage({
         </p>
       </div>
       <div className="lg:w-[416px]">
-        <MySlider />
+        <MySlider initialValue={value} />
       </div>
     </div>
   )

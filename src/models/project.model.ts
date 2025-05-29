@@ -7,10 +7,11 @@ export interface Results {
   otherRecommendedOptions: Tray[] | null
 }
 export interface Sector {
+  id?: string
   sectorName: string | null
-  trayTypeSelection: TrayType
+  trayTypeSelection: TrayType | null
   reservePercentage: number
-  installationLayerSelection: InstallationLayerType
+  installationLayerSelection: InstallationLayerType | null
   cablesInTray: CableInTray[] | null
   results: Results | null
 }

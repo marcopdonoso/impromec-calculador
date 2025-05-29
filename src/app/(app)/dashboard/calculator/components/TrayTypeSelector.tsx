@@ -2,11 +2,15 @@ import MyRadiogroup, { RadioGroupItem } from '@/components/MyRadiogroup'
 import { TrayType } from '@/models/tray.model'
 import clsx from 'clsx'
 
+interface TrayTypeSelectorProps {
+  className?: string
+  selectedType?: TrayType | null
+}
+
 export default function TrayTypeSelector({
   className,
-}: {
-  className?: string
-}) {
+  selectedType,
+}: TrayTypeSelectorProps) {
   const trayTypes: RadioGroupItem[] = [
     {
       label: 'Escalerilla',
@@ -15,6 +19,10 @@ export default function TrayTypeSelector({
     },
     { label: 'Canal', value: 'canal' as TrayType, image: 'canal' },
   ]
+
+  // Si no hay un tipo seleccionado, usar escalerilla por defecto
+  const defaultValue = selectedType || 'escalerilla'
+
   return (
     <div
       className={clsx(
@@ -33,6 +41,7 @@ export default function TrayTypeSelector({
       <MyRadiogroup
         items={trayTypes}
         className="flex justify-center gap-x-4 lg:gap-x-8"
+        defaultValue={defaultValue}
       />
     </div>
   )

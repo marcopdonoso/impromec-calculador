@@ -46,9 +46,16 @@ export default function NewProjectForm() {
       }
 
       if (data) {
-        // Redirigir al usuario a la siguiente página después de crear el proyecto
-        // Por ahora, volvemos a la calculadora, pero esto debería cambiar según el flujo de la aplicación
-        router.push(appLinks.calculatorHome.path)
+        // Redirigir según si el proyecto tiene sectores o no
+        if (formData.hasSectors) {
+          // Si tiene sectores, redirigir a la página para agregar sectores
+          router.push(`/dashboard/calculator/edit-project/add-sector?projectId=${data.project.id}`)
+        } else {
+          // Si no tiene sectores, por ahora no hacemos nada adicional
+          // En el futuro, redirigir a la página de edición del proyecto
+          // router.push(`/dashboard/calculator/edit-project/${data.project.id}`)
+          router.push(appLinks.calculatorHome.path)
+        }
       }
     } catch (error) {
       setError('Error al procesar la solicitud')
