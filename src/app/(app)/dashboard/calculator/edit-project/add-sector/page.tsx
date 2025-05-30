@@ -1,16 +1,17 @@
 'use client'
 
+import Alert from '@/components/Alert'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
-import { Suspense, useState } from 'react'
-import DeleteSingleSectorMessageWrapper from './components/DeleteSingleSectorMessageWrapper'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { createSector } from '@/services/project.service'
-import Alert from '@/components/Alert'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, Controller } from 'react-hook-form'
 import { appLinks } from '@/constants/links.constants'
+import { createSector } from '@/services/project.service'
+import { useProjectStore } from '@/store/useProjectStore'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import DeleteSingleSectorMessageWrapper from './components/DeleteSingleSectorMessageWrapper'
 
 // Esquema de validación para el formulario de sector
 const sectorSchema = z.object({
@@ -30,6 +31,8 @@ export default function AddSectorPage() {
   const projectId = searchParams.get('projectId')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [sectorNumber, setSectorNumber] = useState(1)
+  const { currentProject, fetchProject } = useProjectStore()
 
   const {
     control,
@@ -61,8 +64,12 @@ export default function AddSectorPage() {
       }
 
       if (data) {
-        // Redirigir a la página principal de la calculadora o a la página de edición del proyecto
-        router.push(appLinks.calculatorHome.path)
+        // Redirigir a la página de edición del proyecto
+        const editProjectUrl = `${appLinks.calculatorEditProject.path}/${projectId}`;
+        console.log(`Redirigiendo a: ${editProjectUrl}`);
+        
+        // Usar window.location para una redirección directa del navegador
+        window.location.href = editProjectUrl;
       }
     } catch (error) {
       setError('Error al procesar la solicitud')
@@ -71,15 +78,45 @@ export default function AddSectorPage() {
     }
   }
 
+  // Cargar el proyecto para obtener los sectores existentes
+  useEffect(() => {
+    const loadProject = async () => {
+      if (projectId) {
+        try {
+          // Cargar el proyecto usando el store
+          await fetchProject(projectId)
+        } catch (err) {
+          console.error('Error al cargar el proyecto:', err)
+          setError('Error al cargar el proyecto')
+        }
+      }
+    }
+
+    loadProject()
+  }, [projectId, fetchProject])
+
+  // Actualizar el número del sector cuando se carga el proyecto
+  useEffect(() => {
+    if (currentProject && currentProject.sectors) {
+      // El número del nuevo sector será el total de sectores + 1
+      setSectorNumber(currentProject.sectors.length + 1)
+    }
+  }, [currentProject])
+
   // Si no hay ID de proyecto, mostrar un mensaje de error
   if (!projectId) {
     return (
       <section className="flex min-h-screen w-full max-w-4xl flex-col px-4 pt-8">
         <div className="mt-6">
-          <Alert variant="error" paragraph="No se encontró el ID del proyecto. Por favor, intenta crear el proyecto nuevamente." />
+          <Alert
+            variant="error"
+            paragraph="No se encontró el ID del proyecto. Por favor, intenta crear el proyecto nuevamente."
+          />
         </div>
         <div className="mt-8">
-          <Button onClick={() => router.push(appLinks.calculatorHome.path)}>Volver al inicio</Button>
+          <Button onClick={() => router.push(appLinks.calculatorHome.path)}>
+            Volver al inicio
+          </Button>
         </div>
       </section>
     )
@@ -93,7 +130,7 @@ export default function AddSectorPage() {
           control={control}
           render={({ field }) => (
             <Input
-              label="Nombre del sector [1]"
+              label={`Nombre del sector ${sectorNumber}`}
               placeholder="Ej: Sala de servidores"
               className="mb-16 lg:mb-6"
               error={errors.sectorName?.message}
@@ -101,16 +138,20 @@ export default function AddSectorPage() {
             />
           )}
         />
-        
-        {error && <div className="mb-6"><Alert variant="error" paragraph={error} /></div>}
-        
+
+        {error && (
+          <div className="mb-6">
+            <Alert variant="error" paragraph={error} />
+          </div>
+        )}
+
         <div className="flex flex-col gap-4 lg:flex-row-reverse lg:gap-9">
           <Button type="submit" disabled={loading}>
             {loading ? 'Guardando...' : 'Guardar sector'}
           </Button>
-          <Button 
-            variant="secondary" 
-            type="button" 
+          <Button
+            variant="secondary"
+            type="button"
             onClick={() => router.push(appLinks.calculatorHome.path)}
           >
             Volver atrás
