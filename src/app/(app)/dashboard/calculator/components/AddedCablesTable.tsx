@@ -1,6 +1,7 @@
 import SelectedItemsTable from '@/components/SelectedItemsTable'
 import { CableInTray } from '@/models/cable.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
+import { getArrangementDisplayText } from '@/utilities/cable-arrangement.utility'
 
 interface AddedCablesTableProps {
   handleDelete: (cableId: string, dataRowIndex: number) => void
@@ -36,7 +37,7 @@ export default function AddedCablesTable({
       Cantidad: cableInTray.quantity,
       Disposición:
         cableInTray.arrangement &&
-        capitalizeFirstLetter(cableInTray.arrangement),
+        getArrangementDisplayText(cableInTray.arrangement),
       id: cableInTray.id // Guardar el ID del cable
     }
   })

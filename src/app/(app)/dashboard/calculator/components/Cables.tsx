@@ -19,6 +19,7 @@ export default function Cables({ cablesInTray, installationLayerType }: CablesPr
   const { currentProject, deleteCable, fetchProject } = useProjectStore();
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showAddCableForm, setShowAddCableForm] = useState(false);
   
   // Determinar si el proyecto tiene sectores
   const hasSectors = currentProject?.hasSectors;
@@ -78,12 +79,22 @@ export default function Cables({ cablesInTray, installationLayerType }: CablesPr
           <AddedCablesTable handleDelete={handleDelete} cablesInTray={cablesInTray} />
         </div>
       )}
-      <AddCableForm installationLayerType={installationLayerType} />
-      <div className="mt-4 px-2 lg:mt-6 lg:px-0">
-        <Button variant="add" icon={<PlusCircleIcon />}>
-          Agregar cable
-        </Button>
-      </div>
+      {showAddCableForm ? (
+        <AddCableForm 
+          installationLayerType={installationLayerType} 
+          onSave={() => setShowAddCableForm(false)}
+        />
+      ) : (
+        <div className="mt-4 px-2 lg:mt-6 lg:px-0">
+          <Button 
+            variant="add" 
+            icon={<PlusCircleIcon />} 
+            onClick={() => setShowAddCableForm(true)}
+          >
+            Agregar cable
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

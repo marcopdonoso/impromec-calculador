@@ -1,16 +1,17 @@
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import MyListbox, { Option } from '@/components/MyListbox'
-import { OptionCategory } from '@/constants/specialization-areas.constants'
-import { cables } from '@/constants/cables.constants'
-import { Cable, CableArrangementType } from '@/models/cable.model'
-import { useProjectStore } from '@/store/useProjectStore'
-import { useState, useEffect } from 'react'
+import { Cable, CableArrangementType, CableInTray } from '@/models/cable.model'
 import { Controller, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { useProjectStore } from '@/store/useProjectStore'
+import { cables } from '@/constants/cables.constants'
+import { CABLE_ARRANGEMENT_OPTIONS } from '@/utilities/cable-arrangement.utility'
 
 interface AddCableFormProps {
   installationLayerType: string | null
+  onSave?: () => void
 }
 
 interface AddCableFormData {
@@ -19,7 +20,7 @@ interface AddCableFormData {
   arrangement: CableArrangementType | null
 }
 
-export default function AddCableForm({ installationLayerType }: AddCableFormProps) {
+export default function AddCableForm({ installationLayerType, onSave }: AddCableFormProps) {
   const params = useParams();
   const projectId = params.slug as string;
   const { currentProject, addCable, fetchProject, isLoading, error } = useProjectStore();
@@ -37,26 +38,21 @@ export default function AddCableForm({ installationLayerType }: AddCableFormProp
     currentProject?.defaultSector?.id || null;
 
   // Crear las opciones para los listbox
-  const cableGaugesMM2: Option[] = cables.map((cable, index) => ({
+  const cableGaugesMM2: Option[] = cables.map((cable: Cable, index: number) => ({
     text: `${cable.nominalSectionMM2} mm²`,
     value: index.toString(),
   }));
 
-  const cableGaugesAWG: Option[] = cables.map((cable, index) => ({
+  const cableGaugesAWG: Option[] = cables.map((cable: Cable, index: number) => ({
     text: `${cable.nominalSectionAWG} AWG`,
     value: index.toString(),
   }));
 
-  const cableArrangement: Option[] = [
-    {
-      text: 'Horizontal',
-      value: 'horizontal' as CableArrangementType,
-    },
-    {
-      text: 'Trébol',
-      value: 'clover' as CableArrangementType,
-    },
-  ];
+  // Convertir las opciones de disposición de cables al formato requerido por el componente MyListbox
+  const cableArrangement: Option[] = CABLE_ARRANGEMENT_OPTIONS.map((option: any) => ({
+    text: option.text,
+    value: option.value,
+  }));
 
   // Establecer el primer cable como valor por defecto
   const defaultCableIndex = 0;
@@ -93,12 +89,12 @@ export default function AddCableForm({ installationLayerType }: AddCableFormProp
   }, [installationLayerType, setValue]);
 
   // Manejar el cambio en el listbox de mm²
-  const handleMM2Change = (option: Option | OptionCategory) => {
+  const handleMM2Change = (option: Option) => {
     setValue('cableIndex', parseInt(option.value.toString()));
   };
 
   // Manejar el cambio en el listbox de AWG
-  const handleAWGChange = (option: Option | OptionCategory) => {
+  const handleAWGChange = (option: Option) => {
     setValue('cableIndex', parseInt(option.value.toString()));
   };
 
@@ -140,6 +136,11 @@ export default function AddCableForm({ installationLayerType }: AddCableFormProp
         
         // Volver a cargar el proyecto para asegurar que la tabla se actualice
         await fetchProject(projectId);
+        
+        // Llamar a la función onSave si existe
+        if (onSave) {
+          onSave();
+        }
       }
     } catch (err) {
       setErrorMessage('Error al guardar el cable');
@@ -223,8 +224,22 @@ export default function AddCableForm({ installationLayerType }: AddCableFormProp
             />
           </div>
         </div>
-        <div className="text-center">
-          <Button className="lg:max-w-md" type="submit" disabled={isLoading}>
+        <div className="flex justify-center gap-4">
+          <Button 
+            className="lg:max-w-md" 
+            type="button" 
+            variant="secondary"
+            onClick={() => {
+              if (onSave) onSave();
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button 
+            className="lg:max-w-md" 
+            type="submit" 
+            disabled={isLoading}
+          >
             {isLoading ? 'Guardando...' : 'Guardar cable'}
           </Button>
         </div>
