@@ -39,14 +39,18 @@ export default function DeleteSectorModal({
         return
       }
       
-      // Actualizar el proyecto en el store para reflejar los cambios
-      await fetchProject(projectId)
-      
       // Cerrar el modal
       setShowModal(false)
       
-      // Refrescar la página para mostrar los cambios
-      router.refresh()
+      // Verificar si este era el último sector del proyecto
+      if (response.project && response.project.sectorsCount === 0) {
+        // Si era el último sector, redirigir a la página de agregar sector con el mensaje
+        router.push(`/dashboard/calculator/edit-project/add-sector?projectId=${projectId}&showDeleteSingleSectorMessage=true`)
+      } else {
+        // Si no era el último, solo actualizar el proyecto y refrescar
+        await fetchProject(projectId)
+        router.refresh()
+      }
       
     } catch (error) {
       console.error('Error al eliminar el sector:', error)
