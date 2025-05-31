@@ -3,6 +3,12 @@ import { CableInTray } from '@/models/cable.model'
 import { addCableToProject, addCableToSector, deleteCableFromProject, deleteCableFromSector, getProjectById } from '@/services/project.service'
 import { create } from 'zustand'
 
+interface CableData {
+  cable: any
+  quantity: number
+  arrangement?: string
+}
+
 interface ProjectState {
   currentProject: Project | null
   isLoading: boolean
@@ -10,7 +16,7 @@ interface ProjectState {
   setCurrentProject: (project: Project | null) => void
   fetchProject: (projectId: string) => Promise<void>
   clearProject: () => void
-  addCable: (projectId: string, sectorId: string | null, cableData: any) => Promise<CableInTray | null>
+  addCable: (projectId: string, sectorId: string | null, cableData: CableData) => Promise<CableInTray | null>
   deleteCable: (projectId: string, sectorId: string | null, cableId: string) => Promise<boolean>
 }
 
@@ -18,8 +24,8 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   currentProject: null,
   isLoading: false,
   error: null,
-  setCurrentProject: (project) => set({ currentProject: project }),
-  fetchProject: async (projectId) => {
+  setCurrentProject: (project: Project | null) => set({ currentProject: project }),
+  fetchProject: async (projectId: string) => {
     try {
       set({ isLoading: true, error: null })
       const response = await getProjectById(projectId)
@@ -49,7 +55,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     }
   },
   clearProject: () => set({ currentProject: null, error: null }),
-  deleteCable: async (projectId, sectorId, cableId) => {
+  deleteCable: async (projectId: string, sectorId: string | null, cableId: string) => {
     try {
       set({ isLoading: true, error: null })
       
@@ -84,9 +90,14 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       return false
     }
   },
-  addCable: async (projectId, sectorId, cableData) => {
+  addCable: async (projectId: string, sectorId: string | null, cableData: CableData) => {
     try {
       set({ isLoading: true, error: null })
+      console.log('addCable - Iniciando proceso de agregar cable:', {
+        projectId,
+        sectorId,
+        cableData
+      });
       
       // Si hay sectorId, agregar el cable al sector
       // Si no hay sectorId, agregar el cable directamente al proyecto
@@ -95,6 +106,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
         : await addCableToProject(projectId, cableData)
 
       if (response.error) {
+        console.error('addCable - Error al agregar cable:', response.error);
         set({ 
           error: response.error.message, 
           isLoading: false
@@ -103,64 +115,28 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       }
 
       if (response.data) {
-        // Actualizar el proyecto actual con el nuevo cable
-        const currentProject = get().currentProject
+        console.log('addCable - Cable agregado exitosamente:', response.data);
         
-        if (currentProject) {
-          if (sectorId) {
-            // Caso con sectores: Encontrar el sector al que se agregó el cable
-            const updatedSectors = currentProject.sectors?.map(sector => {
-              if (sector.id === sectorId) {
-                // Agregar el nuevo cable al sector
-                const updatedCablesInTray = sector.cablesInTray ? 
-                  [...sector.cablesInTray, response.data!.cable] : 
-                  [response.data!.cable]
-                
-                return {
-                  ...sector,
-                  cablesInTray: updatedCablesInTray
-                }
-              }
-              return sector
-            })
-            
-            // Actualizar el proyecto con los sectores actualizados
-            set({ 
-              currentProject: {
-                ...currentProject,
-                sectors: updatedSectors || null
-              },
-              isLoading: false,
-              error: null
-            })
-          } else {
-            // Caso sin sectores: Agregar el cable directamente al proyecto
-            const updatedCables = currentProject.cables ? 
-              [...currentProject.cables, response.data!.cable] : 
-              [response.data!.cable]
-            
-            // Actualizar el proyecto con el nuevo cable
-            set({ 
-              currentProject: {
-                ...currentProject,
-                cables: updatedCables
-              },
-              isLoading: false,
-              error: null
-            })
-          }
-        }
+        // En lugar de actualizar manualmente el estado, vamos a recargar el proyecto completo
+        // para asegurarnos de que tenemos los datos más actualizados del backend
+        console.log('addCable - Recargando proyecto para actualizar estado...');
+        await get().fetchProject(projectId);
+        console.log('addCable - Proyecto recargado exitosamente');
         
+        // Devolver el cable agregado
         return response.data.cable
       }
       
+      console.log('addCable - No se recibieron datos en la respuesta');
+      set({ isLoading: false });
       return null
     } catch (error) {
+      console.error('addCable - Error inesperado:', error);
       set({ 
         error: 'Error al agregar el cable', 
         isLoading: false
       })
       return null
     }
-  }
+  },
 }))

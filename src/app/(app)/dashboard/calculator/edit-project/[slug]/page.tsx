@@ -7,6 +7,7 @@ import SectorsList from '../../components/SectorsList'
 import PreventNavigation from './components/PreventNavigation'
 import { useProjectStore } from '@/store/useProjectStore'
 import { useEffect, useState } from 'react'
+import { Sector } from '@/models/project.model'
 import Alert from '@/components/Alert'
 import { useParams, useRouter } from 'next/navigation'
 import { appLinks } from '@/constants/links.constants'
@@ -17,6 +18,8 @@ export default function EditProjectPage() {
   const router = useRouter()
   const { currentProject, isLoading, error, fetchProject } = useProjectStore()
   const [showError, setShowError] = useState(false)
+  // Inicializar el sector activo como null, se actualizará cuando se cargue el proyecto
+  const [activeSector, setActiveSector] = useState<Sector | null>(null)
 
   useEffect(() => {
     if (slug && typeof slug === 'string') {
@@ -29,6 +32,27 @@ export default function EditProjectPage() {
       setShowError(true)
     }
   }, [error])
+
+  // Mantener el sector activo cuando se recarga el proyecto
+  useEffect(() => {
+    if (!isLoading && currentProject && currentProject.hasSectors && currentProject.sectors) {
+      // Si ya hay un sector activo, buscar su equivalente en el proyecto actualizado
+      if (activeSector) {
+        const updatedActiveSector = currentProject.sectors.find(s => s.id === activeSector.id);
+        if (updatedActiveSector) {
+          console.log('Manteniendo el mismo sector activo después de recargar:', updatedActiveSector.sectorName);
+          setActiveSector(updatedActiveSector);
+          return;
+        }
+      }
+      
+      // Si no hay sector activo o no se encontró, establecer el primer sector como activo
+      if (currentProject.sectors.length > 0) {
+        console.log('Estableciendo el primer sector como activo');
+        setActiveSector(currentProject.sectors[0]);
+      }
+    }
+  }, [currentProject, isLoading, activeSector])
 
   if (isLoading) {
     return (
@@ -66,7 +90,11 @@ export default function EditProjectPage() {
 
       {/* Mostrar la lista de sectores solo si el proyecto tiene sectores */}
       {currentProject.hasSectors && currentProject.sectors && currentProject.sectors.length > 0 && (
-        <SectorsList sectors={currentProject.sectors} />
+        <SectorsList 
+          sectors={currentProject.sectors} 
+          onSectorChange={(sector) => setActiveSector(sector)}
+          initialActiveSector={activeSector}
+        />
       )}
       
       {/* Mostrar la información general del proyecto */}
@@ -74,9 +102,10 @@ export default function EditProjectPage() {
       
       {/* Mostrar los datos para cálculo según el tipo de proyecto */}
       {currentProject.hasSectors ? (
-        // Para proyectos con sectores, pasar el primer sector
+        // Para proyectos con sectores, pasar el sector activo Y el proyecto
         <DataForCalculation 
-          currentSector={currentProject.sectors && currentProject.sectors.length > 0 ? currentProject.sectors[0] : null} 
+          currentSector={activeSector || (currentProject.sectors && currentProject.sectors.length > 0 ? currentProject.sectors[0] : null)}
+          currentProject={currentProject} 
         />
       ) : (
         // Para proyectos sin sectores, pasar el proyecto completo
@@ -85,7 +114,16 @@ export default function EditProjectPage() {
         />
       )}
       
-      <SaveAndCalc />
+      <SaveAndCalc 
+        activeSector={activeSector} 
+        hasSectors={currentProject.hasSectors}
+        activeSectorIndex={currentProject.sectors?.findIndex(s => s.id === activeSector?.id) ?? -1}
+        hasCables={currentProject.hasSectors 
+          ? !!((activeSector?.cablesInTray && activeSector.cablesInTray.length > 0) || 
+              (activeSector?.cables && activeSector.cables.length > 0))
+          : !!(currentProject.cables && currentProject.cables.length > 0)
+        }
+      />
     </section>
   )
 }

@@ -1,6 +1,18 @@
 import { CableInTray } from './cable.model'
 import { Tray, TrayType } from './tray.model'
 
+/**
+ * Interfaz para elementos de la lista de proyectos que devuelve la API
+ */
+export interface ProjectListItem {
+  id: string
+  projectName: string
+  hasSectors: boolean
+  sectorsCount: number
+  createdAt: string
+  updatedAt: string
+}
+
 export type InstallationLayerType = 'singleLayer' | 'multiLayer'
 export interface Results {
   moreConvenientOption: Tray | null
@@ -12,7 +24,9 @@ export interface Sector {
   trayTypeSelection: TrayType | null
   reservePercentage: number
   installationLayerSelection: InstallationLayerType | null
-  cablesInTray: CableInTray[] | null
+  cablesInTray?: CableInTray[] | null // Propiedad antigua, mantener por compatibilidad
+  cables?: CableInTray[] | null // Nueva propiedad que viene del backend
+  cablesCount?: number // Contador de cables que viene del backend
   results: Results | null
 }
 
@@ -30,6 +44,7 @@ export interface Project {
   sectors?: Sector[] | null // Para proyectos con sectores (hasSectors: true)
   defaultSector?: DefaultSector | null // Para proyectos sin sectores (hasSectors: false)
   cables?: CableInTray[] | null // Para proyectos sin sectores (hasSectors: false)
+  cablesCount?: number // Contador de cables que viene del backend para proyectos sin sectores
   // Propiedades adicionales para proyectos sin sectores
   trayTypeSelection?: TrayType | null // Para proyectos sin sectores
   reservePercentage?: number // Para proyectos sin sectores

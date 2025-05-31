@@ -1,5 +1,6 @@
 import MySlider from '@/components/MySlider'
 import clsx from 'clsx'
+import { useState, useEffect } from 'react'
 
 interface ReservePercentageProps {
   className?: string
@@ -10,6 +11,15 @@ export default function ReservePercentage({
   className,
   value = 30, // Valor por defecto si no se proporciona
 }: ReservePercentageProps) {
+  // Usamos useState para mantener un registro del valor actual
+  const [currentValue, setCurrentValue] = useState(value);
+  
+  // Este useEffect es crucial para actualizar el valor cuando cambia el prop value
+  // por ejemplo, cuando se cambia de sector
+  useEffect(() => {
+    console.log('ReservePercentage value changed:', value);
+    setCurrentValue(value);
+  }, [value]);
   return (
     <div
       className={clsx(
@@ -29,7 +39,14 @@ export default function ReservePercentage({
         </p>
       </div>
       <div className="lg:w-[416px]">
-        <MySlider initialValue={value} />
+        <MySlider 
+          key={`slider-${currentValue}`} // Forzar recreación cuando cambia el valor
+          initialValue={currentValue} 
+          onChange={(newValue) => {
+            console.log('Slider value changed to:', newValue);
+            setCurrentValue(newValue);
+          }}
+        />
       </div>
     </div>
   )

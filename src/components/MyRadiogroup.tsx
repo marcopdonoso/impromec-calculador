@@ -46,7 +46,12 @@ export default function MyRadiogroup({
     <RadioGroup
       className={clsx(className)}
       value={selected}
-      onChange={setSelected}
+      onChange={(value) => {
+        setSelected(value);
+        if (onChange) {
+          onChange(value);
+        }
+      }}
       name={props.name}
       {...props}
     >

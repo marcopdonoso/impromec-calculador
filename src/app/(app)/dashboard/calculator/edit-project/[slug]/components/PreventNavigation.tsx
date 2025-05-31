@@ -1,55 +1,70 @@
 'use client'
-import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ModalOverlay from '../../../components/ModalOverlay'
 import ExitModal from './ExitModal'
 
 export default function PreventNavigation({ backHref }: { backHref: string }) {
   const [leavingPage, setLeavingPage] = useState(false)
+  const [destinationUrl, setDestinationUrl] = useState('')
 
-  const router = useRouter()
-  const confirmationFn = useRef<() => void>(() => {})
-
-  if (typeof window !== 'undefined') {
-    window.history.pushState(null, document.title, window.location.href)
-  }
-
+  // Evitar que se abandone la página sin confirmación
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLAnchorElement
-      if (target.tagName === 'A' && target.href) {
-        e.preventDefault()
-        confirmationFn.current = () => {
-          router.push(target.href)
-        }
+    let isNavigating = false;
+
+    // Prevenir navegación hacia atrás
+    const handlePopState = () => {
+      // Revertir la navegación hacia atrás
+      window.history.pushState(null, document.title, window.location.href)
+      
+      if (!isNavigating) {
+        setDestinationUrl(backHref)
         setLeavingPage(true)
       }
     }
 
-    const handlePopState = () => {
-      window.history.pushState(null, document.title, window.location.href)
-
-      confirmationFn.current = () => {
-        router.push(backHref)
+    // Capturar clics en enlaces
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      const link = target.closest('a');
+      
+      if (link && link.href && !link.href.includes(window.location.pathname)) {
+        e.preventDefault()
+        setDestinationUrl(link.href)
+        setLeavingPage(true)
       }
-
-      setLeavingPage(true)
     }
 
+    // Prevenir recarga de página
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault()
+      e.returnValue = ''
     }
 
-    document.addEventListener('click', handleClick)
+    // Inicializar el estado del historial
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, document.title, window.location.href)
+    }
+
+    // Agregar event listeners
     window.addEventListener('popstate', handlePopState)
+    document.addEventListener('click', handleLinkClick, true) // Usar captura para interceptar antes
     window.addEventListener('beforeunload', handleBeforeUnload)
 
     return () => {
-      document.removeEventListener('click', handleClick)
+      // Eliminar event listeners
       window.removeEventListener('popstate', handlePopState)
+      document.removeEventListener('click', handleLinkClick, true)
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [router, backHref])
+  }, [backHref])
+
+  // Manejar la confirmación para salir de la página
+  const handleConfirmNavigation = () => {
+    if (destinationUrl) {
+      // Usar una navegación completa para actualizar la URL
+      window.location.href = destinationUrl
+    }
+  }
 
   return (
     <ModalOverlay isModalVisible={leavingPage}>
@@ -57,12 +72,7 @@ export default function PreventNavigation({ backHref }: { backHref: string }) {
         showModal={leavingPage}
         setShowModal={setLeavingPage}
         onCancel={() => setLeavingPage(false)}
-        onConfirm={() => {
-          setTimeout(() => {
-            confirmationFn.current()
-          }, 0)
-          setLeavingPage(false)
-        }}
+        onConfirm={handleConfirmNavigation}
       />
     </ModalOverlay>
   )

@@ -30,11 +30,13 @@ export default function SelectedItemsTable({
         {dataRows.map((dataRow, idx) => {
           const dataRowCopy = { ...dataRow }
           const dataRowIndex = idx
+          // Usar el id del cable como clave única si está disponible
+          const uniqueKey = dataRow.id ? dataRow.id : `row-${idx}`
           delete dataRowCopy.id
           const entries = Object.values(dataRowCopy)
           return (
             <div
-              key={idx}
+              key={uniqueKey}
               className="flex w-full flex-col rounded-2xl border border-gray-input bg-gray-white px-3 py-4 lg:h-16 lg:w-full lg:flex-row lg:items-center lg:px-10"
             >
               {entries.map((e, idx) => {

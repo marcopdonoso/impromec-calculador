@@ -1,5 +1,5 @@
 import { api } from './api.service'
-import { Project, Sector } from '@/models/project.model'
+import { Project, Sector, InstallationLayerType } from '@/models/project.model'
 import { CableInTray } from '@/models/cable.model'
 import { NewProjectFormData } from '@/schemas/project.schema'
 
@@ -136,6 +136,19 @@ export const getProjectById = async (
     const response = await api.get<ApiResponse<{ project: Project }>>(`/projects/${projectId}`)
     
     if (response.data.success) {
+      // Agregar logs para depurar la respuesta
+      console.log('Respuesta API getProjectById:', {
+        projectId,
+        hasSectors: response.data.project.hasSectors,
+        sectorsCount: response.data.project.sectors?.length || 0,
+        sectorsWithCables: response.data.project.sectors?.map((s: Sector) => ({
+          id: s.id,
+          name: s.sectorName,
+          cablesCount: s.cablesInTray?.length || 0
+        })) || [],
+        cablesCount: response.data.project.cables?.length || 0
+      });
+      
       return {
         data: {
           project: response.data.project
@@ -293,6 +306,169 @@ export interface DeleteCableFromProjectResponse {
   } | null
 }
 
+export interface UpdateSectorNameResponse {
+  success?: boolean
+  message?: string
+  sector?: {
+    id: string
+    sectorName: string
+    trayTypeSelection?: string
+    reservePercentage?: number
+    installationLayerSelection?: string
+    cablesCount?: number
+  }
+  project?: {
+    id: string
+    projectName: string
+  }
+  error?: {
+    message: string
+  }
+}
+
+export interface DeleteSectorResponse {
+  success?: boolean
+  message?: string
+  project?: {
+    id: string
+    projectName: string
+    sectorsCount: number
+  }
+  error?: {
+    message: string
+  }
+}
+
+export interface UpdateSectorInstallationLayerResponse {
+  success?: boolean
+  message?: string
+  sector?: {
+    id: string
+    sectorName: string
+    trayTypeSelection?: string
+    reservePercentage?: number
+    installationLayerSelection?: string
+    cablesCount?: number
+  }
+  project?: {
+    id: string
+    projectName: string
+  }
+  error?: {
+    message: string
+  }
+}
+
+/**
+ * Actualiza el tipo de instalación de cables de un sector
+ * @param projectId ID del proyecto
+ * @param sectorId ID del sector
+ * @param installationLayerType Tipo de instalación de cables ('singleLayer' o 'multiLayer')
+ * @returns Respuesta con el sector actualizado o error
+ */
+export const updateSectorInstallationLayer = async (
+  projectId: string,
+  sectorId: string,
+  installationLayerType: InstallationLayerType
+): Promise<UpdateSectorInstallationLayerResponse> => {
+  try {
+    const response = await api.patch<ApiResponse<{
+      sector: {
+        id: string
+        sectorName: string
+        trayTypeSelection?: string
+        reservePercentage?: number
+        installationLayerSelection?: string
+        cablesCount?: number
+      },
+      project: {
+        id: string
+        projectName: string
+      }
+    }>>(`/projects/${projectId}/sectors/${sectorId}`, {
+      installationLayerSelection: installationLayerType
+    })
+    
+    if (response.data.success) {
+      return {
+        success: true,
+        message: response.data.message,
+        sector: response.data.data?.sector,
+        project: response.data.data?.project
+      }
+    } else {
+      return {
+        success: false,
+        message: response.data.message,
+        error: {
+          message: response.data.message || 'Error al actualizar el tipo de instalación'
+        }
+      }
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Error al actualizar el tipo de instalación',
+      error: {
+        message: error.response?.data?.message || 'Error al actualizar el tipo de instalación'
+      }
+    }
+  }
+}
+
+/**
+ * Obtiene el sector por defecto de un proyecto sin sectores
+ * @param projectId ID del proyecto
+ * @returns Respuesta con el sector por defecto o error
+ */
+export const getDefaultSector = async (
+  projectId: string
+): Promise<{
+  success: boolean;
+  defaultSector?: {
+    id: string;
+    sectorName: string;
+  } | null;
+  error?: {
+    message: string;
+  };
+}> => {
+  try {
+    const response = await api.get<ApiResponse<{
+      project: {
+        id: string;
+        projectName: string;
+        hasSectors: boolean;
+        defaultSector: {
+          id: string;
+          sectorName: string;
+        } | null;
+      };
+    }>>(`/projects/${projectId}`);
+
+    if (response.data.success) {
+      return {
+        success: true,
+        defaultSector: response.data.data?.project.defaultSector || null
+      };
+    } else {
+      return {
+        success: false,
+        error: {
+          message: response.data.message || 'Error al obtener el sector por defecto'
+        }
+      };
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      error: {
+        message: error.response?.data?.message || 'Error al obtener el sector por defecto'
+      }
+    };
+  }
+};
+
 /**
  * Agrega un cable directamente a un proyecto (sin sectores)
  * @param projectId ID del proyecto
@@ -391,11 +567,60 @@ export const deleteCableFromSector = async (
 }
 
 /**
- * Elimina un cable directamente de un proyecto (sin sectores)
+ * Actualiza el nombre de un sector
  * @param projectId ID del proyecto
- * @param cableId ID del cable a eliminar
+ * @param sectorId ID del sector
+ * @param sectorName Nuevo nombre del sector
  * @returns Respuesta con la confirmación o error
  */
+export const updateSectorName = async (
+  projectId: string,
+  sectorId: string,
+  sectorName: string
+): Promise<UpdateSectorNameResponse> => {
+  try {
+    const response = await api.patch<{
+      success: boolean
+      message: string
+      sector: {
+        id: string
+        sectorName: string
+        trayTypeSelection?: string
+        reservePercentage?: number
+        installationLayerSelection?: string
+        cablesCount?: number
+      }
+      project: {
+        id: string
+        projectName: string
+      }
+    }>(`/projects/${projectId}/sectors/${sectorId}`, { sectorName })
+    
+    // Verificar si la respuesta es exitosa
+    if (response.data && response.data.success) {
+      // La respuesta ya tiene el formato correcto, la devolvemos directamente
+      return response.data
+    }
+    
+    // Si llegamos aquí, algo salió mal con la respuesta
+    console.log('Respuesta del servidor:', response.data);
+    return {
+      success: false,
+      error: {
+        message: response.data?.message || 'Error al actualizar el nombre del sector'
+      }
+    }
+  } catch (error: any) {
+    console.error('Error al actualizar el nombre del sector:', error);
+    return {
+      success: false,
+      error: {
+        message: error.response?.data?.message || 'Error al actualizar el nombre del sector'
+      }
+    }
+  }
+}
+
 export const deleteCableFromProject = async (
   projectId: string,
   cableId: string
@@ -429,6 +654,52 @@ export const deleteCableFromProject = async (
       data: null,
       error: {
         message: error.response?.data?.message || 'Error al eliminar el cable'
+      }
+    }
+  }
+}
+
+/**
+ * Elimina un sector de un proyecto
+ * @param projectId ID del proyecto
+ * @param sectorId ID del sector a eliminar
+ * @returns Respuesta con la confirmación o error
+ */
+export const deleteSector = async (
+  projectId: string,
+  sectorId: string
+): Promise<DeleteSectorResponse> => {
+  try {
+    const response = await api.delete<{
+      success: boolean
+      message: string
+      project: {
+        id: string
+        projectName: string
+        sectorsCount: number
+      }
+    }>(`/projects/${projectId}/sectors/${sectorId}`)
+    
+    // Verificar si la respuesta es exitosa
+    if (response.data && response.data.success) {
+      // La respuesta ya tiene el formato correcto, la devolvemos directamente
+      return response.data
+    }
+    
+    // Si llegamos aquí, algo salió mal con la respuesta
+    console.log('Respuesta del servidor al eliminar sector:', response.data);
+    return {
+      success: false,
+      error: {
+        message: response.data?.message || 'Error al eliminar el sector'
+      }
+    }
+  } catch (error: any) {
+    console.error('Error al eliminar el sector:', error);
+    return {
+      success: false,
+      error: {
+        message: error.response?.data?.message || 'Error al eliminar el sector'
       }
     }
   }

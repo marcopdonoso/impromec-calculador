@@ -14,10 +14,12 @@ export default function Tray({ trayType, reservePercentage }: TrayProps) {
         <h4 className="body_small_medium lg:body_medium_medium">Bandeja</h4>
       </div>
       <TrayTypeSelector 
+        key={`tray-type-${trayType || 'escalerilla'}`}
         className="mb-2 rounded-2xl bg-gray-white p-2 lg:mb-8" 
         selectedType={trayType}
       />
       <ReservePercentage 
+        key={`reserve-percentage-${reservePercentage || 30}`}
         className="rounded-2xl bg-gray-white p-2" 
         value={reservePercentage || 30} 
       />

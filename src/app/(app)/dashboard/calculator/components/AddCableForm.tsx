@@ -12,6 +12,7 @@ import { CABLE_ARRANGEMENT_OPTIONS } from '@/utilities/cable-arrangement.utility
 interface AddCableFormProps {
   installationLayerType: string | null
   onSave?: () => void
+  currentSectorId?: string | null
 }
 
 interface AddCableFormData {
@@ -20,22 +21,60 @@ interface AddCableFormData {
   arrangement: CableArrangementType | null
 }
 
-export default function AddCableForm({ installationLayerType, onSave }: AddCableFormProps) {
+export default function AddCableForm({ installationLayerType, onSave, currentSectorId }: AddCableFormProps) {
   const params = useParams();
   const projectId = params.slug as string;
   const { currentProject, addCable, fetchProject, isLoading, error } = useProjectStore();
   const [selectedCableIndex, setSelectedCableIndex] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  
+  // Limpiar mensajes de éxito después de 3 segundos
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(null);
+        // Ya no cerramos el formulario aquí, lo hacemos directamente en onSubmit
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+  
+  // Efecto para registrar cuando se monta el componente
+  useEffect(() => {
+    console.log('AddCableForm - Componente montado');
+    // No recargamos el proyecto aquí para evitar problemas con la UI
+  }, []);
   // Verificar el valor de installationLayerType y determinar si es capa única
   const isSingleLayer = installationLayerType === 'singleLayer';
   console.log('installationLayerType:', installationLayerType, 'isSingleLayer:', isSingleLayer);
   
   // Verificar si el proyecto tiene sectores según la propiedad hasSectors
   const hasSectors = currentProject?.hasSectors;
-  // Obtener el ID del sector según el tipo de proyecto
-  const sectorId = hasSectors && currentProject?.sectors?.[0]?.id ? 
-    currentProject.sectors[0].id : 
-    currentProject?.defaultSector?.id || null;
+  
+  // Obtener el ID del sector activo
+  // Si se proporciona currentSectorId, usarlo directamente
+  // Si no, usar el primer sector o el sector por defecto
+  let sectorId: string | null = null;
+  
+  if (hasSectors) {
+    // Para proyectos con sectores, usar el ID del sector activo si está disponible
+    if (currentSectorId) {
+      sectorId = currentSectorId;
+      console.log('Usando sector activo (prop):', sectorId);
+    } 
+    // Si no hay ID de sector activo, buscar el sector activo en el proyecto
+    else if (currentProject?.sectors && currentProject.sectors.length > 0) {
+      sectorId = currentProject.sectors[0].id || null;
+      console.log('Usando primer sector (fallback):', sectorId);
+    }
+  } else {
+    // Para proyectos sin sectores, usar el ID del sector por defecto
+    sectorId = currentProject?.defaultSector?.id || null;
+    console.log('Usando sector por defecto:', sectorId);
+  }
+  
+  console.log('ID del sector para agregar cable:', sectorId);
 
   // Crear las opciones para los listbox
   const cableGaugesMM2: Option[] = cables.map((cable: Cable, index: number) => ({
@@ -100,6 +139,7 @@ export default function AddCableForm({ installationLayerType, onSave }: AddCable
 
   const onSubmit = async (data: AddCableFormData) => {
     setErrorMessage(null);
+    setSuccessMessage(null);
     
     // Verificar que haya un índice de cable válido
     if (data.cableIndex === null || data.cableIndex === undefined) {
@@ -126,25 +166,43 @@ export default function AddCableForm({ installationLayerType, onSave }: AddCable
         arrangement: data.arrangement || undefined
       };
 
+      console.log('Agregando cable con datos:', {
+        projectId,
+        sectorId,
+        cableData
+      });
+
       // Si el proyecto no tiene sectores, el sectorId será null
       const result = await addCable(projectId, sectorId, cableData);
       
       if (result) {
         // Éxito: reiniciar el formulario y mostrar mensaje
         reset();
-        console.log('Cable agregado exitosamente');
+        console.log('Cable agregado exitosamente, resultado:', result);
         
         // Volver a cargar el proyecto para asegurar que la tabla se actualice
+        console.log('Recargando proyecto...');
         await fetchProject(projectId);
+        console.log('Proyecto recargado');
         
-        // Llamar a la función onSave si existe
+        // Esperar un momento para asegurar que los datos se han actualizado completamente
+        // Este retraso es importante para que React tenga tiempo de procesar los cambios
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Mostrar mensaje de éxito
+        setSuccessMessage('Cable agregado exitosamente');
+        
+        // Cerrar el formulario inmediatamente
         if (onSave) {
+          console.log('Cerrando formulario después de agregar cable');
           onSave();
         }
+      } else {
+        setErrorMessage('No se pudo agregar el cable');
       }
     } catch (err) {
       setErrorMessage('Error al guardar el cable');
-      console.error(err);
+      console.error('Error en onSubmit:', err);
     }
   };
 
@@ -161,6 +219,12 @@ export default function AddCableForm({ installationLayerType, onSave }: AddCable
       {error && (
         <div className="mb-4 rounded-md bg-red-100 p-3 text-red-700">
           {error}
+        </div>
+      )}
+      
+      {successMessage && (
+        <div className="mb-4 rounded-md bg-green-100 p-3 text-green-700">
+          {successMessage}
         </div>
       )}
 
