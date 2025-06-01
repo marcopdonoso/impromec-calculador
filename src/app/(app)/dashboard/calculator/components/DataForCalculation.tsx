@@ -5,7 +5,12 @@ import { useState, useEffect } from 'react'
 import Cables from './Cables'
 import InstallationLayerSelector from './InstallationLayerSelector'
 import Tray from './Tray'
-import { getDefaultSector, updateSectorInstallationLayer } from '@/services/project.service'
+import { 
+  getDefaultSector, 
+  updateSectorInstallationLayer, 
+  updateSectorTrayType,
+  updateSectorReservePercentage
+} from '@/services/project.service'
 import { useParams } from 'next/navigation'
 import { useProjectStore } from '@/store/useProjectStore'
 
@@ -138,27 +143,59 @@ export default function DataForCalculation({
 
   const handleInstallationLayerChange = async (value: InstallationLayerType) => {
     setInstallationLayer(value);
+    console.log('DataForCalculation - handleInstallationLayerChange:', value);
+    console.log('Proyecto actual:', currentProject);
+    console.log('Es proyecto sin sectores:', isProjectWithoutSectors);
     
     try {
       if (isProjectWithoutSectors && currentProject) {
-        // Para proyectos sin sectores, primero obtener el ID del sector por defecto
-        const defaultSectorResponse = await getDefaultSector(currentProject.id);
+        console.log('Intentando actualizar tipo de instalación para proyecto sin sectores');
         
-        if (defaultSectorResponse.success && defaultSectorResponse.defaultSector) {
-          // Luego actualizar el tipo de instalación del sector por defecto
-          await updateSectorInstallationLayer(
+        // Usar directamente el sector por defecto del proyecto
+        if (currentProject.defaultSector && currentProject.defaultSector.id) {
+          console.log('Usando sector por defecto del proyecto:', currentProject.defaultSector);
+          
+          // Actualizar el tipo de instalación del sector por defecto
+          const updateResponse = await updateSectorInstallationLayer(
             currentProject.id,
-            defaultSectorResponse.defaultSector.id,
+            currentProject.defaultSector.id,
             value
           );
+          
+          console.log('Respuesta updateSectorInstallationLayer:', updateResponse);
+          
+          if (updateResponse.success) {
+            console.log('Tipo de instalación actualizado correctamente en el backend');
+          } else {
+            console.error('Error al actualizar el tipo de instalación:', updateResponse.message);
+          }
+        } else {
+          console.error('No se encontró sector por defecto en el proyecto');
+          console.log('currentProject:', currentProject);
         }
       } else if (currentSector && currentSector.id && currentProject) {
+        console.log('Intentando actualizar tipo de instalación para proyecto con sectores');
+        console.log('Sector actual:', currentSector);
+        
         // Para proyectos con sectores, actualizar directamente el tipo de instalación del sector activo
-        await updateSectorInstallationLayer(
+        const updateResponse = await updateSectorInstallationLayer(
           currentProject.id,
           currentSector.id,
           value
         );
+        
+        console.log('Respuesta updateSectorInstallationLayer:', updateResponse);
+        
+        if (updateResponse.success) {
+          console.log('Tipo de instalación actualizado correctamente en el backend');
+        } else {
+          console.error('Error al actualizar el tipo de instalación:', updateResponse.message);
+        }
+      } else {
+        console.error('No se cumplen las condiciones para actualizar el tipo de instalación');
+        console.log('currentProject:', currentProject);
+        console.log('currentSector:', currentSector);
+        console.log('isProjectWithoutSectors:', isProjectWithoutSectors);
       }
     } catch (error) {
       console.error('Error al actualizar el tipo de instalación:', error);
@@ -176,22 +213,142 @@ export default function DataForCalculation({
     installationLayer
   });
   
+  // Manejador para actualizar el tipo de bandeja en el backend
+  const handleTrayTypeChange = async (newType: TrayType) => {
+    console.log('DataForCalculation - handleTrayTypeChange:', newType);
+    console.log('Proyecto actual:', currentProject);
+    console.log('Es proyecto sin sectores:', isProjectWithoutSectors);
+    
+    try {
+      if (isProjectWithoutSectors && currentProject) {
+        console.log('Intentando actualizar tipo de bandeja para proyecto sin sectores');
+        
+        // Usar directamente el sector por defecto del proyecto
+        if (currentProject.defaultSector && currentProject.defaultSector.id) {
+          console.log('Usando sector por defecto del proyecto:', currentProject.defaultSector);
+          
+          // Actualizar el tipo de bandeja del sector por defecto
+          const updateResponse = await updateSectorTrayType(
+            currentProject.id,
+            currentProject.defaultSector.id,
+            newType
+          );
+          
+          console.log('Respuesta updateSectorTrayType:', updateResponse);
+          
+          if (updateResponse.success) {
+            console.log('Tipo de bandeja actualizado correctamente en el backend');
+            // Propagar el cambio al componente padre
+            onTrayTypeChange && onTrayTypeChange(newType);
+          } else {
+            console.error('Error al actualizar el tipo de bandeja:', updateResponse.message);
+          }
+        } else {
+          console.error('No se encontró sector por defecto en el proyecto');
+          console.log('currentProject:', currentProject);
+        }
+      } else if (currentSector && currentSector.id && currentProject) {
+        console.log('Intentando actualizar tipo de bandeja para proyecto con sectores');
+        console.log('Sector actual:', currentSector);
+        // Para proyectos con sectores, actualizar directamente el tipo de bandeja del sector activo
+        const updateResponse = await updateSectorTrayType(
+          currentProject.id,
+          currentSector.id,
+          newType
+        );
+        
+        console.log('Respuesta updateSectorTrayType:', updateResponse);
+        
+        if (updateResponse.success) {
+          console.log('Tipo de bandeja actualizado correctamente en el backend');
+          // Propagar el cambio al componente padre
+          onTrayTypeChange && onTrayTypeChange(newType);
+        } else {
+          console.error('Error al actualizar el tipo de bandeja:', updateResponse.message);
+        }
+      } else {
+        console.error('No se cumplen las condiciones para actualizar el tipo de bandeja');
+        console.log('currentProject:', currentProject);
+        console.log('currentSector:', currentSector);
+        console.log('isProjectWithoutSectors:', isProjectWithoutSectors);
+      }
+    } catch (error) {
+      console.error('Error al actualizar el tipo de bandeja:', error);
+    }
+  };
+
+  // Manejador para actualizar el porcentaje de reserva en el backend
+  const handleReservePercentageChange = async (newValue: number) => {
+    console.log('DataForCalculation - handleReservePercentageChange:', newValue);
+    console.log('Proyecto actual:', currentProject);
+    console.log('Es proyecto sin sectores:', isProjectWithoutSectors);
+    
+    try {
+      if (isProjectWithoutSectors && currentProject) {
+        console.log('Intentando actualizar porcentaje de reserva para proyecto sin sectores');
+        
+        // Usar directamente el sector por defecto del proyecto
+        if (currentProject.defaultSector && currentProject.defaultSector.id) {
+          console.log('Usando sector por defecto del proyecto:', currentProject.defaultSector);
+          
+          // Actualizar el porcentaje de reserva del sector por defecto
+          const updateResponse = await updateSectorReservePercentage(
+            currentProject.id,
+            currentProject.defaultSector.id,
+            newValue
+          );
+          
+          console.log('Respuesta updateSectorReservePercentage:', updateResponse);
+          
+          if (updateResponse.success) {
+            console.log('Porcentaje de reserva actualizado correctamente en el backend');
+            // Propagar el cambio al componente padre
+            onReservePercentageChange && onReservePercentageChange(newValue);
+          } else {
+            console.error('Error al actualizar el porcentaje de reserva:', updateResponse.message);
+          }
+        } else {
+          console.error('No se encontró sector por defecto en el proyecto');
+          console.log('currentProject:', currentProject);
+        }
+      } else if (currentSector && currentSector.id && currentProject) {
+        console.log('Intentando actualizar porcentaje de reserva para proyecto con sectores');
+        console.log('Sector actual:', currentSector);
+        // Para proyectos con sectores, actualizar directamente el porcentaje de reserva del sector activo
+        const updateResponse = await updateSectorReservePercentage(
+          currentProject.id,
+          currentSector.id,
+          newValue
+        );
+        
+        console.log('Respuesta updateSectorReservePercentage:', updateResponse);
+        
+        if (updateResponse.success) {
+          console.log('Porcentaje de reserva actualizado correctamente en el backend');
+          // Propagar el cambio al componente padre
+          onReservePercentageChange && onReservePercentageChange(newValue);
+        } else {
+          console.error('Error al actualizar el porcentaje de reserva:', updateResponse.message);
+        }
+      } else {
+        console.error('No se cumplen las condiciones para actualizar el porcentaje de reserva');
+        console.log('currentProject:', currentProject);
+        console.log('currentSector:', currentSector);
+        console.log('isProjectWithoutSectors:', isProjectWithoutSectors);
+      }
+    } catch (error) {
+      console.error('Error al actualizar el porcentaje de reserva:', error);
+    }
+  };
+  
   return (
     // Usar la key única para forzar la recreación completa del componente cuando cambia el sector
     <div key={componentKey} className="flex flex-col gap-6 lg:gap-16">
         <Tray 
           trayType={trayType} 
           reservePercentage={reservePercentage}
-          onTrayTypeChange={(newType) => {
-            console.log('DataForCalculation - trayType cambiado a:', newType);
-            // Propagar el cambio al componente padre
-            onTrayTypeChange && onTrayTypeChange(newType);
-          }}
-          onReservePercentageChange={(newValue) => {
-            console.log('DataForCalculation - reservePercentage cambiado a:', newValue);
-            // Propagar el cambio al componente padre
-            onReservePercentageChange && onReservePercentageChange(newValue);
-          }}
+          onTrayTypeChange={handleTrayTypeChange}
+          onReservePercentageChange={handleReservePercentageChange}
         />
         <InstallationLayerSelector 
           installationLayerType={installationLayer} 

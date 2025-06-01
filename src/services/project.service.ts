@@ -759,8 +759,7 @@ export const calculateProjectTray = async (
 ): Promise<CalculateTrayResponse> => {
   try {
     const response = await api.post<CalculateTrayResponse>(
-      `/projects/${projectId}/calculate-tray`,
-      { trayTypeSelection, reservePercentage }
+      `/projects/${projectId}/calculate-general-tray`
     )
 
     if (response.data.success) {
@@ -798,8 +797,7 @@ export const calculateSectorTray = async (
 ): Promise<CalculateTrayResponse> => {
   try {
     const response = await api.post<CalculateTrayResponse>(
-      `/projects/${projectId}/sectors/${sectorId}/calculate-tray`,
-      { trayTypeSelection, reservePercentage }
+      `/projects/${projectId}/sectors/${sectorId}/calculate-tray`
     )
 
     if (response.data.success) {
@@ -899,3 +897,185 @@ export const deleteProject = async (
     }
   }
 }
+
+/**
+ * Interfaz para la respuesta de actualización del tipo de bandeja de un sector
+ */
+export interface UpdateSectorTrayTypeResponse {
+  success?: boolean
+  message?: string
+  sector?: {
+    id: string
+    sectorName: string
+    trayTypeSelection?: string
+    reservePercentage?: number
+    installationLayerSelection?: string
+    cablesCount?: number
+  }
+  project?: {
+    id: string
+    projectName: string
+  }
+  error?: {
+    message: string
+  }
+}
+
+/**
+ * Actualiza el tipo de bandeja de un sector
+ * @param projectId ID del proyecto
+ * @param sectorId ID del sector
+ * @param trayType Tipo de bandeja ('escalerilla' o 'bandeja')
+ * @returns Respuesta con el sector actualizado o error
+ */
+export const updateSectorTrayType = async (
+  projectId: string,
+  sectorId: string,
+  trayType: TrayType
+): Promise<UpdateSectorTrayTypeResponse> => {
+  try {
+    console.log(`Actualizando tipo de bandeja: Proyecto ${projectId}, Sector ${sectorId}, Valor: ${trayType}`);
+    
+    const response = await api.patch<
+      ApiResponse<{
+        sector: {
+          id: string
+          sectorName: string
+          trayTypeSelection?: string
+          reservePercentage?: number
+          installationLayerSelection?: string
+          cablesCount?: number
+        }
+        project: {
+          id: string
+          projectName: string
+        }
+      }>
+    >(`/projects/${projectId}/sectors/${sectorId}`, {
+      trayTypeSelection: trayType,
+    })
+
+    if (response.data.success) {
+      return {
+        success: true,
+        message: response.data.message,
+        sector: response.data.data?.sector,
+        project: response.data.data?.project,
+      }
+    } else {
+      return {
+        success: false,
+        message: response.data.message,
+        error: {
+          message:
+            response.data.message ||
+            'Error al actualizar el tipo de bandeja',
+        },
+      }
+    }
+  } catch (error: any) {
+    console.error('Error al actualizar el tipo de bandeja:', error);
+    return {
+      success: false,
+      message:
+        error.response?.data?.message ||
+        'Error al actualizar el tipo de bandeja',
+      error: {
+        message:
+          error.response?.data?.message ||
+          'Error al actualizar el tipo de bandeja',
+      },
+    }
+  }
+};
+
+/**
+ * Interfaz para la respuesta de actualización del porcentaje de reserva de un sector
+ */
+export interface UpdateSectorReservePercentageResponse {
+  success?: boolean
+  message?: string
+  sector?: {
+    id: string
+    sectorName: string
+    trayTypeSelection?: string
+    reservePercentage?: number
+    installationLayerSelection?: string
+    cablesCount?: number
+  }
+  project?: {
+    id: string
+    projectName: string
+  }
+  error?: {
+    message: string
+  }
+}
+
+/**
+ * Actualiza el porcentaje de reserva de un sector
+ * @param projectId ID del proyecto
+ * @param sectorId ID del sector
+ * @param reservePercentage Porcentaje de reserva (0-100)
+ * @returns Respuesta con el sector actualizado o error
+ */
+export const updateSectorReservePercentage = async (
+  projectId: string,
+  sectorId: string,
+  reservePercentage: number
+): Promise<UpdateSectorReservePercentageResponse> => {
+  try {
+    console.log(`Actualizando porcentaje de reserva: Proyecto ${projectId}, Sector ${sectorId}, Valor: ${reservePercentage}`);
+    
+    const response = await api.patch<
+      ApiResponse<{
+        sector: {
+          id: string
+          sectorName: string
+          trayTypeSelection?: string
+          reservePercentage?: number
+          installationLayerSelection?: string
+          cablesCount?: number
+        }
+        project: {
+          id: string
+          projectName: string
+        }
+      }>
+    >(`/projects/${projectId}/sectors/${sectorId}`, {
+      reservePercentage: reservePercentage,
+    })
+
+    if (response.data.success) {
+      return {
+        success: true,
+        message: response.data.message,
+        sector: response.data.data?.sector,
+        project: response.data.data?.project,
+      }
+    } else {
+      return {
+        success: false,
+        message: response.data.message,
+        error: {
+          message:
+            response.data.message ||
+            'Error al actualizar el porcentaje de reserva',
+        },
+      }
+    }
+  } catch (error: any) {
+    console.error('Error al actualizar el porcentaje de reserva:', error);
+    return {
+      success: false,
+      message:
+        error.response?.data?.message ||
+        'Error al actualizar el porcentaje de reserva',
+      error: {
+        message:
+          error.response?.data?.message ||
+          'Error al actualizar el porcentaje de reserva',
+      },
+    }
+  }
+};
