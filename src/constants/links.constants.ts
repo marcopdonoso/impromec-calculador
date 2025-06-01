@@ -97,7 +97,7 @@ export const appLinks = {
     path: '/dashboard/calculator/projects-list',
   },
   calculatorResults: {
-    name: '[Resultados]',
+    name: 'Resultados',
     path: '/dashboard/calculator/results',
   },
   productsHome: {

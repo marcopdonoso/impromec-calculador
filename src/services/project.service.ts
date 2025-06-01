@@ -1,12 +1,47 @@
-import { api } from './api.service'
-import { Project, Sector, InstallationLayerType } from '@/models/project.model'
 import { CableInTray } from '@/models/cable.model'
+import { InstallationLayerType, Project, Sector } from '@/models/project.model'
+import { TrayType } from '@/models/tray.model'
 import { NewProjectFormData } from '@/schemas/project.schema'
+import { api } from './api.service'
 
 export interface ApiResponse<T> {
   success: boolean
   message: string
   [key: string]: any
+}
+
+export interface CalculateTrayResponse {
+  success: boolean
+  message: string
+  data: {
+    projectId: string
+    sectorId: string
+    sectorName: string
+    results: {
+      moreConvenientOption: {
+        id: string
+        trayType: TrayType
+        trayCategory: string
+        technicalDetails: {
+          thicknessInMM: number
+          widthInMM: number
+          heightInMM: number
+          loadResistanceInKgM: number
+        }
+      }
+      otherRecommendedOptions: Array<{
+        id: string
+        trayType: TrayType
+        trayCategory: string
+        technicalDetails: {
+          thicknessInMM: number
+          widthInMM: number
+          heightInMM: number
+          loadResistanceInKgM: number
+        }
+      }>
+    }
+  } | null
 }
 
 export interface GetProjectResponse {
@@ -51,29 +86,32 @@ export const createProject = async (
   projectData: NewProjectFormData
 ): Promise<CreateProjectResponse> => {
   try {
-    const response = await api.post<ApiResponse<{ project: Project }>>('/projects', projectData)
-    
+    const response = await api.post<ApiResponse<{ project: Project }>>(
+      '/projects',
+      projectData
+    )
+
     if (response.data.success) {
       return {
         data: {
-          project: response.data.project
+          project: response.data.project,
         },
-        error: null
+        error: null,
       }
     } else {
       return {
         data: null,
         error: {
-          message: response.data.message || 'Error al crear el proyecto'
-        }
+          message: response.data.message || 'Error al crear el proyecto',
+        },
       }
     }
   } catch (error: any) {
     return {
       data: null,
       error: {
-        message: error.response?.data?.message || 'Error al crear el proyecto'
-      }
+        message: error.response?.data?.message || 'Error al crear el proyecto',
+      },
     }
   }
 }
@@ -89,37 +127,39 @@ export const createSector = async (
   sectorName: string
 ): Promise<CreateSectorResponse> => {
   try {
-    const response = await api.post<ApiResponse<{
-      sector: Sector,
-      project: {
-        id: string
-        projectName: string
-        sectorsCount: number
-      }
-    }>>(`/projects/${projectId}/sectors`, { sectorName })
-    
+    const response = await api.post<
+      ApiResponse<{
+        sector: Sector
+        project: {
+          id: string
+          projectName: string
+          sectorsCount: number
+        }
+      }>
+    >(`/projects/${projectId}/sectors`, { sectorName })
+
     if (response.data.success) {
       return {
         data: {
           sector: response.data.sector,
-          project: response.data.project
+          project: response.data.project,
         },
-        error: null
+        error: null,
       }
     } else {
       return {
         data: null,
         error: {
-          message: response.data.message || 'Error al crear el sector'
-        }
+          message: response.data.message || 'Error al crear el sector',
+        },
       }
     }
   } catch (error: any) {
     return {
       data: null,
       error: {
-        message: error.response?.data?.message || 'Error al crear el sector'
-      }
+        message: error.response?.data?.message || 'Error al crear el sector',
+      },
     }
   }
 }
@@ -133,44 +173,48 @@ export const getProjectById = async (
   projectId: string
 ): Promise<GetProjectResponse> => {
   try {
-    const response = await api.get<ApiResponse<{ project: Project }>>(`/projects/${projectId}`)
-    
+    const response = await api.get<ApiResponse<{ project: Project }>>(
+      `/projects/${projectId}`
+    )
+
     if (response.data.success) {
       // Agregar logs para depurar la respuesta
       console.log('Respuesta API getProjectById:', {
         projectId,
         hasSectors: response.data.project.hasSectors,
         sectorsCount: response.data.project.sectors?.length || 0,
-        sectorsWithCables: response.data.project.sectors?.map((s: Sector) => ({
-          id: s.id,
-          name: s.sectorName,
-          cablesCount: s.cablesInTray?.length || 0
-        })) || [],
-        cablesCount: response.data.project.cables?.length || 0
-      });
-      
+        sectorsWithCables:
+          response.data.project.sectors?.map((s: Sector) => ({
+            id: s.id,
+            name: s.sectorName,
+            cablesCount: s.cablesInTray?.length || 0,
+          })) || [],
+        cablesCount: response.data.project.cables?.length || 0,
+      })
+
       return {
         data: {
-          project: response.data.project
+          project: response.data.project,
         },
-        error: null
+        error: null,
       }
     } else {
       return {
         data: null,
         error: {
           message: response.data.message || 'Error al obtener el proyecto',
-          statusCode: response.data.statusCode
-        }
+          statusCode: response.data.statusCode,
+        },
       }
     }
   } catch (error: any) {
     return {
       data: null,
       error: {
-        message: error.response?.data?.message || 'Error al obtener el proyecto',
-        statusCode: error.response?.data?.statusCode || error.response?.status
-      }
+        message:
+          error.response?.data?.message || 'Error al obtener el proyecto',
+        statusCode: error.response?.data?.statusCode || error.response?.status,
+      },
     }
   }
 }
@@ -218,42 +262,44 @@ export const addCableToSector = async (
   cableData: AddCableRequest
 ): Promise<AddCableResponse> => {
   try {
-    const response = await api.post<ApiResponse<{
-      cable: CableInTray,
-      sector: {
-        id: string
-        sectorName: string
-        cablesCount: number
-      },
-      project: {
-        id: string
-        projectName: string
-      }
-    }>>(`/projects/${projectId}/sectors/${sectorId}/cables`, cableData)
-    
+    const response = await api.post<
+      ApiResponse<{
+        cable: CableInTray
+        sector: {
+          id: string
+          sectorName: string
+          cablesCount: number
+        }
+        project: {
+          id: string
+          projectName: string
+        }
+      }>
+    >(`/projects/${projectId}/sectors/${sectorId}/cables`, cableData)
+
     if (response.data.success) {
       return {
         data: {
           cable: response.data.cable,
           sector: response.data.sector,
-          project: response.data.project
+          project: response.data.project,
         },
-        error: null
+        error: null,
       }
     } else {
       return {
         data: null,
         error: {
-          message: response.data.message || 'Error al agregar el cable'
-        }
+          message: response.data.message || 'Error al agregar el cable',
+        },
       }
     }
   } catch (error: any) {
     return {
       data: null,
       error: {
-        message: error.response?.data?.message || 'Error al agregar el cable'
-      }
+        message: error.response?.data?.message || 'Error al agregar el cable',
+      },
     }
   }
 }
@@ -372,46 +418,54 @@ export const updateSectorInstallationLayer = async (
   installationLayerType: InstallationLayerType
 ): Promise<UpdateSectorInstallationLayerResponse> => {
   try {
-    const response = await api.patch<ApiResponse<{
-      sector: {
-        id: string
-        sectorName: string
-        trayTypeSelection?: string
-        reservePercentage?: number
-        installationLayerSelection?: string
-        cablesCount?: number
-      },
-      project: {
-        id: string
-        projectName: string
-      }
-    }>>(`/projects/${projectId}/sectors/${sectorId}`, {
-      installationLayerSelection: installationLayerType
+    const response = await api.patch<
+      ApiResponse<{
+        sector: {
+          id: string
+          sectorName: string
+          trayTypeSelection?: string
+          reservePercentage?: number
+          installationLayerSelection?: string
+          cablesCount?: number
+        }
+        project: {
+          id: string
+          projectName: string
+        }
+      }>
+    >(`/projects/${projectId}/sectors/${sectorId}`, {
+      installationLayerSelection: installationLayerType,
     })
-    
+
     if (response.data.success) {
       return {
         success: true,
         message: response.data.message,
         sector: response.data.data?.sector,
-        project: response.data.data?.project
+        project: response.data.data?.project,
       }
     } else {
       return {
         success: false,
         message: response.data.message,
         error: {
-          message: response.data.message || 'Error al actualizar el tipo de instalación'
-        }
+          message:
+            response.data.message ||
+            'Error al actualizar el tipo de instalación',
+        },
       }
     }
   } catch (error: any) {
     return {
       success: false,
-      message: error.response?.data?.message || 'Error al actualizar el tipo de instalación',
+      message:
+        error.response?.data?.message ||
+        'Error al actualizar el tipo de instalación',
       error: {
-        message: error.response?.data?.message || 'Error al actualizar el tipo de instalación'
-      }
+        message:
+          error.response?.data?.message ||
+          'Error al actualizar el tipo de instalación',
+      },
     }
   }
 }
@@ -424,50 +478,55 @@ export const updateSectorInstallationLayer = async (
 export const getDefaultSector = async (
   projectId: string
 ): Promise<{
-  success: boolean;
+  success: boolean
   defaultSector?: {
-    id: string;
-    sectorName: string;
-  } | null;
+    id: string
+    sectorName: string
+  } | null
   error?: {
-    message: string;
-  };
+    message: string
+  }
 }> => {
   try {
-    const response = await api.get<ApiResponse<{
-      project: {
-        id: string;
-        projectName: string;
-        hasSectors: boolean;
-        defaultSector: {
-          id: string;
-          sectorName: string;
-        } | null;
-      };
-    }>>(`/projects/${projectId}`);
+    const response = await api.get<
+      ApiResponse<{
+        project: {
+          id: string
+          projectName: string
+          hasSectors: boolean
+          defaultSector: {
+            id: string
+            sectorName: string
+          } | null
+        }
+      }>
+    >(`/projects/${projectId}`)
 
     if (response.data.success) {
       return {
         success: true,
-        defaultSector: response.data.data?.project.defaultSector || null
-      };
+        defaultSector: response.data.data?.project.defaultSector || null,
+      }
     } else {
       return {
         success: false,
         error: {
-          message: response.data.message || 'Error al obtener el sector por defecto'
-        }
-      };
+          message:
+            response.data.message || 'Error al obtener el sector por defecto',
+        },
+      }
     }
   } catch (error: any) {
     return {
       success: false,
       error: {
-        message: error.response?.data?.message || 'Error al obtener el sector por defecto'
-      }
-    };
+        message:
+          error.response?.data?.message ||
+          'Error al obtener el sector por defecto',
+      },
+    }
   }
-};
+}
 
 /**
  * Agrega un cable directamente a un proyecto (sin sectores)
@@ -480,37 +539,39 @@ export const addCableToProject = async (
   cableData: AddCableRequest
 ): Promise<AddCableToProjectResponse> => {
   try {
-    const response = await api.post<ApiResponse<{
-      cable: CableInTray,
-      project: {
-        id: string
-        projectName: string
-        cablesCount: number
-      }
-    }>>(`/projects/${projectId}/cables`, cableData)
-    
+    const response = await api.post<
+      ApiResponse<{
+        cable: CableInTray
+        project: {
+          id: string
+          projectName: string
+          cablesCount: number
+        }
+      }>
+    >(`/projects/${projectId}/cables`, cableData)
+
     if (response.data.success) {
       return {
         data: {
           cable: response.data.cable,
-          project: response.data.project
+          project: response.data.project,
         },
-        error: null
+        error: null,
       }
     } else {
       return {
         data: null,
         error: {
-          message: response.data.message || 'Error al agregar el cable'
-        }
+          message: response.data.message || 'Error al agregar el cable',
+        },
       }
     }
   } catch (error: any) {
     return {
       data: null,
       error: {
-        message: error.response?.data?.message || 'Error al agregar el cable'
-      }
+        message: error.response?.data?.message || 'Error al agregar el cable',
+      },
     }
   }
 }
@@ -528,40 +589,42 @@ export const deleteCableFromSector = async (
   cableId: string
 ): Promise<DeleteCableFromSectorResponse> => {
   try {
-    const response = await api.delete<ApiResponse<{
-      sector: {
-        id: string
-        sectorName: string
-        cablesCount: number
-      },
-      project: {
-        id: string
-        projectName: string
-      }
-    }>>(`/projects/${projectId}/sectors/${sectorId}/cables/${cableId}`)
-    
+    const response = await api.delete<
+      ApiResponse<{
+        sector: {
+          id: string
+          sectorName: string
+          cablesCount: number
+        }
+        project: {
+          id: string
+          projectName: string
+        }
+      }>
+    >(`/projects/${projectId}/sectors/${sectorId}/cables/${cableId}`)
+
     if (response.data.success) {
       return {
         data: {
           sector: response.data.sector,
-          project: response.data.project
+          project: response.data.project,
         },
-        error: null
+        error: null,
       }
     } else {
       return {
         data: null,
         error: {
-          message: response.data.message || 'Error al eliminar el cable'
-        }
+          message: response.data.message || 'Error al eliminar el cable',
+        },
       }
     }
   } catch (error: any) {
     return {
       data: null,
       error: {
-        message: error.response?.data?.message || 'Error al eliminar el cable'
-      }
+        message: error.response?.data?.message || 'Error al eliminar el cable',
+      },
     }
   }
 }
@@ -595,28 +658,31 @@ export const updateSectorName = async (
         projectName: string
       }
     }>(`/projects/${projectId}/sectors/${sectorId}`, { sectorName })
-    
+
     // Verificar si la respuesta es exitosa
     if (response.data && response.data.success) {
       // La respuesta ya tiene el formato correcto, la devolvemos directamente
       return response.data
     }
-    
+
     // Si llegamos aquí, algo salió mal con la respuesta
-    console.log('Respuesta del servidor:', response.data);
+    console.log('Respuesta del servidor:', response.data)
     return {
       success: false,
       error: {
-        message: response.data?.message || 'Error al actualizar el nombre del sector'
-      }
+        message:
+          response.data?.message || 'Error al actualizar el nombre del sector',
+      },
     }
   } catch (error: any) {
-    console.error('Error al actualizar el nombre del sector:', error);
+    console.error('Error al actualizar el nombre del sector:', error)
     return {
       success: false,
       error: {
-        message: error.response?.data?.message || 'Error al actualizar el nombre del sector'
-      }
+        message:
+          error.response?.data?.message ||
+          'Error al actualizar el nombre del sector',
+      },
     }
   }
 }
@@ -626,35 +692,37 @@ export const deleteCableFromProject = async (
   cableId: string
 ): Promise<DeleteCableFromProjectResponse> => {
   try {
-    const response = await api.delete<ApiResponse<{
-      project: {
-        id: string
-        projectName: string
-        cablesCount: number
-      }
-    }>>(`/projects/${projectId}/cables/${cableId}`)
-    
+    const response = await api.delete<
+      ApiResponse<{
+        project: {
+          id: string
+          projectName: string
+          cablesCount: number
+        }
+      }>
+    >(`/projects/${projectId}/cables/${cableId}`)
+
     if (response.data.success) {
       return {
         data: {
-          project: response.data.project
+          project: response.data.project,
         },
-        error: null
+        error: null,
       }
     } else {
       return {
         data: null,
         error: {
-          message: response.data.message || 'Error al eliminar el cable'
-        }
+          message: response.data.message || 'Error al eliminar el cable',
+        },
       }
     }
   } catch (error: any) {
     return {
       data: null,
       error: {
-        message: error.response?.data?.message || 'Error al eliminar el cable'
-      }
+        message: error.response?.data?.message || 'Error al eliminar el cable',
+      },
     }
   }
 }
@@ -665,6 +733,82 @@ export const deleteCableFromProject = async (
  * @param sectorId ID del sector a eliminar
  * @returns Respuesta con la confirmación o error
  */
+/**
+ * Calcula la bandeja para un proyecto sin sectores
+ * @param projectId ID del proyecto
+ * @param trayTypeSelection Tipo de bandeja seleccionado
+ * @param reservePercentage Porcentaje de reserva
+ * @returns Respuesta con los resultados del cálculo o error
+ */
+export const calculateProjectTray = async (
+  projectId: string,
+  trayTypeSelection: TrayType,
+  reservePercentage: number
+): Promise<CalculateTrayResponse> => {
+  try {
+    const response = await api.post<CalculateTrayResponse>(
+      `/projects/${projectId}/calculate-tray`,
+      { trayTypeSelection, reservePercentage }
+    )
+
+    if (response.data.success) {
+      return response.data
+    }
+
+    return {
+      success: false,
+      message: response.data.message || 'Error al calcular la bandeja',
+      data: null,
+    }
+  } catch (error: any) {
+    console.error('Error al calcular la bandeja del proyecto:', error)
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Error al calcular la bandeja',
+      data: null,
+    }
+  }
+}
+
+/**
+ * Calcula la bandeja para un sector específico de un proyecto
+ * @param projectId ID del proyecto
+ * @param sectorId ID del sector
+ * @param trayTypeSelection Tipo de bandeja seleccionado
+ * @param reservePercentage Porcentaje de reserva
+ * @returns Respuesta con los resultados del cálculo o error
+ */
+export const calculateSectorTray = async (
+  projectId: string,
+  sectorId: string,
+  trayTypeSelection: TrayType,
+  reservePercentage: number
+): Promise<CalculateTrayResponse> => {
+  try {
+    const response = await api.post<CalculateTrayResponse>(
+      `/projects/${projectId}/sectors/${sectorId}/calculate-tray`,
+      { trayTypeSelection, reservePercentage }
+    )
+
+    if (response.data.success) {
+      return response.data
+    }
+
+    return {
+      success: false,
+      message: response.data.message || 'Error al calcular la bandeja',
+      data: null,
+    }
+  } catch (error: any) {
+    console.error('Error al calcular la bandeja del sector:', error)
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Error al calcular la bandeja',
+      data: null,
+    }
+  }
+}
+
 export const deleteSector = async (
   projectId: string,
   sectorId: string
@@ -679,28 +823,28 @@ export const deleteSector = async (
         sectorsCount: number
       }
     }>(`/projects/${projectId}/sectors/${sectorId}`)
-    
+
     // Verificar si la respuesta es exitosa
     if (response.data && response.data.success) {
       // La respuesta ya tiene el formato correcto, la devolvemos directamente
       return response.data
     }
-    
+
     // Si llegamos aquí, algo salió mal con la respuesta
-    console.log('Respuesta del servidor al eliminar sector:', response.data);
+    console.log('Respuesta del servidor al eliminar sector:', response.data)
     return {
       success: false,
       error: {
-        message: response.data?.message || 'Error al eliminar el sector'
-      }
+        message: response.data?.message || 'Error al eliminar el sector',
+      },
     }
   } catch (error: any) {
-    console.error('Error al eliminar el sector:', error);
+    console.error('Error al eliminar el sector:', error)
     return {
       success: false,
       error: {
-        message: error.response?.data?.message || 'Error al eliminar el sector'
-      }
+        message: error.response?.data?.message || 'Error al eliminar el sector',
+      },
     }
   }
 }

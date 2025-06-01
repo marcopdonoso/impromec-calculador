@@ -1,5 +1,6 @@
 import { CableInTray } from '@/models/cable.model'
 import { InstallationLayerType, Project, Sector } from '@/models/project.model'
+import { TrayType } from '@/models/tray.model'
 import { useState, useEffect } from 'react'
 import Cables from './Cables'
 import InstallationLayerSelector from './InstallationLayerSelector'
@@ -11,9 +12,21 @@ import { useProjectStore } from '@/store/useProjectStore'
 interface DataForCalculationProps {
   currentSector?: Sector | null
   currentProject?: Project | null
+  // Nuevos props para el tipo de bandeja y porcentaje de reserva
+  trayType?: TrayType
+  reservePercentage?: number
+  onTrayTypeChange?: (newType: TrayType) => void
+  onReservePercentageChange?: (newValue: number) => void
 }
 
-export default function DataForCalculation({ currentSector, currentProject }: DataForCalculationProps) {
+export default function DataForCalculation({ 
+  currentSector, 
+  currentProject, 
+  trayType: initialTrayType, 
+  reservePercentage: initialReservePercentage,
+  onTrayTypeChange,
+  onReservePercentageChange
+}: DataForCalculationProps) {
   // Logs para depuración
   console.log('DataForCalculation - Sector activo:', {
     id: currentSector?.id,
@@ -22,6 +35,19 @@ export default function DataForCalculation({ currentSector, currentProject }: Da
   
   // Determinar si estamos trabajando con un sector o directamente con el proyecto
   const isProjectWithoutSectors = currentProject && !currentProject.hasSectors;
+  
+  // Usar los valores iniciales pasados como props, o valores por defecto del proyecto/sector
+  const defaultTrayType = isProjectWithoutSectors
+    ? (currentProject?.trayTypeSelection || 'escalerilla')
+    : (currentSector?.trayTypeSelection || 'escalerilla');
+  
+  const defaultReservePercentage = isProjectWithoutSectors
+    ? (currentProject?.reservePercentage || 30)
+    : (currentSector?.reservePercentage || 30);
+  
+  // Usar los valores pasados como prop o los valores por defecto
+  const trayType = initialTrayType || defaultTrayType;
+  const reservePercentage = initialReservePercentage || defaultReservePercentage;
   
   // Obtener los cables según el caso
   // Ahora el backend devuelve 'cables' en lugar de 'cablesInTray'
@@ -102,6 +128,7 @@ export default function DataForCalculation({ currentSector, currentProject }: Da
 
   // Actualizar el estado cuando cambia el sector o el proyecto
   useEffect(() => {
+    // Actualizar installationLayer
     if (isProjectWithoutSectors) {
       setInstallationLayer(currentProject?.installationLayerSelection || 'singleLayer');
     } else {
@@ -142,24 +169,41 @@ export default function DataForCalculation({ currentSector, currentProject }: Da
     ? `project-${currentProject?.id}`
     : `sector-${currentSector?.id}`;
 
+  // Logs para verificar valores actualizados antes de renderizar
+  console.log('DataForCalculation - Valores actuales antes de renderizar:', {
+    trayType,
+    reservePercentage,
+    installationLayer
+  });
+  
   return (
     // Usar la key única para forzar la recreación completa del componente cuando cambia el sector
     <div key={componentKey} className="flex flex-col gap-6 lg:gap-16">
-      <Tray 
-        trayType={isProjectWithoutSectors ? currentProject?.trayTypeSelection : currentSector?.trayTypeSelection} 
-        reservePercentage={isProjectWithoutSectors ? currentProject?.reservePercentage : currentSector?.reservePercentage} 
-      />
-      <InstallationLayerSelector 
-        installationLayerType={installationLayer} 
-        hasCables={cables.length > 0}
-        onInstallationLayerChange={handleInstallationLayerChange}
-      />
+        <Tray 
+          trayType={trayType} 
+          reservePercentage={reservePercentage}
+          onTrayTypeChange={(newType) => {
+            console.log('DataForCalculation - trayType cambiado a:', newType);
+            // Propagar el cambio al componente padre
+            onTrayTypeChange && onTrayTypeChange(newType);
+          }}
+          onReservePercentageChange={(newValue) => {
+            console.log('DataForCalculation - reservePercentage cambiado a:', newValue);
+            // Propagar el cambio al componente padre
+            onReservePercentageChange && onReservePercentageChange(newValue);
+          }}
+        />
+        <InstallationLayerSelector 
+          installationLayerType={installationLayer} 
+          hasCables={cables.length > 0}
+          onInstallationLayerChange={handleInstallationLayerChange}
+        />
       <Cables
         key={`cables-${currentSector?.id || 'project'}`}
         cablesInTray={cables}
         installationLayerType={installationLayer}
         currentSectorId={currentSector?.id}
       />
-    </div>
+      </div>
   )
 }

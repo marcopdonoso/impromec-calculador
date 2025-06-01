@@ -1,6 +1,15 @@
 import { Project, Sector } from '@/models/project.model'
 import { CableInTray } from '@/models/cable.model'
-import { addCableToProject, addCableToSector, deleteCableFromProject, deleteCableFromSector, getProjectById } from '@/services/project.service'
+import { TrayType } from '@/models/tray.model'
+import { 
+  addCableToProject, 
+  addCableToSector, 
+  calculateProjectTray,
+  calculateSectorTray,
+  deleteCableFromProject, 
+  deleteCableFromSector, 
+  getProjectById 
+} from '@/services/project.service'
 import { create } from 'zustand'
 
 interface CableData {
@@ -18,12 +27,45 @@ interface ProjectState {
   clearProject: () => void
   addCable: (projectId: string, sectorId: string | null, cableData: CableData) => Promise<CableInTray | null>
   deleteCable: (projectId: string, sectorId: string | null, cableId: string) => Promise<boolean>
+  calculateTray: (projectId: string, sectorId: string | null, trayType: TrayType, reservePercentage: number) => Promise<{
+    success: boolean
+    message: string
+  }>
 }
 
 export const useProjectStore = create<ProjectState>((set, get) => ({
   currentProject: null,
   isLoading: false,
   error: null,
+  
+  calculateTray: async (projectId, sectorId, trayType, reservePercentage) => {
+    try {
+      set({ isLoading: true, error: null })
+      
+      // Realizar la llamada al servicio correspondiente según si es un proyecto con sectores o no
+      const response = sectorId
+        ? await calculateSectorTray(projectId, sectorId, trayType, reservePercentage)
+        : await calculateProjectTray(projectId, trayType, reservePercentage)
+      
+      if (!response.success) {
+        set({ 
+          error: response.message || 'Error al calcular la bandeja', 
+          isLoading: false 
+        })
+        return { success: false, message: response.message || 'Error al calcular la bandeja' }
+      }
+      
+      // Si el cálculo fue exitoso, actualizar el proyecto para reflejar los resultados
+      await get().fetchProject(projectId)
+      
+      set({ isLoading: false })
+      return { success: true, message: response.message || 'Cálculo completado exitosamente' }
+    } catch (error: any) {
+      const errorMessage = error.message || 'Error al calcular la bandeja'
+      set({ error: errorMessage, isLoading: false })
+      return { success: false, message: errorMessage }
+    }
+  },
   setCurrentProject: (project: Project | null) => set({ currentProject: project }),
   fetchProject: async (projectId: string) => {
     try {

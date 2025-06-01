@@ -17,6 +17,8 @@ export type InstallationLayerType = 'singleLayer' | 'multiLayer'
 export interface Results {
   moreConvenientOption: Tray | null
   otherRecommendedOptions: Tray[] | null
+  calculatedLoadInKgM: number | null
+  calculatedAreaInMM2: number | null
 }
 export interface Sector {
   id?: string

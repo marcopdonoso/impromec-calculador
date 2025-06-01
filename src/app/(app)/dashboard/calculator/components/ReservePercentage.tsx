@@ -5,11 +5,13 @@ import { useState, useEffect } from 'react'
 interface ReservePercentageProps {
   className?: string
   value?: number
+  onChange?: (value: number) => void
 }
 
 export default function ReservePercentage({
   className,
   value = 30, // Valor por defecto si no se proporciona
+  onChange,
 }: ReservePercentageProps) {
   // Usamos useState para mantener un registro del valor actual
   const [currentValue, setCurrentValue] = useState(value);
@@ -45,6 +47,8 @@ export default function ReservePercentage({
           onChange={(newValue) => {
             console.log('Slider value changed to:', newValue);
             setCurrentValue(newValue);
+            // Propagar el cambio al componente padre
+            onChange && onChange(newValue);
           }}
         />
       </div>

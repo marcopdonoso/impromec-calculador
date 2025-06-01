@@ -1,10 +1,9 @@
 import SelectedItemsTable from '@/components/SelectedItemsTable'
 import { CableInTray } from '@/models/cable.model'
-import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
 import { getArrangementDisplayText } from '@/utilities/cable-arrangement.utility'
 
 interface AddedCablesTableProps {
-  handleDelete: (cableId: string, dataRowIndex: number) => void
+  handleDelete?: (cableId: string, dataRowIndex: number) => void
   cablesInTray: CableInTray[]
 }
 
@@ -38,17 +37,17 @@ export default function AddedCablesTable({
       Disposición:
         cableInTray.arrangement &&
         getArrangementDisplayText(cableInTray.arrangement),
-      id: cableInTray.id // Guardar el ID del cable
+      id: cableInTray.id, // Guardar el ID del cable
     }
   })
 
   const handleDeleteWithId = (dataRowIndex: number) => {
     // Obtener el ID del cable desde los datos de la fila
-    const cableId = dataRows[dataRowIndex].id;
+    const cableId = dataRows[dataRowIndex].id
     if (cableId) {
-      handleDelete(cableId, dataRowIndex);
+      handleDelete?.(cableId, dataRowIndex)
     }
-  };
+  }
 
   return (
     <SelectedItemsTable

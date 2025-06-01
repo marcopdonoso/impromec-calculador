@@ -5,11 +5,13 @@ import clsx from 'clsx'
 interface TrayTypeSelectorProps {
   className?: string
   selectedType?: TrayType | null
+  onChange?: (type: TrayType) => void
 }
 
 export default function TrayTypeSelector({
   className,
   selectedType,
+  onChange,
 }: TrayTypeSelectorProps) {
   const trayTypes: RadioGroupItem[] = [
     {
@@ -42,6 +44,10 @@ export default function TrayTypeSelector({
         items={trayTypes}
         className="flex justify-center gap-x-4 lg:gap-x-8"
         defaultValue={defaultValue}
+        onChange={(value) => {
+          console.log('TrayTypeSelector: value changed to', value);
+          onChange && onChange(value as TrayType);
+        }}
       />
     </div>
   )
