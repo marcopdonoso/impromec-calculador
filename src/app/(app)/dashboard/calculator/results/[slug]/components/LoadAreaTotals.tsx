@@ -78,7 +78,7 @@ export default function LoadAreaTotals() {
           Carga total: {formatNumber(loadResistance)} kg/ml
         </p>
         <p className="body_medium_medium lg:body_large_semibold">
-          Área total (sin reserva): {formatNumber(totalArea)} mm²
+          Área total: {formatNumber(totalArea)} mm²
         </p>
       </div>
     </div>
