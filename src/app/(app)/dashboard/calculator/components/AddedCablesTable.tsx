@@ -53,7 +53,7 @@ export default function AddedCablesTable({
     <SelectedItemsTable
       headers={headers}
       dataRows={dataRows}
-      handleDelete={handleDeleteWithId}
+      handleDelete={handleDelete ? handleDeleteWithId : undefined}
     />
   )
 }

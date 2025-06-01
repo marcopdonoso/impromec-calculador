@@ -33,13 +33,9 @@ export default function Cables({
   // Obtener el ID del sector si existe
   const sectorId = hasSectors ? currentSectorId : null
 
-  // Depurar cuando cambian los cables o el sector activo
+  // Efecto para monitorear cambios en los cables o el sector activo
   useEffect(() => {
-    console.log('Cables - Props actualizadas:', {
-      cablesCount: cablesInTray.length,
-      currentSectorId,
-      installationLayerType,
-    })
+    // Monitorear cambios en cables, sector activo e installationLayerType
   }, [cablesInTray, currentSectorId, installationLayerType])
 
   // Limpiar mensajes de éxito después de 3 segundos
@@ -55,7 +51,6 @@ export default function Cables({
   // Manejar la eliminación de un cable
   const handleDelete = async (cableId: string, dataRowIndex: number) => {
     if (!cableId) {
-      console.error('No se pudo eliminar el cable: ID no válido')
       setError('ID de cable no válido')
       return
     }
@@ -65,36 +60,22 @@ export default function Cables({
       setError(null)
       setSuccessMessage(null)
 
-      console.log(
-        `Eliminando cable ${cableId} del ${hasSectors ? 'sector' : 'proyecto'}...`
-      )
-      console.log('Datos antes de eliminar:', {
-        projectId,
-        sectorId,
-        cableId,
-        cablesCount: cablesInTray.length,
-      })
+      // Iniciar proceso de eliminación del cable
 
       // Llamar al backend para eliminar el cable
       const success = await deleteCable(projectId, sectorId, cableId)
 
       if (success) {
-        console.log('Cable eliminado exitosamente')
-
         // Recargar el proyecto para actualizar los datos
-        console.log('Recargando proyecto después de eliminar cable...')
         await fetchProject(projectId)
-        console.log('Proyecto recargado después de eliminar cable')
 
         // Mostrar mensaje de éxito temporal
         setSuccessMessage('Cable eliminado exitosamente')
         setError(null)
       } else {
-        console.error('La eliminación del cable falló en el backend')
         setError('No se pudo eliminar el cable')
       }
     } catch (err) {
-      console.error('Error al eliminar el cable:', err)
       setError('Error al eliminar el cable')
     } finally {
       setIsDeleting(false)

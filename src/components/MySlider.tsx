@@ -14,7 +14,6 @@ export default function MySlider({ initialValue = 0, onChange }: MySliderProps) 
   // Este useEffect es crucial para actualizar el slider cuando cambia el initialValue
   // por ejemplo, cuando se cambia de sector
   useEffect(() => {
-    console.log('MySlider initialValue changed:', initialValue)
     setValue([initialValue])
   }, [initialValue])
 

@@ -19,7 +19,6 @@ export default function ReservePercentage({
   // Este useEffect es crucial para actualizar el valor cuando cambia el prop value
   // por ejemplo, cuando se cambia de sector
   useEffect(() => {
-    console.log('ReservePercentage value changed:', value);
     setCurrentValue(value);
   }, [value]);
   return (
@@ -45,7 +44,6 @@ export default function ReservePercentage({
           key={`slider-${currentValue}`} // Forzar recreación cuando cambia el valor
           initialValue={currentValue} 
           onChange={(newValue) => {
-            console.log('Slider value changed to:', newValue);
             setCurrentValue(newValue);
             // Propagar el cambio al componente padre
             onChange && onChange(newValue);
