@@ -22,7 +22,7 @@ export default function SectorsList({ sectors, onSectorChange, initialActiveSect
   // Actualizar el sector activo cuando cambia initialActiveSector (prop externo)
   useEffect(() => {
     if (initialActiveSector) {
-      console.log('SectorsList: Actualizando sector activo desde prop externo:', initialActiveSector.sectorName);
+      // Actualizar sector activo desde prop externo
       setActiveSector(initialActiveSector);
     }
   }, [initialActiveSector]);
@@ -30,7 +30,7 @@ export default function SectorsList({ sectors, onSectorChange, initialActiveSect
   // Inicializar el sector activo cuando se cargan los sectores y no hay uno activo
   useEffect(() => {
     if (sectors && sectors.length > 0 && !activeSector) {
-      console.log('SectorsList: Inicializando primer sector como activo');
+      // Inicializar primer sector como activo
       setActiveSector(sectors[0]);
       if (onSectorChange) onSectorChange(sectors[0]);
     }

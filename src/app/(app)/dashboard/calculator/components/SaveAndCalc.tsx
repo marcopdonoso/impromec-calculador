@@ -68,17 +68,9 @@ export default function SaveAndCalc({
       let trayType: TrayType = trayTypeUI || 'escalerilla'
       let reservePercentage = reservePercentageUI || 30
 
-      console.log('SaveAndCalc - Usando valores actualizados:', {
-        trayType,
-        reservePercentage,
-        // Para comparación, mostrar también los valores originales
-        originalTrayType: hasSectors
-          ? activeSector?.trayTypeSelection
-          : currentProject?.trayTypeSelection,
-        originalReservePercentage: hasSectors
-          ? activeSector?.reservePercentage
-          : currentProject?.reservePercentage,
-      })
+      // Usando valores actualizados para el cálculo:
+      // - trayType: tipo de bandeja seleccionado en la UI
+      // - reservePercentage: porcentaje de reserva seleccionado en la UI
 
       // Llamar al servicio para calcular la bandeja
       const result = await calculateTray(
@@ -109,7 +101,7 @@ export default function SaveAndCalc({
         })
       }
     } catch (error) {
-      console.error('Error al calcular la bandeja:', error)
+      // Error al calcular la bandeja
       setAlertInfo({
         show: true,
         message: 'Error al calcular la bandeja',
