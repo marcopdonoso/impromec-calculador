@@ -23,7 +23,7 @@ export default function OtherTrayOptionsCollapsible() {
     // Si hay un sector activo con resultados, mostrar sus opciones alternativas
     if (activeSectorGlobal && activeSectorGlobal.results && activeSectorGlobal.results.otherRecommendedOptions) {
       options = activeSectorGlobal.results.otherRecommendedOptions;
-      console.log('Mostrando opciones alternativas para el sector:', activeSectorGlobal.sectorName);
+      // Mostrando opciones alternativas para el sector activo
     } 
     // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
     else if (currentProject && currentProject.hasSectors && currentProject.sectors) {
@@ -34,13 +34,13 @@ export default function OtherTrayOptionsCollapsible() {
       
       if (sectorWithResults && sectorWithResults.results && sectorWithResults.results.otherRecommendedOptions) {
         options = sectorWithResults.results.otherRecommendedOptions;
-        console.log('Mostrando opciones alternativas para el primer sector con resultados:', sectorWithResults.sectorName);
+        // Mostrando opciones alternativas para el primer sector con resultados
       }
     }
     // Si es un proyecto sin sectores, usar sus opciones alternativas
     else if (currentProject && !currentProject.hasSectors && currentProject.results && currentProject.results.otherRecommendedOptions) {
       options = currentProject.results.otherRecommendedOptions;
-      console.log('Mostrando opciones alternativas para el proyecto sin sectores');
+      // Mostrando opciones alternativas para el proyecto sin sectores
     }
     
     setOtherRecommendedOptions(options);

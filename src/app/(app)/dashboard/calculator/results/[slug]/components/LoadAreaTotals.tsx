@@ -25,10 +25,7 @@ export default function LoadAreaTotals() {
       if (activeSectorGlobal && activeSectorGlobal.results) {
         setLoadResistance(activeSectorGlobal.results.calculatedLoadInKgM || 0)
         setTotalArea(activeSectorGlobal.results.calculatedAreaInMM2 || 0)
-        console.log(
-          'LoadAreaTotals: Usando datos del sector activo:',
-          activeSectorGlobal.sectorName
-        )
+        // Usando datos del sector activo
       }
       // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
       else if (

@@ -66,7 +66,7 @@ export default function ResultsPage() {
           setError(response.error?.message || 'Error al cargar el proyecto')
         }
       } catch (err: any) {
-        console.error('Error al cargar el proyecto:', err)
+        // Error manejado en la UI con toast
         setError(err.message || 'Error al cargar el proyecto')
       } finally {
         setIsLoading(false)
@@ -84,10 +84,7 @@ export default function ResultsPage() {
 
     // Si hay un sector activo seleccionado, usar sus resultados
     if (activeSectorGlobal && activeSectorGlobal.results) {
-      console.log(
-        'Usando resultados del sector activo:',
-        activeSectorGlobal.sectorName
-      )
+      // Usando resultados del sector activo
       return activeSectorGlobal.results
     }
     // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
@@ -100,14 +97,11 @@ export default function ResultsPage() {
       const sectorWithResults =
         currentProject.sectors.find((sector) => sector.results) ||
         currentProject.sectors[0]
-      console.log(
-        'Usando resultados del primer sector con resultados:',
-        sectorWithResults.sectorName
-      )
+      // Usando resultados del primer sector con resultados
       return sectorWithResults.results || undefined
     } else {
       // Proyecto sin sectores
-      console.log('Usando resultados del proyecto sin sectores')
+      // Usando resultados del proyecto sin sectores
       return currentProject.results || undefined
     }
   }, [currentProject])
@@ -118,10 +112,7 @@ export default function ResultsPage() {
 
     // Si hay un sector activo seleccionado, usar sus cables
     if (activeSectorGlobal) {
-      console.log(
-        'Usando cables del sector activo:',
-        activeSectorGlobal.sectorName
-      )
+      // Usando cables del sector activo
       // Primero intentar con la propiedad cables, luego con cablesInTray
       return activeSectorGlobal.cables || activeSectorGlobal.cablesInTray || []
     }
@@ -135,14 +126,11 @@ export default function ResultsPage() {
       const sectorWithResults =
         currentProject.sectors.find((sector) => sector.results) ||
         currentProject.sectors[0]
-      console.log(
-        'Usando cables del primer sector con resultados:',
-        sectorWithResults.sectorName
-      )
+      // Usando cables del primer sector con resultados
       return sectorWithResults.cables || sectorWithResults.cablesInTray || []
     } else {
       // Proyecto sin sectores
-      console.log('Usando cables del proyecto sin sectores')
+      // Usando cables del proyecto sin sectores
       return currentProject.cables || []
     }
   }, [currentProject])

@@ -1,6 +1,8 @@
 import { ProjectListItem } from '@/models/project.model'
 import { apiBaseUrl } from '@/constants/api.constants'
 import { getCookie } from 'cookies-next'
+import { api } from './api.service'
+import axios from 'axios'
 
 /**
  * Obtiene la lista de proyectos desde el backend
@@ -12,39 +14,23 @@ export const getProjects = async (): Promise<{
   error?: string;
 }> => {
   try {
-    // Obtener el token de autenticación almacenado en cookies
-    const token = getCookie('token')
+    // Usar la instancia api que ya incluye el token en los headers
+    const response = await api.get('/projects')
     
-    if (!token) {
-      return { 
-        success: false, 
-        error: 'No hay token de autenticación' 
-      }
-    }
-
-    const response = await fetch(`${apiBaseUrl}/projects`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    })
-
-    const data = await response.json()
+    // La respuesta ya viene como JSON
+    return response.data
     
-    if (!response.ok) {
-      return { 
-        success: false, 
-        error: data.message || 'Error al obtener los proyectos' 
-      }
-    }
-
-    return data
   } catch (error) {
-    console.error('Error al obtener los proyectos:', error)
+    if (axios.isAxiosError(error)) {
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Error al obtener los proyectos' 
+      }
+    }
+    
     return { 
       success: false, 
-      error: 'Error al obtener los proyectos' 
+      error: 'Error de conexión al obtener los proyectos' 
     }
   }
 }

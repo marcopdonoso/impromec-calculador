@@ -26,11 +26,6 @@ export default function SelectedTrayCard() {
       if (activeSectorGlobal.installationLayerSelection) {
         setInstallationType(activeSectorGlobal.installationLayerSelection)
       }
-      console.log('Sector activo - datos:', {
-        trayType: activeSectorGlobal.trayTypeSelection,
-        reservePercent: activeSectorGlobal.reservePercentage,
-        installationType: activeSectorGlobal.installationLayerSelection,
-      })
     }
     // Si no hay sector activo o para proyectos sin sectores
     else if (currentProject && !currentProject.hasSectors) {
@@ -43,11 +38,7 @@ export default function SelectedTrayCard() {
       if (currentProject.installationLayerSelection) {
         setInstallationType(currentProject.installationLayerSelection)
       }
-      console.log('Proyecto sin sectores - datos:', {
-        trayType: currentProject.trayTypeSelection,
-        reservePercent: currentProject.reservePercentage,
-        installationType: currentProject.installationLayerSelection,
-      })
+      // Datos del proyecto sin sectores disponibles
     }
   }, [currentProject, setTrayType, setReservePercent, setInstallationType])
 

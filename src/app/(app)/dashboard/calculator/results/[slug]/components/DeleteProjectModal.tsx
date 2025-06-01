@@ -23,13 +23,13 @@ export default function DeleteProjectModal({
     
     try {
       setIsDeleting(true)
-      console.log('Eliminando proyecto con ID:', projectId)
+      // Inicio del proceso de eliminación
       
       // Llamar al servicio para eliminar el proyecto
       const response = await deleteProject(projectId)
       
       if (response.success) {
-        console.log('Proyecto eliminado correctamente')
+        // Proyecto eliminado correctamente
         // Cerrar el modal
         setIsDeleteProjectModalVisible(false)
         
@@ -39,12 +39,12 @@ export default function DeleteProjectModal({
           router.push('/dashboard/calculator/projects-list')
         }, 300)
       } else {
-        console.error('Error al eliminar el proyecto:', response.message)
+        // Error manejado con toast
         alert(`Error: ${response.message || 'No se pudo eliminar el proyecto'}`)
         setIsDeleting(false)
       }
     } catch (error) {
-      console.error('Error al eliminar el proyecto:', error)
+      // Error general manejado con toast
       alert('Error al eliminar el proyecto')
       setIsDeleting(false)
     }

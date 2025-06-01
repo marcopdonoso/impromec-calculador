@@ -33,7 +33,7 @@ export default function SectorsListbox({ sectors }: SectorsListboxProps) {
       // También establecer este sector como activo globalmente
       if (sectors && sectors.length > 0) {
         activeSectorGlobal = sectors[0];
-        console.log('Sector activo establecido:', activeSectorGlobal.sectorName);
+        // Sector activo establecido inicialmente
       }
     }
   }, [sectorOptions, selectedSector, sectors])
@@ -48,7 +48,7 @@ export default function SectorsListbox({ sectors }: SectorsListboxProps) {
       
       if (selectedSectorObj) {
         activeSectorGlobal = selectedSectorObj;
-        console.log('Sector activo cambiado a:', selectedSectorObj.sectorName);
+        // Sector activo actualizado
       }
     }
   }

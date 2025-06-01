@@ -178,19 +178,7 @@ export const getProjectById = async (
     )
 
     if (response.data.success) {
-      // Agregar logs para depurar la respuesta
-      console.log('Respuesta API getProjectById:', {
-        projectId,
-        hasSectors: response.data.project.hasSectors,
-        sectorsCount: response.data.project.sectors?.length || 0,
-        sectorsWithCables:
-          response.data.project.sectors?.map((s: Sector) => ({
-            id: s.id,
-            name: s.sectorName,
-            cablesCount: s.cablesInTray?.length || 0,
-          })) || [],
-        cablesCount: response.data.project.cables?.length || 0,
-      })
+      // Proyecto recuperado correctamente
 
       return {
         data: {
@@ -678,7 +666,7 @@ export const updateSectorName = async (
     }
 
     // Si llegamos aquí, algo salió mal con la respuesta
-    console.log('Respuesta del servidor:', response.data)
+    // Respuesta del servidor procesada
     return {
       success: false,
       error: {
@@ -687,7 +675,7 @@ export const updateSectorName = async (
       },
     }
   } catch (error: any) {
-    console.error('Error al actualizar el nombre del sector:', error)
+    // Error capturado y manejado
     return {
       success: false,
       error: {
@@ -772,7 +760,7 @@ export const calculateProjectTray = async (
       data: null,
     }
   } catch (error: any) {
-    console.error('Error al calcular la bandeja del proyecto:', error)
+    // Error capturado y manejado
     return {
       success: false,
       message: error.response?.data?.message || 'Error al calcular la bandeja',
@@ -810,7 +798,7 @@ export const calculateSectorTray = async (
       data: null,
     }
   } catch (error: any) {
-    console.error('Error al calcular la bandeja del sector:', error)
+    // Error capturado y manejado
     return {
       success: false,
       message: error.response?.data?.message || 'Error al calcular la bandeja',
@@ -841,7 +829,7 @@ export const deleteSector = async (
     }
 
     // Si llegamos aquí, algo salió mal con la respuesta
-    console.log('Respuesta del servidor al eliminar sector:', response.data)
+    // Respuesta del servidor procesada
     return {
       success: false,
       error: {
@@ -849,7 +837,7 @@ export const deleteSector = async (
       },
     }
   } catch (error: any) {
-    console.error('Error al eliminar el sector:', error)
+    // Error capturado y manejado
     return {
       success: false,
       error: {
@@ -881,12 +869,7 @@ export const deleteProject = async (
     const statusCode = error.response?.status
     const errorMessage = error.response?.data?.message || 'Error al eliminar el proyecto'
     
-    console.error('Error al eliminar proyecto:', {
-      projectId,
-      statusCode,
-      errorMessage,
-    })
-    
+    // Error capturado y manejado al eliminar el proyecto
     return {
       success: false,
       message: errorMessage,
@@ -934,7 +917,7 @@ export const updateSectorTrayType = async (
   trayType: TrayType
 ): Promise<UpdateSectorTrayTypeResponse> => {
   try {
-    console.log(`Actualizando tipo de bandeja: Proyecto ${projectId}, Sector ${sectorId}, Valor: ${trayType}`);
+    // Actualizando tipo de bandeja para proyecto/sector
     
     const response = await api.patch<
       ApiResponse<{
@@ -974,7 +957,7 @@ export const updateSectorTrayType = async (
       }
     }
   } catch (error: any) {
-    console.error('Error al actualizar el tipo de bandeja:', error);
+    // Error capturado y manejado
     return {
       success: false,
       message:
@@ -1025,7 +1008,7 @@ export const updateSectorReservePercentage = async (
   reservePercentage: number
 ): Promise<UpdateSectorReservePercentageResponse> => {
   try {
-    console.log(`Actualizando porcentaje de reserva: Proyecto ${projectId}, Sector ${sectorId}, Valor: ${reservePercentage}`);
+    // Actualizando porcentaje de reserva para proyecto/sector
     
     const response = await api.patch<
       ApiResponse<{
@@ -1065,7 +1048,7 @@ export const updateSectorReservePercentage = async (
       }
     }
   } catch (error: any) {
-    console.error('Error al actualizar el porcentaje de reserva:', error);
+    // Error capturado y manejado
     return {
       success: false,
       message:
