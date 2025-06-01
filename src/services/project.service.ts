@@ -385,6 +385,18 @@ export interface DeleteSectorResponse {
   }
 }
 
+/**
+ * Interfaz para la respuesta de la eliminación de un proyecto
+ */
+export interface DeleteProjectResponse {
+  success: boolean
+  message: string
+  error?: {
+    message: string
+    statusCode?: number
+  }
+}
+
 export interface UpdateSectorInstallationLayerResponse {
   success?: boolean
   message?: string
@@ -844,6 +856,45 @@ export const deleteSector = async (
       success: false,
       error: {
         message: error.response?.data?.message || 'Error al eliminar el sector',
+      },
+    }
+  }
+}
+
+/**
+ * Elimina un proyecto por su ID
+ * @param projectId ID del proyecto a eliminar
+ * @returns Respuesta con confirmación de éxito o error
+ */
+export const deleteProject = async (
+  projectId: string
+): Promise<DeleteProjectResponse> => {
+  try {
+    const response = await api.delete<{
+      success: boolean
+      message: string
+    }>(`/projects/${projectId}`)
+
+    return {
+      success: response.data.success,
+      message: response.data.message || 'Proyecto eliminado exitosamente',
+    }
+  } catch (error: any) {
+    const statusCode = error.response?.status
+    const errorMessage = error.response?.data?.message || 'Error al eliminar el proyecto'
+    
+    console.error('Error al eliminar proyecto:', {
+      projectId,
+      statusCode,
+      errorMessage,
+    })
+    
+    return {
+      success: false,
+      message: errorMessage,
+      error: {
+        message: errorMessage,
+        statusCode: statusCode,
       },
     }
   }

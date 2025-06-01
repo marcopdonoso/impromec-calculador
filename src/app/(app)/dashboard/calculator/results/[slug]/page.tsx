@@ -11,7 +11,7 @@ import {
   PencilIcon,
   PhoneIcon,
 } from '@heroicons/react/24/outline'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import AddedCablesTable from '../../components/AddedCablesTable'
 import ModalOverlay from '../../components/ModalOverlay'
@@ -31,8 +31,12 @@ import UnfinishedSectorsListMessages from './components/UnfinishedSectorsListMes
 export default function ResultsPage() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const projectId = params.slug as string
   const { currentProject, setCurrentProject } = useProjectStore()
+
+  // Verificar si se llegó desde el proceso de cálculo
+  const fromCalculation = searchParams.get('fromCalculation') === 'true'
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isDeleteProjectModalVisible, setIsDeleteProjectModalVisible] =
@@ -180,7 +184,21 @@ export default function ResultsPage() {
     <section className="flex min-h-screen flex-col items-center px-4 pb-20 pt-12 lg:px-28">
       <div className="flex w-full max-w-4xl flex-col">
         <div className="mb-8 flex w-full flex-col gap-8 lg:mb-10 lg:gap-10">
-          <ResultsHeader />
+          {fromCalculation ? (
+            <ResultsHeader />
+          ) : (
+            /* 
+             * Texto invisible que mantiene el mismo ancho que el ResultsHeader sin mostrar contenido
+             * Esto soluciona el problema de que el layout cambie de ancho cuando no se muestra ResultsHeader
+             * La clase 'invisible' de Tailwind oculta el texto pero mantiene su espacio en el flujo del documento
+             */
+            <div>
+              <p className="body_small_regular invisible text-center lg:body_large_regular">
+                Podrás revisar el resumen de tu proyecto junto a las
+                recomendaciones de acuerdo al resultado
+              </p>
+            </div>
+          )}
           <UnfinishedSectorsListMessages />
         </div>
 
@@ -243,7 +261,17 @@ export default function ResultsPage() {
         <hr className="my-6 w-full text-gray-placeholder lg:hidden" />
 
         <div className="flex w-full flex-col gap-4">
-          <Button variant="add" icon={<PencilIcon />}>
+          <Button
+            variant="add"
+            icon={<PencilIcon />}
+            onClick={() => {
+              if (currentProject && currentProject.id) {
+                router.push(
+                  `/dashboard/calculator/edit-project/${currentProject.id}`
+                )
+              }
+            }}
+          >
             Editar
           </Button>
           <Button

@@ -1,63 +1,80 @@
 import TrayRecommendationCard, {
   TrayRecommendationCardProps,
 } from '@/components/TrayRecommendationCard'
+import { useProjectStore } from '@/store/useProjectStore'
 import { Results } from '@/models/project.model'
+import { Tray } from '@/models/tray.model'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import * as Collapsible from '@radix-ui/react-collapsible'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
+// Importar la variable global desde SectorsListbox
+import { activeSectorGlobal } from './SectorsListbox'
 
 export default function OtherTrayOptionsCollapsible() {
+  const { currentProject } = useProjectStore()
   const [isOpen, setIsOpen] = useState(false)
+  const [otherRecommendedOptions, setOtherRecommendedOptions] = useState<Tray[]>([])  
 
-  // TODO: Borrar data mockeada
-  const results: Results = {
-    moreConvenientOption: {
-      id: '1-1-1-1-1',
-      trayName: 'Curva horizontal 90° (300 mm)',
-      trayDescription:
-        'Curva horizontal 90º. Radio = 300 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-      trayType: 'escalerilla',
-      technicalDetails: {
-        thicknessInMM: 2,
-        widthInMM: 100,
-        heightInMM: 60,
-        usefulAreaInMM2: 5400,
-        loadResistanceInKgM: 150,
-      },
-    },
-    otherRecommendedOptions: [
-      {
-        id: '2-2-2-2-2',
-        trayName: 'Curva horizontal 90° (600 mm)',
-        trayDescription:
-          'Curva horizontal 90º. Radio = 600 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-        trayType: 'escalerilla',
-        technicalDetails: {
-          thicknessInMM: 2,
-          widthInMM: 100,
-          heightInMM: 100,
-          usefulAreaInMM2: 8000,
-          loadResistanceInKgM: 150,
-        },
-      },
-    ],
-  }
+  // Función para verificar y actualizar las opciones alternativas de bandejas
+  const updateOtherOptions = useCallback(() => {
+    let options: Tray[] = [];
+    
+    // Si hay un sector activo con resultados, mostrar sus opciones alternativas
+    if (activeSectorGlobal && activeSectorGlobal.results && activeSectorGlobal.results.otherRecommendedOptions) {
+      options = activeSectorGlobal.results.otherRecommendedOptions;
+      console.log('Mostrando opciones alternativas para el sector:', activeSectorGlobal.sectorName);
+    } 
+    // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
+    else if (currentProject && currentProject.hasSectors && currentProject.sectors) {
+      // Buscar un sector con resultados
+      const sectorWithResults = currentProject.sectors.find(sector => 
+        sector.results && sector.results.otherRecommendedOptions && sector.results.otherRecommendedOptions.length > 0
+      );
+      
+      if (sectorWithResults && sectorWithResults.results && sectorWithResults.results.otherRecommendedOptions) {
+        options = sectorWithResults.results.otherRecommendedOptions;
+        console.log('Mostrando opciones alternativas para el primer sector con resultados:', sectorWithResults.sectorName);
+      }
+    }
+    // Si es un proyecto sin sectores, usar sus opciones alternativas
+    else if (currentProject && !currentProject.hasSectors && currentProject.results && currentProject.results.otherRecommendedOptions) {
+      options = currentProject.results.otherRecommendedOptions;
+      console.log('Mostrando opciones alternativas para el proyecto sin sectores');
+    }
+    
+    setOtherRecommendedOptions(options);
+  }, [currentProject]);
+  
+  // Ejecutar la verificación cuando cambia el proyecto
+  useEffect(() => {
+    updateOtherOptions();
+    
+    // Establecer un intervalo para verificar cambios en el sector activo
+    const intervalId = setInterval(() => {
+      updateOtherOptions();
+    }, 500); // Verificar cada 500ms
+    
+    // Limpiar el intervalo cuando el componente se desmonta
+    return () => clearInterval(intervalId);
+  }, [updateOtherOptions]);
 
-  const otherRecommendedOptions: TrayRecommendationCardProps[] | null =
-    results.otherRecommendedOptions &&
-    results.otherRecommendedOptions.map((tray) => {
+  // Convertir las opciones de bandejas a props para TrayRecommendationCard
+  const otherRecommendedOptionsCards: TrayRecommendationCardProps[] | null =
+    otherRecommendedOptions &&
+    otherRecommendedOptions.map((tray) => {
       return {
-        title: tray.trayName,
-        subtitle: `Hasta ${tray.technicalDetails.loadResistanceInKgM} kg/ml`,
-        description: `${tray.technicalDetails.thicknessInMM} mm de espesor. Recubierta con zinc (galvanizado) de grado G90: 275g/m2.`,
-        height: tray.technicalDetails.heightInMM,
-        width: tray.technicalDetails.widthInMM,
+        title: `Bandeja Recta ${tray.trayCategory?.toUpperCase() || ''} (${tray.technicalDetails?.heightInMM || 0} mm x ${tray.technicalDetails?.widthInMM || 0} mm)`,
+        subtitle: `Hasta ${tray.technicalDetails?.loadResistanceInKgM || 0} kg/ml`,
+        description: `${tray.technicalDetails?.thicknessInMM || 0} mm de espesor. Recubierta con zinc (galvanizado) de grado G90: 275g/m2.`,
+        height: tray.technicalDetails?.heightInMM || 0,
+        width: tray.technicalDetails?.widthInMM || 0,
         image: `/img/${tray.trayType}.png`,
         alt: `bandeja portacable de tipo ${tray.trayType}`,
       }
     })
 
-  if (otherRecommendedOptions === null) return
+  if (!otherRecommendedOptionsCards || otherRecommendedOptionsCards.length === 0) return null
 
   return (
     <Collapsible.Root
@@ -77,7 +94,7 @@ export default function OtherTrayOptionsCollapsible() {
       </Collapsible.Trigger>
       <Collapsible.Content>
         <div className="flex flex-col gap-4">
-          {otherRecommendedOptions.map((tray) => {
+          {otherRecommendedOptionsCards.map((tray) => {
             return (
               <TrayRecommendationCard
                 key={tray.title}

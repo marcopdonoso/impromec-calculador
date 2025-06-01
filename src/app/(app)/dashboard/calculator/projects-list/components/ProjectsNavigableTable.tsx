@@ -2,7 +2,7 @@ import NavigableItemsTable from '@/components/NavigableItemsTable'
 import { ProjectListItem } from '@/models/project.model'
 import { getProjects } from '@/services/projects.service'
 import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import NoProjectsYet from './NoProjectsYet'
 
 interface ProjectsNavigableTableProps {
@@ -16,16 +16,16 @@ export default function ProjectsNavigableTable({
   const [projects, setProjects] = useState<ProjectListItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  
+
   // Cargar proyectos desde el backend
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setIsLoading(true)
         setError(null)
-        
+
         const response = await getProjects()
-        
+
         if (response.success && response.projects) {
           setProjects(response.projects)
         } else {
@@ -38,10 +38,10 @@ export default function ProjectsNavigableTable({
         setIsLoading(false)
       }
     }
-    
+
     fetchProjects()
   }, [])
-  
+
   // Interfaz para las filas de datos
   interface DataRow {
     projectName: string
@@ -53,24 +53,24 @@ export default function ProjectsNavigableTable({
   // Formatear los datos de proyectos para la tabla y mantener referencia al ID original
   const formatProjects = () => {
     if (!projects.length) return []
-    
+
     return projects.map((project) => ({
       projectName: project.projectName,
-      sectorsNumber: project.hasSectors 
-        ? `${project.sectorsCount} Sectores` 
+      sectorsNumber: project.hasSectors
+        ? `${project.sectorsCount} Sectores`
         : 'Sin sectores',
       createdAt: formatDate(project.createdAt),
       // Guardar el ID original del proyecto para la navegación
-      _originalId: project.id
+      _originalId: project.id,
     }))
   }
-  
+
   // Mostrar fecha como viene del backend
   const formatDate = (dateString: string) => {
-    if (!dateString) return 'Fecha no disponible';
-    return dateString;
+    if (!dateString) return 'Fecha no disponible'
+    return dateString
   }
-  
+
   // Obtener las filas de datos formateadas
   const dataRows: DataRow[] = formatProjects()
 
@@ -88,10 +88,10 @@ export default function ProjectsNavigableTable({
     if (dataRowIndex >= 0 && dataRowIndex < dataRowsSortedByDate.length) {
       // Usar el ID original almacenado en la fila de datos
       const projectId = dataRowsSortedByDate[dataRowIndex]._originalId
-      router.push(`/dashboard/calculator/edit-project/${projectId}`)
+      router.push(`/dashboard/calculator/results/${projectId}`)
     }
   }
-  
+
   // Mostrar indicador de carga mientras se obtienen los datos
   if (isLoading) {
     return (
@@ -100,16 +100,16 @@ export default function ProjectsNavigableTable({
       </div>
     )
   }
-  
+
   // Mostrar mensaje de error si falla la carga
   if (error) {
     return (
       <div className="my-8 flex w-full justify-center">
-        <p className="body_medium_medium text-red-600">{error}</p>
+        <p className="text-red-600 body_medium_medium">{error}</p>
       </div>
     )
   }
-  
+
   // Mostrar la tabla de proyectos o el mensaje de no hay proyectos
   return dataRowsSortedByDate.length > 0 ? (
     <NavigableItemsTable
