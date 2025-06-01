@@ -43,17 +43,13 @@ export default function LoadAreaTotals() {
         if (sectorWithResults.results) {
           setLoadResistance(sectorWithResults.results.calculatedLoadInKgM || 0)
           setTotalArea(sectorWithResults.results.calculatedAreaInMM2 || 0)
-          console.log(
-            'LoadAreaTotals: Usando datos del primer sector con resultados:',
-            sectorWithResults.sectorName
-          )
+          // Usando datos del primer sector con resultados
         }
       }
       // Proyecto sin sectores
       else if (currentProject.results) {
         setLoadResistance(currentProject.results.calculatedLoadInKgM || 0)
         setTotalArea(currentProject.results.calculatedAreaInMM2 || 0)
-        console.log('LoadAreaTotals: Usando datos del proyecto sin sectores')
       }
     }
 

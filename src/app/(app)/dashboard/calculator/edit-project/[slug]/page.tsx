@@ -61,9 +61,7 @@ export default function EditProjectPage() {
         activeSectorIndex >= 0 &&
         activeSectorIndex < currentProject.sectors.length
       ) {
-        console.log(
-          `Activando sector especificado en URL: índice ${activeSectorIndex}`
-        )
+        // Activando sector especificado en URL
         setActiveSector(currentProject.sectors[activeSectorIndex])
         return
       }
@@ -74,10 +72,7 @@ export default function EditProjectPage() {
           (s) => s.id === activeSector.id
         )
         if (updatedActiveSector) {
-          console.log(
-            'Manteniendo el mismo sector activo después de recargar:',
-            updatedActiveSector.sectorName
-          )
+          // Manteniendo el mismo sector activo después de recargar
           setActiveSector(updatedActiveSector)
           return
         }
@@ -85,7 +80,7 @@ export default function EditProjectPage() {
 
       // Si no hay sector activo o no se encontró, establecer el primer sector como activo
       if (currentProject.sectors.length > 0) {
-        console.log('Estableciendo el primer sector como activo')
+        // Estableciendo el primer sector como activo
         setActiveSector(currentProject.sectors[0])
       }
     }
@@ -95,22 +90,12 @@ export default function EditProjectPage() {
   useEffect(() => {
     // Solo actualizar si hay un sector activo o un proyecto
     if (activeSector) {
-      console.log('Actualizando valores UI con datos del sector:', {
-        sectorId: activeSector.id,
-        trayType: activeSector.trayTypeSelection,
-        reservePercentage: activeSector.reservePercentage,
-      })
+      // Actualizando valores UI con datos del sector
       setTrayTypeUI(activeSector.trayTypeSelection || 'escalerilla')
       setReservePercentageUI(activeSector.reservePercentage || 30)
     } else if (currentProject && !currentProject.hasSectors) {
       // Para proyectos sin sectores, los valores están directamente en el objeto del proyecto
-      console.log(
-        'Actualizando valores UI con datos del proyecto (sin sectores):',
-        {
-          trayType: currentProject.trayTypeSelection,
-          reservePercentage: currentProject.reservePercentage,
-        }
-      )
+      // Actualizando valores UI con datos del proyecto (sin sectores)
       setTrayTypeUI(currentProject.trayTypeSelection || 'escalerilla')
       setReservePercentageUI(currentProject.reservePercentage || 30)
     }

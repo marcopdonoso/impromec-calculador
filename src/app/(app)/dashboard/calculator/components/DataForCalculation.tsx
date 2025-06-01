@@ -143,17 +143,15 @@ export default function DataForCalculation({
 
   const handleInstallationLayerChange = async (value: InstallationLayerType) => {
     setInstallationLayer(value);
-    console.log('DataForCalculation - handleInstallationLayerChange:', value);
-    console.log('Proyecto actual:', currentProject);
-    console.log('Es proyecto sin sectores:', isProjectWithoutSectors);
+    // Manejar cambio del tipo de instalación
     
     try {
       if (isProjectWithoutSectors && currentProject) {
-        console.log('Intentando actualizar tipo de instalación para proyecto sin sectores');
+
         
         // Usar directamente el sector por defecto del proyecto
         if (currentProject.defaultSector && currentProject.defaultSector.id) {
-          console.log('Usando sector por defecto del proyecto:', currentProject.defaultSector);
+
           
           // Actualizar el tipo de instalación del sector por defecto
           const updateResponse = await updateSectorInstallationLayer(
@@ -162,20 +160,14 @@ export default function DataForCalculation({
             value
           );
           
-          console.log('Respuesta updateSectorInstallationLayer:', updateResponse);
-          
-          if (updateResponse.success) {
-            console.log('Tipo de instalación actualizado correctamente en el backend');
-          } else {
-            console.error('Error al actualizar el tipo de instalación:', updateResponse.message);
+          if (!updateResponse.success) {
+            // Manejar error si es necesario
           }
         } else {
-          console.error('No se encontró sector por defecto en el proyecto');
-          console.log('currentProject:', currentProject);
+          // No se encontró sector por defecto
         }
       } else if (currentSector && currentSector.id && currentProject) {
-        console.log('Intentando actualizar tipo de instalación para proyecto con sectores');
-        console.log('Sector actual:', currentSector);
+        // Actualizar tipo de instalación para proyecto con sectores
         
         // Para proyectos con sectores, actualizar directamente el tipo de instalación del sector activo
         const updateResponse = await updateSectorInstallationLayer(
@@ -184,21 +176,16 @@ export default function DataForCalculation({
           value
         );
         
-        console.log('Respuesta updateSectorInstallationLayer:', updateResponse);
-        
         if (updateResponse.success) {
-          console.log('Tipo de instalación actualizado correctamente en el backend');
+          // Tipo de instalación actualizado correctamente en el backend
         } else {
-          console.error('Error al actualizar el tipo de instalación:', updateResponse.message);
+          // Manejar error si es necesario
         }
       } else {
-        console.error('No se cumplen las condiciones para actualizar el tipo de instalación');
-        console.log('currentProject:', currentProject);
-        console.log('currentSector:', currentSector);
-        console.log('isProjectWithoutSectors:', isProjectWithoutSectors);
+        // No se cumplen las condiciones para actualizar el tipo de instalación
       }
     } catch (error) {
-      console.error('Error al actualizar el tipo de instalación:', error);
+      // Manejo de error
     }
   };
   // Generar una key única basada en el sector activo o el proyecto
@@ -206,26 +193,17 @@ export default function DataForCalculation({
     ? `project-${currentProject?.id}`
     : `sector-${currentSector?.id}`;
 
-  // Logs para verificar valores actualizados antes de renderizar
-  console.log('DataForCalculation - Valores actuales antes de renderizar:', {
-    trayType,
-    reservePercentage,
-    installationLayer
-  });
   
   // Manejador para actualizar el tipo de bandeja en el backend
   const handleTrayTypeChange = async (newType: TrayType) => {
-    console.log('DataForCalculation - handleTrayTypeChange:', newType);
-    console.log('Proyecto actual:', currentProject);
-    console.log('Es proyecto sin sectores:', isProjectWithoutSectors);
     
     try {
       if (isProjectWithoutSectors && currentProject) {
-        console.log('Intentando actualizar tipo de bandeja para proyecto sin sectores');
+
         
         // Usar directamente el sector por defecto del proyecto
         if (currentProject.defaultSector && currentProject.defaultSector.id) {
-          console.log('Usando sector por defecto del proyecto:', currentProject.defaultSector);
+
           
           // Actualizar el tipo de bandeja del sector por defecto
           const updateResponse = await updateSectorTrayType(
@@ -234,22 +212,16 @@ export default function DataForCalculation({
             newType
           );
           
-          console.log('Respuesta updateSectorTrayType:', updateResponse);
-          
           if (updateResponse.success) {
-            console.log('Tipo de bandeja actualizado correctamente en el backend');
-            // Propagar el cambio al componente padre
             onTrayTypeChange && onTrayTypeChange(newType);
           } else {
-            console.error('Error al actualizar el tipo de bandeja:', updateResponse.message);
+            // Error al actualizar el tipo de bandeja
           }
         } else {
-          console.error('No se encontró sector por defecto en el proyecto');
-          console.log('currentProject:', currentProject);
+          // No se encontró sector por defecto
         }
       } else if (currentSector && currentSector.id && currentProject) {
-        console.log('Intentando actualizar tipo de bandeja para proyecto con sectores');
-        console.log('Sector actual:', currentSector);
+        // Actualizar tipo de bandeja para proyecto con sectores
         // Para proyectos con sectores, actualizar directamente el tipo de bandeja del sector activo
         const updateResponse = await updateSectorTrayType(
           currentProject.id,
@@ -257,39 +229,30 @@ export default function DataForCalculation({
           newType
         );
         
-        console.log('Respuesta updateSectorTrayType:', updateResponse);
-        
         if (updateResponse.success) {
-          console.log('Tipo de bandeja actualizado correctamente en el backend');
           // Propagar el cambio al componente padre
           onTrayTypeChange && onTrayTypeChange(newType);
         } else {
-          console.error('Error al actualizar el tipo de bandeja:', updateResponse.message);
+          // Error al actualizar el tipo de bandeja
         }
       } else {
-        console.error('No se cumplen las condiciones para actualizar el tipo de bandeja');
-        console.log('currentProject:', currentProject);
-        console.log('currentSector:', currentSector);
-        console.log('isProjectWithoutSectors:', isProjectWithoutSectors);
+        // No se cumplen las condiciones para actualizar el tipo de bandeja
       }
     } catch (error) {
-      console.error('Error al actualizar el tipo de bandeja:', error);
+      // Manejo de error
     }
   };
 
   // Manejador para actualizar el porcentaje de reserva en el backend
   const handleReservePercentageChange = async (newValue: number) => {
-    console.log('DataForCalculation - handleReservePercentageChange:', newValue);
-    console.log('Proyecto actual:', currentProject);
-    console.log('Es proyecto sin sectores:', isProjectWithoutSectors);
     
     try {
       if (isProjectWithoutSectors && currentProject) {
-        console.log('Intentando actualizar porcentaje de reserva para proyecto sin sectores');
+
         
         // Usar directamente el sector por defecto del proyecto
         if (currentProject.defaultSector && currentProject.defaultSector.id) {
-          console.log('Usando sector por defecto del proyecto:', currentProject.defaultSector);
+
           
           // Actualizar el porcentaje de reserva del sector por defecto
           const updateResponse = await updateSectorReservePercentage(
@@ -298,22 +261,17 @@ export default function DataForCalculation({
             newValue
           );
           
-          console.log('Respuesta updateSectorReservePercentage:', updateResponse);
-          
           if (updateResponse.success) {
-            console.log('Porcentaje de reserva actualizado correctamente en el backend');
             // Propagar el cambio al componente padre
             onReservePercentageChange && onReservePercentageChange(newValue);
           } else {
-            console.error('Error al actualizar el porcentaje de reserva:', updateResponse.message);
+            // Error al actualizar el porcentaje de reserva
           }
         } else {
-          console.error('No se encontró sector por defecto en el proyecto');
-          console.log('currentProject:', currentProject);
+          // No se encontró sector por defecto
         }
       } else if (currentSector && currentSector.id && currentProject) {
-        console.log('Intentando actualizar porcentaje de reserva para proyecto con sectores');
-        console.log('Sector actual:', currentSector);
+        // Actualizar porcentaje de reserva para proyecto con sectores
         // Para proyectos con sectores, actualizar directamente el porcentaje de reserva del sector activo
         const updateResponse = await updateSectorReservePercentage(
           currentProject.id,
@@ -321,23 +279,17 @@ export default function DataForCalculation({
           newValue
         );
         
-        console.log('Respuesta updateSectorReservePercentage:', updateResponse);
-        
         if (updateResponse.success) {
-          console.log('Porcentaje de reserva actualizado correctamente en el backend');
           // Propagar el cambio al componente padre
           onReservePercentageChange && onReservePercentageChange(newValue);
         } else {
-          console.error('Error al actualizar el porcentaje de reserva:', updateResponse.message);
+          // Error al actualizar el porcentaje de reserva
         }
       } else {
-        console.error('No se cumplen las condiciones para actualizar el porcentaje de reserva');
-        console.log('currentProject:', currentProject);
-        console.log('currentSector:', currentSector);
-        console.log('isProjectWithoutSectors:', isProjectWithoutSectors);
+        // No se cumplen las condiciones para actualizar el porcentaje de reserva
       }
     } catch (error) {
-      console.error('Error al actualizar el porcentaje de reserva:', error);
+      // Manejo de error
     }
   };
   
