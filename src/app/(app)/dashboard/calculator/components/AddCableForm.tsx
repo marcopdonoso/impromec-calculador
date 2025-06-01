@@ -41,54 +41,31 @@ export default function AddCableForm({
     if (successMessage) {
       const timer = setTimeout(() => {
         setSuccessMessage(null)
-        // Ya no cerramos el formulario aquí, lo hacemos directamente en onSubmit
       }, 2000)
       return () => clearTimeout(timer)
     }
   }, [successMessage])
 
-  // Efecto para registrar cuando se monta el componente
   useEffect(() => {
-    console.log('AddCableForm - Componente montado')
     // No recargamos el proyecto aquí para evitar problemas con la UI
   }, [])
-  // Verificar el valor de installationLayerType y determinar si es capa única
-  const isSingleLayer = installationLayerType === 'singleLayer'
-  console.log(
-    'installationLayerType:',
-    installationLayerType,
-    'isSingleLayer:',
-    isSingleLayer
-  )
 
-  // Verificar si el proyecto tiene sectores según la propiedad hasSectors
+  const isSingleLayer = installationLayerType === 'singleLayer'
+
   const hasSectors = currentProject?.hasSectors
 
-  // Obtener el ID del sector activo
-  // Si se proporciona currentSectorId, usarlo directamente
-  // Si no, usar el primer sector o el sector por defecto
   let sectorId: string | null = null
 
   if (hasSectors) {
-    // Para proyectos con sectores, usar el ID del sector activo si está disponible
     if (currentSectorId) {
       sectorId = currentSectorId
-      console.log('Usando sector activo (prop):', sectorId)
-    }
-    // Si no hay ID de sector activo, buscar el sector activo en el proyecto
-    else if (currentProject?.sectors && currentProject.sectors.length > 0) {
+    } else if (currentProject?.sectors && currentProject.sectors.length > 0) {
       sectorId = currentProject.sectors[0].id || null
-      console.log('Usando primer sector (fallback):', sectorId)
     }
   } else {
-    // Para proyectos sin sectores, usar el ID del sector por defecto
     sectorId = currentProject?.defaultSector?.id || null
-    console.log('Usando sector por defecto:', sectorId)
   }
 
-  console.log('ID del sector para agregar cable:', sectorId)
-
-  // Crear las opciones para los listbox
   const cableGaugesMM2: Option[] = cables.map(
     (cable: Cable, index: number) => ({
       text: `${cable.nominalSectionMM2} mm²`,
@@ -103,7 +80,6 @@ export default function AddCableForm({
     })
   )
 
-  // Convertir las opciones de disposición de cables al formato requerido por el componente MyListbox
   const cableArrangement: Option[] = CABLE_ARRANGEMENT_OPTIONS.map(
     (option: any) => ({
       text: option.text,
@@ -111,7 +87,6 @@ export default function AddCableForm({
     })
   )
 
-  // Establecer el primer cable como valor por defecto
   const defaultCableIndex = 0
 
   const { control, handleSubmit, setValue, watch, reset } =
@@ -123,35 +98,28 @@ export default function AddCableForm({
       },
     })
 
-  // Establecer el valor inicial del cable seleccionado
   useEffect(() => {
     setSelectedCableIndex(defaultCableIndex)
   }, [])
 
-  // Observar cambios en el índice del cable seleccionado
   const watchCableIndex = watch('cableIndex')
 
-  // Actualizar el estado local cuando cambia el índice del cable
   useEffect(() => {
     if (watchCableIndex !== undefined && watchCableIndex !== null) {
       setSelectedCableIndex(watchCableIndex as number)
     }
   }, [watchCableIndex])
 
-  // Actualizar el campo de disposición según el tipo de instalación
   useEffect(() => {
-    // Si no es capa única, fijar en horizontal
     if (installationLayerType !== 'singleLayer') {
       setValue('arrangement', 'horizontal')
     }
   }, [installationLayerType, setValue])
 
-  // Manejar el cambio en el listbox de mm²
   const handleMM2Change = (option: Option) => {
     setValue('cableIndex', parseInt(option.value.toString()))
   }
 
-  // Manejar el cambio en el listbox de AWG
   const handleAWGChange = (option: Option) => {
     setValue('cableIndex', parseInt(option.value.toString()))
   }
@@ -160,7 +128,6 @@ export default function AddCableForm({
     setErrorMessage(null)
     setSuccessMessage(null)
 
-    // Verificar que haya un índice de cable válido
     if (data.cableIndex === null || data.cableIndex === undefined) {
       setErrorMessage('Debe seleccionar un calibre de cable')
       return
@@ -185,35 +152,14 @@ export default function AddCableForm({
         arrangement: data.arrangement || undefined,
       }
 
-      console.log('Agregando cable con datos:', {
-        projectId,
-        sectorId,
-        cableData,
-      })
-
-      // Si el proyecto no tiene sectores, el sectorId será null
       const result = await addCable(projectId, sectorId, cableData)
 
       if (result) {
-        // Éxito: reiniciar el formulario y mostrar mensaje
         reset()
-        console.log('Cable agregado exitosamente, resultado:', result)
-
-        // Volver a cargar el proyecto para asegurar que la tabla se actualice
-        console.log('Recargando proyecto...')
         await fetchProject(projectId)
-        console.log('Proyecto recargado')
-
-        // Esperar un momento para asegurar que los datos se han actualizado completamente
-        // Este retraso es importante para que React tenga tiempo de procesar los cambios
         await new Promise((resolve) => setTimeout(resolve, 500))
-
-        // Mostrar mensaje de éxito
         setSuccessMessage('Cable agregado exitosamente')
-
-        // Cerrar el formulario inmediatamente
         if (onSave) {
-          console.log('Cerrando formulario después de agregar cable')
           onSave()
         }
       } else {
@@ -221,7 +167,6 @@ export default function AddCableForm({
       }
     } catch (err) {
       setErrorMessage('Error al guardar el cable')
-      console.error('Error en onSubmit:', err)
     }
   }
 
@@ -310,7 +255,6 @@ export default function AddCableForm({
                       : null
                   }
                   onChange={(option) => {
-                    console.log('Cambiando disposición a:', option.value)
                     field.onChange(option.value)
                   }}
                   disabled={installationLayerType !== 'singleLayer'}

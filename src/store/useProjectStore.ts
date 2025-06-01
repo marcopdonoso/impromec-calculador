@@ -168,11 +168,6 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
   ) => {
     try {
       set({ isLoading: true, error: null })
-      console.log('addCable - Iniciando proceso de agregar cable:', {
-        projectId,
-        sectorId,
-        cableData,
-      })
 
       // Si hay sectorId, agregar el cable al sector
       // Si no hay sectorId, agregar el cable directamente al proyecto
@@ -181,7 +176,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
         : await addCableToProject(projectId, cableData)
 
       if (response.error) {
-        console.error('addCable - Error al agregar cable:', response.error)
+        // Error al agregar cable
         set({
           error: response.error.message,
           isLoading: false,
@@ -190,23 +185,21 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       }
 
       if (response.data) {
-        console.log('addCable - Cable agregado exitosamente:', response.data)
+        // Cable agregado exitosamente
 
         // En lugar de actualizar manualmente el estado, vamos a recargar el proyecto completo
         // para asegurarnos de que tenemos los datos más actualizados del backend
-        console.log('addCable - Recargando proyecto para actualizar estado...')
         await get().fetchProject(projectId)
-        console.log('addCable - Proyecto recargado exitosamente')
 
         // Devolver el cable agregado
         return response.data.cable
       }
 
-      console.log('addCable - No se recibieron datos en la respuesta')
+      // No se recibieron datos en la respuesta
       set({ isLoading: false })
       return null
     } catch (error) {
-      console.error('addCable - Error inesperado:', error)
+      // Error inesperado al agregar cable
       set({
         error: 'Error al agregar el cable',
         isLoading: false,
