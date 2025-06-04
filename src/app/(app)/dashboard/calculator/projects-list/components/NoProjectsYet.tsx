@@ -4,7 +4,7 @@ export default function NoProjectsYet() {
   return (
     <div className="my-20 flex flex-col items-center justify-center">
       <Image
-        src={'/svg/icon_no-projects.svg'}
+        src={'/svg/Icon_no-projects.svg'}
         alt="no projects icon"
         width={100}
         height={100}
