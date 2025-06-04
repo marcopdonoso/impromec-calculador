@@ -28,6 +28,14 @@ export default function NavigableItemsTable({
         const dataRowCopy = { ...dataRow }
         const dataRowIndex = idx
         delete dataRowCopy.id
+        
+        // Filtrar campos que empiezan con guion bajo (campos internos)
+        Object.keys(dataRowCopy).forEach(key => {
+          if (key.startsWith('_')) {
+            delete dataRowCopy[key]
+          }
+        })
+        
         const entries = Object.values({
           ...dataRowCopy,
           createdAt: createdAt,

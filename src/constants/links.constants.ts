@@ -89,7 +89,7 @@ export const appLinks = {
     path: '/dashboard/calculator/edit-project/add-sector',
   },
   calculatorEditProject: {
-    name: '[Editar proyecto]',
+    name: 'Editar proyecto',
     path: '/dashboard/calculator/edit-project',
   },
   calculatorProjectsList: {
@@ -97,7 +97,7 @@ export const appLinks = {
     path: '/dashboard/calculator/projects-list',
   },
   calculatorResults: {
-    name: '[Resultados]',
+    name: 'Resultados',
     path: '/dashboard/calculator/results',
   },
   productsHome: {

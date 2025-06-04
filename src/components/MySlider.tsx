@@ -1,10 +1,29 @@
 'use client'
 import * as Slider from '@radix-ui/react-slider'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export default function MySlider() {
-  const [value, setValue] = useState([0])
+interface MySliderProps {
+  initialValue?: number
+  onChange?: (value: number) => void
+}
+
+export default function MySlider({ initialValue = 0, onChange }: MySliderProps) {
+  const [value, setValue] = useState([initialValue])
+
+  // Este useEffect es crucial para actualizar el slider cuando cambia el initialValue
+  // por ejemplo, cuando se cambia de sector
+  useEffect(() => {
+    setValue([initialValue])
+  }, [initialValue])
+
+  const handleValueChange = (newValue: number[]) => {
+    setValue(newValue)
+    if (onChange) {
+      onChange(newValue[0])
+    }
+  }
+
   return (
     <div className="flex w-full items-center gap-2 lg:gap-4">
       <Slider.Root
@@ -12,7 +31,7 @@ export default function MySlider() {
         step={5}
         className="relative flex h-5 flex-1 items-center"
         value={value}
-        onValueChange={(v) => setValue(v)}
+        onValueChange={handleValueChange}
       >
         <Slider.Track className="relative h-[10px] grow rounded-full bg-gray-input">
           <Slider.Range className="absolute h-full rounded-full bg-green-success" />

@@ -8,6 +8,7 @@ export interface Cable {
 
 export type CableArrangementType = 'horizontal' | 'clover'
 export interface CableInTray {
+  id?: string
   cable: Cable
   quantity: number
   arrangement?: CableArrangementType

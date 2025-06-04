@@ -1,134 +1,81 @@
 import NavigableItemsTable from '@/components/NavigableItemsTable'
-import { cables } from '@/constants/cables.constants'
-import { Project } from '@/models/project.model'
+import { ProjectListItem } from '@/models/project.model'
+import { getProjects } from '@/services/projects.service'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import NoProjectsYet from './NoProjectsYet'
 
 interface ProjectsNavigableTableProps {
   isSortedByRecent: boolean
 }
+
 export default function ProjectsNavigableTable({
   isSortedByRecent,
 }: ProjectsNavigableTableProps) {
-  // TODO: delete mock data
-  const projects: Project[] = [
-    {
-      id: '1-1-1-1-1',
-      projectName: 'Instalación Electrobol de su planta de azucar yeah',
-      projectCompany: 'Electrobol S.A',
-      projectLocation: 'La Paz',
-      sectors: [
-        {
-          sectorName: 'Sala de servidores',
-          trayTypeSelection: 'escalerilla',
-          reservePercentage: 40,
-          installationLayerSelection: 'singleLayer',
-          cablesInTray: [
-            { cable: cables[0], quantity: 20, arrangement: 'clover' },
-          ],
-          results: {
-            moreConvenientOption: {
-              id: '1-1-1-1-1',
-              trayName: 'Curva horizontal 90° (300 mm)',
-              trayDescription:
-                'Curva horizontal 90º. Radio = 300 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-              trayType: 'escalerilla',
-              technicalDetails: {
-                thicknessInMM: 2,
-                widthInMM: 100,
-                heightInMM: 60,
-                usefulAreaInMM2: 5400,
-                loadResistanceInKgM: 150,
-              },
-            },
-            otherRecommendedOptions: [
-              {
-                id: '2-2-2-2-2',
-                trayName: 'Curva horizontal 90° (600 mm)',
-                trayDescription:
-                  'Curva horizontal 90º. Radio = 600 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-                trayType: 'escalerilla',
-                technicalDetails: {
-                  thicknessInMM: 2,
-                  widthInMM: 100,
-                  heightInMM: 100,
-                  usefulAreaInMM2: 8000,
-                  loadResistanceInKgM: 150,
-                },
-              },
-            ],
-          },
-        },
-      ],
-      createdAt: '2022/05/31',
-    },
-    {
-      id: '2-2-2-2-2',
-      projectName: 'Instalación YPFB porque si muy bonito todo yeah',
-      projectCompany: 'YPFB',
-      projectLocation: 'Cochabamba',
-      sectors: [
-        {
-          sectorName: 'Sala de máquinas',
-          trayTypeSelection: 'canal',
-          reservePercentage: 40,
-          installationLayerSelection: 'singleLayer',
-          cablesInTray: [
-            { cable: cables[0], quantity: 20, arrangement: 'clover' },
-          ],
-          results: {
-            moreConvenientOption: {
-              id: '1-1-1-1-1',
-              trayName: 'Curva horizontal 90° (300 mm)',
-              trayDescription:
-                'Curva horizontal 90º. Radio = 300 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-              trayType: 'escalerilla',
-              technicalDetails: {
-                thicknessInMM: 2,
-                widthInMM: 100,
-                heightInMM: 60,
-                usefulAreaInMM2: 5400,
-                loadResistanceInKgM: 150,
-              },
-            },
-            otherRecommendedOptions: [
-              {
-                id: '2-2-2-2-2',
-                trayName: 'Curva horizontal 90° (600 mm)',
-                trayDescription:
-                  'Curva horizontal 90º. Radio = 600 mm.  Permite conducir  el cableado a través de un cambio de dirección ortogonal. El radio interno de esta curva es ideal  para instalaciones con cables de secciones menores, tanto en baja tensión como en ultra baja  tensión.',
-                trayType: 'escalerilla',
-                technicalDetails: {
-                  thicknessInMM: 2,
-                  widthInMM: 100,
-                  heightInMM: 100,
-                  usefulAreaInMM2: 8000,
-                  loadResistanceInKgM: 150,
-                },
-              },
-            ],
-          },
-        },
-      ],
-      createdAt: '2021/10/6',
-    },
-  ]
-  const noProjects: Project[] = []
+  const router = useRouter()
+  const [projects, setProjects] = useState<ProjectListItem[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  interface dataRow {
+  // Cargar proyectos desde el backend
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+
+        const response = await getProjects()
+
+        if (response.success && response.projects) {
+          setProjects(response.projects)
+        } else {
+          setError(response.error || 'Error al cargar los proyectos')
+        }
+      } catch (err) {
+        console.error('Error al cargar proyectos:', err)
+        setError('Error al cargar los proyectos')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchProjects()
+  }, [])
+
+  // Interfaz para las filas de datos
+  interface DataRow {
     projectName: string
-    sectorsNumber?: string | null
+    sectorsNumber: string
     createdAt: string
+    _originalId: string // ID original del proyecto para navegación
   }
 
-  const dataRows: dataRow[] = projects.map((project) => {
-    return {
-      projectName: project.projectName,
-      sectorsNumber: `${project.sectors?.length ?? 0} Sectores`,
-      createdAt: project.createdAt,
-    }
-  })
+  // Formatear los datos de proyectos para la tabla y mantener referencia al ID original
+  const formatProjects = () => {
+    if (!projects.length) return []
 
-  const dataRowsSortedByDate: dataRow[] = dataRows.sort((a, b) => {
+    return projects.map((project) => ({
+      projectName: project.projectName,
+      sectorsNumber: project.hasSectors
+        ? `${project.sectorsCount} Sectores`
+        : 'Sin sectores',
+      createdAt: formatDate(project.createdAt),
+      // Guardar el ID original del proyecto para la navegación
+      _originalId: project.id,
+    }))
+  }
+
+  // Mostrar fecha como viene del backend
+  const formatDate = (dateString: string) => {
+    if (!dateString) return 'Fecha no disponible'
+    return dateString
+  }
+
+  // Obtener las filas de datos formateadas
+  const dataRows: DataRow[] = formatProjects()
+
+  // Ordenar las filas por fecha según la preferencia del usuario
+  const dataRowsSortedByDate: DataRow[] = [...dataRows].sort((a, b) => {
     if (isSortedByRecent) {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     } else {
@@ -136,11 +83,35 @@ export default function ProjectsNavigableTable({
     }
   })
 
+  // Manejar la navegación a la página de edición del proyecto
   const handleNavigate = (dataRowIndex: number) => {
-    const projectId = projects[dataRowIndex].id
-    console.log(projectId)
+    if (dataRowIndex >= 0 && dataRowIndex < dataRowsSortedByDate.length) {
+      // Usar el ID original almacenado en la fila de datos
+      const projectId = dataRowsSortedByDate[dataRowIndex]._originalId
+      router.push(`/dashboard/calculator/results/${projectId}`)
+    }
   }
-  return dataRowsSortedByDate.length !== 0 ? (
+
+  // Mostrar indicador de carga mientras se obtienen los datos
+  if (isLoading) {
+    return (
+      <div className="my-8 flex w-full justify-center">
+        <p className="body_medium_medium">Cargando proyectos...</p>
+      </div>
+    )
+  }
+
+  // Mostrar mensaje de error si falla la carga
+  if (error) {
+    return (
+      <div className="my-8 flex w-full justify-center">
+        <p className="text-red-600 body_medium_medium">{error}</p>
+      </div>
+    )
+  }
+
+  // Mostrar la tabla de proyectos o el mensaje de no hay proyectos
+  return dataRowsSortedByDate.length > 0 ? (
     <NavigableItemsTable
       dataRows={dataRowsSortedByDate}
       title="Proyecto"

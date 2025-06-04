@@ -8,7 +8,7 @@ export default function CalculatorMain() {
     <main className="mt-14 flex w-full flex-col gap-4 lg:mt-20">
       <Link href={'/dashboard/calculator/projects-list'}>
         <Button variant="icon_right" icon={<ChevronRightIcon />}>
-          Mis proyectos [(0)]
+          Mis proyectos
         </Button>
       </Link>
       <Link href={appLinks.calculatorNewProject.path}>

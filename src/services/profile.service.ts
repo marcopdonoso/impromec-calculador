@@ -47,37 +47,27 @@ export const uploadAvatar = async (
     const formData = new FormData()
     formData.append('avatar', file)
 
-    const token = getCookie('token')
+    // Usar la instancia api para pasar por el interceptor
+    const response = await api.post('/user/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/avatar`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      }
-    )
-
-    if (!response.ok) {
-      const errorData = await response.json()
-      return {
-        error: {
-          message: errorData.message || 'Error al subir avatar',
-          statusCode: errorData.status,
-        },
-      }
-    }
-
-    const data = await response.json()
     return {
       data: {
-        user: data,
+        user: response.data,
       },
     }
   } catch (error) {
-    console.log('Error en uploadAvatar: ', error)
+    if (axios.isAxiosError(error)) {
+      return {
+        error: {
+          message: error.response?.data?.message || 'Error al subir avatar',
+          statusCode: error.response?.status || 500,
+        },
+      }
+    }
     return {
       error: {
         message: 'Error de conexión',
