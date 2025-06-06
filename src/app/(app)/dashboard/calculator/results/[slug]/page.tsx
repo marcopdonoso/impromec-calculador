@@ -6,6 +6,7 @@ import TrayRecommendationCard, {
 import { Results } from '@/models/project.model'
 import { getProjectById } from '@/services/project.service'
 import { useProjectStore } from '@/store/useProjectStore'
+import { useUserStore } from '@/store/useStore'
 import {
   ArrowDownTrayIcon,
   PencilIcon,
@@ -27,6 +28,7 @@ import ResultsHeader from './components/ResultsHeader'
 import { activeSectorGlobal } from './components/SectorsListbox'
 import SelectedTrayCard from './components/SelectedTrayCard'
 import UnfinishedSectorsListMessages from './components/UnfinishedSectorsListMessages'
+import { useReportGeneration } from '@/hooks/useReportGeneration'
 
 export default function ResultsPage() {
   const params = useParams()
@@ -34,6 +36,7 @@ export default function ResultsPage() {
   const searchParams = useSearchParams()
   const projectId = params.slug as string
   const { currentProject, setCurrentProject } = useProjectStore()
+  const { user } = useUserStore()
 
   // Verificar si se llegó desde el proceso de cálculo
   const fromCalculation = searchParams.get('fromCalculation') === 'true'
@@ -150,9 +153,9 @@ export default function ResultsPage() {
 
     return () => clearInterval(intervalId) // Limpiar el intervalo al desmontar
   }, [getResults, getCables])
-  // Ya no necesitamos estas variables constantes, usaremos los estados
-  // const results = getResults()
-  // const cablesInTray = getCables()
+  
+  // Hook para la generación de la memoria de cálculo
+  const { isGenerating, generateReport } = useReportGeneration()
 
   const moreConvenientOptionToCard: TrayRecommendationCardProps | null =
     currentResults?.moreConvenientOption
@@ -175,7 +178,7 @@ export default function ResultsPage() {
           {fromCalculation ? (
             <ResultsHeader />
           ) : (
-            /* 
+            /*
              * Texto invisible que mantiene el mismo ancho que el ResultsHeader sin mostrar contenido
              * Esto soluciona el problema de que el layout cambie de ancho cuando no se muestra ResultsHeader
              * La clase 'invisible' de Tailwind oculta el texto pero mantiene su espacio en el flujo del documento
@@ -237,8 +240,25 @@ export default function ResultsPage() {
         </div>
 
         <div className="flex w-full flex-col gap-4 lg:mb-14 lg:flex-row lg:gap-10">
-          <Button variant="secondary" icon={<ArrowDownTrayIcon />}>
-            Descargar
+          <Button
+            variant="secondary"
+            icon={<ArrowDownTrayIcon />}
+            disabled={isGenerating}
+            onClick={() => {
+              // Verificamos que tenemos los datos necesarios
+              if (currentProject && user) {
+                generateReport(user, currentProject)
+              }
+            }}
+          >
+            {isGenerating ? (
+              <span className="flex items-center gap-2">
+                Generando...
+                <span className="animate-pulse">⦿</span>
+              </span>
+            ) : (
+              'Generar memoria de cálculo y Descargar'
+            )}
           </Button>
 
           <Button icon={<PhoneIcon />}>
