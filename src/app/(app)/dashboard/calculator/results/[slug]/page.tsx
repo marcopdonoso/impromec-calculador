@@ -3,12 +3,14 @@ import Button from '@/components/Button'
 import TrayRecommendationCard, {
   TrayRecommendationCardProps,
 } from '@/components/TrayRecommendationCard'
+import { useReportGeneration } from '@/hooks/useReportGeneration'
 import { Results } from '@/models/project.model'
 import { getProjectById } from '@/services/project.service'
 import { useProjectStore } from '@/store/useProjectStore'
 import { useUserStore } from '@/store/useStore'
 import {
   ArrowDownTrayIcon,
+  DocumentIcon,
   PencilIcon,
   PhoneIcon,
 } from '@heroicons/react/24/outline'
@@ -28,7 +30,6 @@ import ResultsHeader from './components/ResultsHeader'
 import { activeSectorGlobal } from './components/SectorsListbox'
 import SelectedTrayCard from './components/SelectedTrayCard'
 import UnfinishedSectorsListMessages from './components/UnfinishedSectorsListMessages'
-import { useReportGeneration } from '@/hooks/useReportGeneration'
 
 export default function ResultsPage() {
   const params = useParams()
@@ -153,9 +154,14 @@ export default function ResultsPage() {
 
     return () => clearInterval(intervalId) // Limpiar el intervalo al desmontar
   }, [getResults, getCables])
-  
+
   // Hook para la generación de la memoria de cálculo
-  const { isGenerating, generateReport } = useReportGeneration()
+  const {
+    isGenerating,
+    generateReport,
+    openReport,
+    error: reportError,
+  } = useReportGeneration()
 
   const moreConvenientOptionToCard: TrayRecommendationCardProps | null =
     currentResults?.moreConvenientOption
@@ -242,22 +248,36 @@ export default function ResultsPage() {
         <div className="flex w-full flex-col gap-4 lg:mb-14 lg:flex-row lg:gap-10">
           <Button
             variant="secondary"
-            icon={<ArrowDownTrayIcon />}
+            icon={
+              currentProject?.calculationReport ? (
+                <DocumentIcon />
+              ) : (
+                <ArrowDownTrayIcon />
+              )
+            }
             disabled={isGenerating}
             onClick={() => {
               // Verificamos que tenemos los datos necesarios
-              if (currentProject && user) {
-                generateReport(user, currentProject)
+              if (currentProject) {
+                if (currentProject.calculationReport) {
+                  // Si ya existe un reporte, simplemente lo abrimos
+                  openReport(currentProject.calculationReport.url)
+                } else if (user) {
+                  // Si no existe un reporte, lo generamos (necesitamos user)
+                  generateReport(user, currentProject)
+                }
               }
             }}
           >
             {isGenerating ? (
               <span className="flex items-center gap-2">
                 Generando...
-                <span className="animate-pulse">⦿</span>
+                <span className="animate-pulse">◎</span>
               </span>
+            ) : currentProject?.calculationReport ? (
+              'Abrir reporte de cálculo'
             ) : (
-              'Generar memoria de cálculo y Descargar'
+              'Generar reporte de cálculo'
             )}
           </Button>
 

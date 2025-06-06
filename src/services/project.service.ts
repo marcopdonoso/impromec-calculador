@@ -1,5 +1,5 @@
 import { CableInTray } from '@/models/cable.model'
-import { InstallationLayerType, Project, Sector } from '@/models/project.model'
+import { CalculationReport, InstallationLayerType, Project, Sector } from '@/models/project.model'
 import { TrayType } from '@/models/tray.model'
 import { NewProjectFormData } from '@/schemas/project.schema'
 import { api } from './api.service'
@@ -173,13 +173,10 @@ export const getProjectById = async (
   projectId: string
 ): Promise<GetProjectResponse> => {
   try {
-    const response = await api.get<ApiResponse<{ project: Project }>>(
-      `/projects/${projectId}`
-    )
-
+    const response = await api.get<ApiResponse<{ project: Project }>>(`/projects/${projectId}`)
+    
     if (response.data.success) {
       // Proyecto recuperado correctamente
-
       return {
         data: {
           project: response.data.project,

@@ -37,6 +37,14 @@ export interface DefaultSector {
   sectorName: string
 }
 
+/**
+ * Interfaz para el reporte de cálculo generado
+ */
+export interface CalculationReport {
+  url: string
+  fileId: string
+}
+
 export interface Project {
   id: string
   projectName: string
@@ -52,5 +60,6 @@ export interface Project {
   reservePercentage?: number // Para proyectos sin sectores
   installationLayerSelection?: InstallationLayerType | null // Para proyectos sin sectores
   results?: Results | null // Para proyectos sin sectores
+  calculationReport?: CalculationReport | null // Reporte de cálculo generado
   createdAt?: string
 }
