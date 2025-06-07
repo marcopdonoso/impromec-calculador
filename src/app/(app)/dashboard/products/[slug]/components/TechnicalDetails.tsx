@@ -3,7 +3,9 @@ import MyListbox, { Option } from '@/components/MyListbox'
 import MyRadiogroup, { RadioGroupItem } from '@/components/MyRadiogroup'
 import { ProductDetails } from '@/models/product.model'
 import { capitalizeFirstLetter } from '@/utilities/capitalize-first-letter.utility'
-import { CheckCircleIcon, PhoneIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon } from '@heroicons/react/24/outline'
+import { BsWhatsapp } from 'react-icons/bs'
+import { useUserStore } from '@/store/useStore'
 import { useState } from 'react'
 
 interface TechnicalDetailsProps {
@@ -11,7 +13,35 @@ interface TechnicalDetailsProps {
 }
 
 export default function TechnicalDetails({ product }: TechnicalDetailsProps) {
+  const { user } = useUserStore()
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0)
+
+  const handleProductInquiryViaWhatsApp = () => {
+    if (!user || !product) return;
+
+    const whatsAppPhoneNumber = '59172216766';
+    let message = 'Hola, estoy interesado/a y quisiera más información sobre el siguiente producto:\n\n';
+
+    message += '*Datos del Producto:*\n';
+    message += `Nombre: ${product.name || 'N/A'}\n`;
+    message += `Tipo: ${product.type || 'N/A'}\n`;
+    if (product.code) {
+      message += `Código: ${product.code}\n`;
+    }
+    message += '\n';
+
+    message += '*Mis Datos de Contacto:*\n';
+    message += `Nombre: ${user.name || 'N/A'}\n`;
+    message += `Empresa: ${user.company || 'N/A'}\n`;
+    message += `Email: ${user.email || 'N/A'}\n\n`;
+
+    message += 'Espero su pronta respuesta. Gracias.';
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${whatsAppPhoneNumber}?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, '_blank');
+  };
   const [selectedHeight, setSelectedHeight] = useState<Option | null>(null)
   const [selectedWidth, setSelectedWidth] = useState<Option | null>(null)
 
@@ -58,8 +88,13 @@ export default function TechnicalDetails({ product }: TechnicalDetailsProps) {
         <p className="text-gray-text_inactive">Referencia {product?.code}</p>
       </div>
 
-      <Button icon={<PhoneIcon />} className="mt-6">
-        Solicitar asesoría de un ejecutivo
+      <Button
+        icon={<BsWhatsapp />}
+        className="mt-6"
+        onClick={handleProductInquiryViaWhatsApp}
+        disabled={!user || !product}
+      >
+        Consultar por WhatsApp
       </Button>
 
       <div className="mt-4 flex flex-col gap-6 p-4 lg:px-0 lg:pb-0">
