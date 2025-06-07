@@ -62,7 +62,7 @@ export default function SaveAndCalc({
       const projectId = currentProject.id
       // Asegurarse de que sectorId sea un string o null, nunca undefined
       const sectorId =
-        hasSectors && activeSector && activeSector.id ? activeSector.id : null
+        hasSectors && activeSector && activeSector.id ? activeSector.id : undefined
 
       // Usar los valores de UI pasados como props
       let trayType: TrayType = trayTypeUI || 'escalerilla'
