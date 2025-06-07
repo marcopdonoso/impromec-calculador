@@ -39,14 +39,15 @@ export interface DefaultSector {
 
 /**
  * Interfaz para el reporte de cálculo generado
+ * El fileId es el identificador del documento en PDFMonkey
  */
 export interface CalculationReport {
-  url: string
   fileId: string
 }
 
 export interface Project {
   id: string
+  _id?: string // Campo opcional para compatibilidad con respuestas de MongoDB
   projectName: string
   projectCompany: string
   projectLocation: string

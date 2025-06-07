@@ -4,7 +4,7 @@ import TrayRecommendationCard, {
   TrayRecommendationCardProps,
 } from '@/components/TrayRecommendationCard'
 import { useReportGeneration } from '@/hooks/useReportGeneration'
-import { Results } from '@/models/project.model'
+import { Results, Sector } from '@/models/project.model'; // Added Sector import
 import { getProjectById } from '@/services/project.service'
 import { useProjectStore } from '@/store/useProjectStore'
 import { useUserStore } from '@/store/useStore'
@@ -13,9 +13,12 @@ import {
   DocumentIcon,
   PencilIcon,
   PhoneIcon,
+  Cog6ToothIcon, // Added for Generate Report
+  ArrowTopRightOnSquareIcon, // Added for Open Report
+  ArrowPathIcon, // Added for loading spinner
 } from '@heroicons/react/24/outline'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import AddedCablesTable from '../../components/AddedCablesTable'
 import ModalOverlay from '../../components/ModalOverlay'
 import ProjectOverviewContent from '../../components/ProjectOverviewContent'
@@ -27,7 +30,7 @@ import MyProjectsLinkButton from './components/MyProjectsLinkButton'
 import OtherTrayOptionsCollapsible from './components/OtherTrayOptionsCollapsible'
 import ProjectOverviewTitle from './components/ProjectOverviewTitle'
 import ResultsHeader from './components/ResultsHeader'
-import { activeSectorGlobal } from './components/SectorsListbox'
+import SectorsListbox from './components/SectorsListbox'; // Ensure SectorsListbox is imported if not already explicitly
 import SelectedTrayCard from './components/SelectedTrayCard'
 import UnfinishedSectorsListMessages from './components/UnfinishedSectorsListMessages'
 
@@ -43,13 +46,34 @@ export default function ResultsPage() {
   const fromCalculation = searchParams.get('fromCalculation') === 'true'
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  // Estado para controlar si el reporte necesita regeneración
+  // Ya no necesitamos este estado, el hook se encarga de la regeneración
+  // const [needsRegeneration, setNeedsRegeneration] = useState(false)
   const [isDeleteProjectModalVisible, setIsDeleteProjectModalVisible] =
     useState(false)
+  const [currentButtonAction, setCurrentButtonAction] = useState<'generate' | 'open' | null>(null);
+  const [activeSectorId, setActiveSectorId] = useState<string | null>(null); // State for active sector ID
+
   // Crear estados para resultados y cables que se actualizarán cuando cambie el sector activo
   const [currentResults, setCurrentResults] = useState<Results | undefined>(
     undefined
   )
   const [currentCables, setCurrentCables] = useState<any[]>([])
+
+  // Logic to determine if action buttons should be shown
+  const isUnfinishedProjectForButtonLogic = !currentProject?.hasSectors && !currentProject?.results;
+  const unfinishedSectorsForButtonLogic = currentProject?.hasSectors && currentProject?.sectors
+    ? currentProject.sectors.filter(sector => !sector.results)
+    : [];
+  const canShowActionButtons = !isUnfinishedProjectForButtonLogic && unfinishedSectorsForButtonLogic.length === 0;
+
+  // Derive activeSector object from activeSectorId and currentProject.sectors
+  const activeSector = useMemo(() => {
+    if (!activeSectorId || !currentProject?.hasSectors || !currentProject.sectors) {
+      return null;
+    }
+    return currentProject.sectors.find(sector => sector.id === activeSectorId) || null;
+  }, [activeSectorId, currentProject]);
 
   // Obtener el proyecto cuando se monta el componente
   useEffect(() => {
@@ -64,8 +88,16 @@ export default function ResultsPage() {
         const response = await getProjectById(projectId)
 
         if (response.data) {
+          const projectData = response.data.project;
           // Actualizar el store global con los datos del proyecto
-          setCurrentProject(response.data.project)
+          setCurrentProject(projectData);
+
+          // Initialize activeSectorId based on the fetched project data
+          if (projectData.hasSectors && projectData.sectors && projectData.sectors.length > 0) {
+            setActiveSectorId(projectData.sectors[0]?.id || null); // Default to the first sector
+          } else {
+            setActiveSectorId(null); // No sectors or not a multi-sector project
+          }
         } else {
           setError(response.error?.message || 'Error al cargar el proyecto')
         }
@@ -84,84 +116,83 @@ export default function ResultsPage() {
 
   // Obtener los resultados del proyecto (ya sea del sector activo o del proyecto sin sectores)
   const getResults = useCallback(() => {
-    if (!currentProject) return undefined
+    if (!currentProject) return undefined;
 
-    // Si hay un sector activo seleccionado, usar sus resultados
-    if (activeSectorGlobal && activeSectorGlobal.results) {
-      // Usando resultados del sector activo
-      return activeSectorGlobal.results
-    }
-    // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
-    else if (
-      currentProject.hasSectors &&
-      currentProject.sectors &&
-      currentProject.sectors.length > 0
-    ) {
-      // Buscar el primer sector con resultados o usar el primero
-      const sectorWithResults =
-        currentProject.sectors.find((sector) => sector.results) ||
-        currentProject.sectors[0]
-      // Usando resultados del primer sector con resultados
-      return sectorWithResults.results || undefined
+    if (currentProject.hasSectors) {
+      // For projects with sectors, use the activeSector's results (derived from activeSectorId)
+      return activeSector?.results || undefined;
     } else {
-      // Proyecto sin sectores
-      // Usando resultados del proyecto sin sectores
-      return currentProject.results || undefined
+      // For projects without sectors, use the project's top-level results
+      return currentProject.results || undefined;
     }
-  }, [currentProject])
+  }, [currentProject, activeSector]); // <-- Use derived activeSector
 
   // Obtener los cables del proyecto (ya sea del sector activo o del proyecto sin sectores)
   const getCables = useCallback(() => {
-    if (!currentProject) return []
+    if (!currentProject) return [];
 
-    // Si hay un sector activo seleccionado, usar sus cables
-    if (activeSectorGlobal) {
-      // Usando cables del sector activo
-      // Primero intentar con la propiedad cables, luego con cablesInTray
-      return activeSectorGlobal.cables || activeSectorGlobal.cablesInTray || []
-    }
-    // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
-    else if (
-      currentProject.hasSectors &&
-      currentProject.sectors &&
-      currentProject.sectors.length > 0
-    ) {
-      // Buscar el primer sector con resultados o usar el primero
-      const sectorWithResults =
-        currentProject.sectors.find((sector) => sector.results) ||
-        currentProject.sectors[0]
-      // Usando cables del primer sector con resultados
-      return sectorWithResults.cables || sectorWithResults.cablesInTray || []
+    if (currentProject.hasSectors) {
+      // For projects with sectors, use the activeSector's cables (derived from activeSectorId)
+      // Ensure to check both possible property names for cables from different data structures
+      return activeSector?.cables || activeSector?.cablesInTray || [];
     } else {
-      // Proyecto sin sectores
-      // Usando cables del proyecto sin sectores
-      return currentProject.cables || []
+      // For projects without sectors, use the project's top-level cables
+      return currentProject.cables || [];
     }
-  }, [currentProject])
+  }, [currentProject, activeSector]); // <-- Use derived activeSector
 
-  // Actualizar los estados cuando cambie el proyecto o cuando cambie el sector activo
+  // Actualizar los estados currentResults y currentCables reactively
   useEffect(() => {
-    // Actualizar resultados y cables
-    setCurrentResults(getResults())
-    setCurrentCables(getCables())
-
-    // Crear un intervalo para verificar cambios en el sector activo
-    const intervalId = setInterval(() => {
-      // Solo verificar si activeSectorGlobal ha cambiado
-      setCurrentResults(getResults())
-      setCurrentCables(getCables())
-    }, 500) // Verificar cada 500ms
-
-    return () => clearInterval(intervalId) // Limpiar el intervalo al desmontar
-  }, [getResults, getCables])
+    if (currentProject) {
+      if (currentProject.hasSectors) {
+        // If it's a project with sectors, results/cables depend on the activeSector
+        setCurrentResults(activeSector?.results || undefined);
+        setCurrentCables(activeSector?.cables || activeSector?.cablesInTray || []);
+      } else {
+        // If it's a project without sectors, use top-level project results/cables
+        setCurrentResults(currentProject.results || undefined);
+        setCurrentCables(currentProject.cables || []);
+      }
+    } else {
+      // If no currentProject, clear results and cables
+      setCurrentResults(undefined);
+      setCurrentCables([]);
+    }
+  }, [currentProject, activeSector]); // Update when project or derived activeSector changes
 
   // Hook para la generación de la memoria de cálculo
   const {
     isGenerating,
     generateReport,
-    openReport,
+    openReportWithFreshUrl,
     error: reportError,
   } = useReportGeneration()
+
+  // Usamos un estado local para controlar la visualización del botón
+  const [needsGeneration, setNeedsGeneration] = useState(false)
+  // const { currentProject } = useProjectStore() // Removed redundant declaration, currentProject is already available from line 38
+
+  useEffect(() => {
+    const reportExists = Boolean(currentProject?.calculationReport)
+    // console.log(`[ResultsPage] useEffect: currentProject.id=${currentProject?.id}, reportExists=${reportExists}. Current needsGeneration=${needsGeneration}`)
+
+    if (reportExists) {
+      if (needsGeneration) {
+        // console.log('[ResultsPage] useEffect: Report EXISTS in store. Setting needsGeneration to false.')
+        setNeedsGeneration(false)
+      }
+    } else {
+      if (!needsGeneration) {
+        // console.log('[ResultsPage] useEffect: Report DOES NOT EXIST in store. Setting needsGeneration to true.')
+        setNeedsGeneration(true)
+      }
+    }
+  }, [currentProject, needsGeneration]) // Added needsGeneration to dependency array
+
+  // Callback function to handle sector changes from SectorsListbox
+  const handleSectorChange = useCallback((selectedSector: Sector) => {
+    setActiveSectorId(selectedSector.id || null);
+  }, []); // setActiveSectorId is stable, no dependencies needed
 
   const moreConvenientOptionToCard: TrayRecommendationCardProps | null =
     currentResults?.moreConvenientOption
@@ -184,11 +215,6 @@ export default function ResultsPage() {
           {fromCalculation ? (
             <ResultsHeader />
           ) : (
-            /*
-             * Texto invisible que mantiene el mismo ancho que el ResultsHeader sin mostrar contenido
-             * Esto soluciona el problema de que el layout cambie de ancho cuando no se muestra ResultsHeader
-             * La clase 'invisible' de Tailwind oculta el texto pero mantiene su espacio en el flujo del documento
-             */
             <div>
               <p className="body_small_regular invisible text-center lg:body_large_regular">
                 Podrás revisar el resumen de tu proyecto junto a las
@@ -209,26 +235,63 @@ export default function ResultsPage() {
             {currentProject && (
               <ProjectOverviewContent project={currentProject} />
             )}
+            {currentProject?.hasSectors && currentProject.sectors && currentProject.sectors.length > 0 && (
+              <div className="mt-4 mb-4">
+                <SectorsListbox
+                  sectors={currentProject.sectors}
+                  activeSectorId={activeSectorId}
+                  onSectorChange={handleSectorChange}
+                />
+              </div>
+            )}
           </div>
 
-          <div className="mb-6 w-full">
-            <CalcDataAndResultsHeader />
-          </div>
+          {/* Conditional rendering for the entire Calculation Data and Results section */}
+          {(currentProject && !currentProject.hasSectors) || (currentProject && currentProject.hasSectors && activeSector) ? (
+            <>
+              {/* This div is ALWAYS rendered if the outer condition is met, preserving its mb-6 for spacing */}
+              <div className="mb-6 w-full">
+                {/* CalcDataAndResultsHeader content is rendered INSIDE this div ONLY if project does NOT have sectors */}
+                {currentProject && !currentProject.hasSectors && (
+                  <CalcDataAndResultsHeader />
+                )}
+                {/* If project has sectors, this div is effectively empty but its mb-6 still applies, spacing out the next element. */}
+              </div>
 
-          <div className="mb-6 w-full">
-            <SelectedTrayCard />
+              <div className="mb-6 w-full">
+                {(() => {
+              const dataSource = currentProject?.hasSectors ? activeSector : currentProject;
+              if (!dataSource) return null; // Or some placeholder/loading UI
+
+              // Provide default values if properties are potentially null/undefined from dataSource
+              const trayType = dataSource.trayTypeSelection ?? 'escalerilla';
+              const reservePercentage = dataSource.reservePercentage ?? 20;
+              const installationLayer = dataSource.installationLayerSelection ?? 'adosada';
+
+              return (
+                <SelectedTrayCard 
+                  trayType={trayType}
+                  reservePercentage={reservePercentage}
+                  installationLayer={installationLayer}
+                />
+              );
+            })()}
           </div>
 
           <div className="mb-8 w-full lg:mb-16">
             <AddedCablesTable cablesInTray={currentCables} />
           </div>
 
-          <LoadAreaTotals />
+          <LoadAreaTotals activeSectorId={activeSectorId} />
+            </>
+          ) : null}
+          {/* End of conditional rendering for Calculation Data and Results section */}
 
           <MostConvenientIconLabel />
 
           {moreConvenientOptionToCard && (
             <TrayRecommendationCard
+              key={moreConvenientOptionToCard.title}
               title={moreConvenientOptionToCard.title}
               subtitle={moreConvenientOptionToCard.subtitle}
               image={moreConvenientOptionToCard.image}
@@ -242,42 +305,67 @@ export default function ResultsPage() {
 
           <hr className="my-6 text-gray-placeholder lg:my-12" />
 
-          <OtherTrayOptionsCollapsible />
+          <OtherTrayOptionsCollapsible activeSectorId={activeSectorId} />
         </div>
 
-        <div className="flex w-full flex-col gap-4 lg:mb-14 lg:flex-row lg:gap-10">
+        {canShowActionButtons && (
+          <div className="flex w-full flex-col gap-4 lg:mb-14 lg:flex-row lg:gap-10">
           <Button
             variant="secondary"
             icon={
-              currentProject?.calculationReport ? (
-                <DocumentIcon />
+              isGenerating ? (
+                <ArrowPathIcon className="h-5 w-5 animate-spin" />
+              ) : needsGeneration ? (
+                <Cog6ToothIcon className="h-5 w-5" />
               ) : (
-                <ArrowDownTrayIcon />
+                <ArrowTopRightOnSquareIcon className="h-5 w-5" />
               )
             }
             disabled={isGenerating}
             onClick={() => {
-              // Verificamos que tenemos los datos necesarios
-              if (currentProject) {
-                if (currentProject.calculationReport) {
-                  // Si ya existe un reporte, simplemente lo abrimos
-                  openReport(currentProject.calculationReport.url)
-                } else if (user) {
-                  // Si no existe un reporte, lo generamos (necesitamos user)
-                  generateReport(user, currentProject)
+              // console.log('[ResultsPage] onClick: Button clicked. State at click time:', {
+              //   reportInStoreOnClick: Boolean(currentProject?.calculationReport),
+              //   needsGenerationOnClick: needsGeneration,
+              //   isGeneratingOnClick: isGenerating,
+              // });
+
+              if (isGenerating) return;
+
+              if (currentProject && user) {
+                if (!needsGeneration) {
+                  setCurrentButtonAction('open');
+                  // console.log('[ResultsPage] onClick: Action based on needsGeneration=false. Attempting to open existing report.');
+                  openReportWithFreshUrl(projectId).then((result) => {
+                    // console.log('[ResultsPage] onClick: Result of openReportWithFreshUrl:', result);
+                    if (!result.success && result.needsRegeneration) {
+                      // console.log('[ResultsPage] onClick: openReportWithFreshUrl indicated needsRegeneration. Reloading page as per user preference.');
+                      window.location.reload();
+                    } else if (result.success) {
+                      // console.log('[ResultsPage] onClick: openReportWithFreshUrl successful. Report should be open.');
+                    } else {
+                      // console.log('[ResultsPage] onClick: openReportWithFreshUrl failed but no regeneration needed. Error should be displayed by hook.');
+                    }
+                  }).finally(() => setCurrentButtonAction(null));
+                } else {
+                  setCurrentButtonAction('generate');
+                  // console.log('[ResultsPage] onClick: Action based on needsGeneration=true. Generating new report.');
+                  generateReport(user, currentProject).then(() => {
+                    // console.log('[ResultsPage] onClick: Result of generateReport. Hook updated store. useEffect should sync UI or page will reload if needed.');
+                  }).finally(() => setCurrentButtonAction(null));
                 }
               }
             }}
           >
             {isGenerating ? (
               <span className="flex items-center gap-2">
-                Generando...
-                <span className="animate-pulse">◎</span>
+                {currentButtonAction === 'generate' && 'Generando reporte...'}
+                {currentButtonAction === 'open' && 'Abriendo reporte...'}
+                {!currentButtonAction && 'Procesando...'}
               </span>
-            ) : currentProject?.calculationReport ? (
-              'Abrir reporte de cálculo'
             ) : (
-              'Generar reporte de cálculo'
+              needsGeneration
+                ? 'Generar reporte de cálculo'
+                : 'Abrir reporte de cálculo'
             )}
           </Button>
 
@@ -285,6 +373,7 @@ export default function ResultsPage() {
             Solicitar Cotización del Proyecto
           </Button>
         </div>
+      )}
 
         <hr className="my-6 w-full text-gray-placeholder lg:hidden" />
 

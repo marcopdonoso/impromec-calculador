@@ -1,7 +1,8 @@
 import { CableInTray } from '@/models/cable.model'
 import { InstallationLayerType, Project, Sector } from '@/models/project.model'
 import { TrayType } from '@/models/tray.model'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react';
+import { useProjectStore } from '@/store/useProjectStore';
 import Cables from './Cables'
 import InstallationLayerSelector from './InstallationLayerSelector'
 import Tray from './Tray'
@@ -12,7 +13,6 @@ import {
   updateSectorReservePercentage
 } from '@/services/project.service'
 import { useParams } from 'next/navigation'
-import { useProjectStore } from '@/store/useProjectStore'
 
 interface DataForCalculationProps {
   currentSector?: Sector | null
@@ -74,97 +74,201 @@ export default function DataForCalculation({
     }
   }, [currentSector, currentProject, isProjectWithoutSectors]);
 
+  const { updateProjectDataWithSector } = useProjectStore();
+
   const handleInstallationLayerChange = async (value: InstallationLayerType) => {
-    setInstallationLayer(value);
+    setInstallationLayer(value); // Optimistically update local UI
     
-    try {
-      if (isProjectWithoutSectors && currentProject) {
-        if (currentProject.defaultSector && currentProject.defaultSector.id) {
-          const updateResponse = await updateSectorInstallationLayer(
-            currentProject.id,
-            currentProject.defaultSector.id,
-            value
-          );
-          
-          if (!updateResponse.success) {
-            // Manejar error si es necesario
-          }
-        }
-      } else if (currentSector && currentSector.id && currentProject) {
+    let sectorIdToUpdate: string | undefined;
+    let projectIdForUpdate: string | undefined = currentProject?.id;
+
+    if (isProjectWithoutSectors && currentProject?.defaultSector?.id) {
+      sectorIdToUpdate = currentProject.defaultSector.id;
+    } else if (currentSector?.id) {
+      sectorIdToUpdate = currentSector.id;
+    }
+
+    if (projectIdForUpdate && sectorIdToUpdate) {
+      try {
         const updateResponse = await updateSectorInstallationLayer(
-          currentProject.id,
-          currentSector.id,
+          projectIdForUpdate,
+          sectorIdToUpdate,
           value
         );
+        if (updateResponse.success && updateResponse.sector) {
+          console.log('Sector installation layer updated successfully in backend, sector data:', updateResponse.sector);
+          // Sanitize trayTypeSelection before passing to store
+          const rawTrayType = updateResponse.sector.trayTypeSelection;
+          let sanitizedTrayType: TrayType | null | undefined = null;
+          if (rawTrayType === 'escalerilla' || rawTrayType === 'canal') {
+            sanitizedTrayType = rawTrayType;
+          } else if (rawTrayType === null || rawTrayType === undefined) {
+            sanitizedTrayType = rawTrayType;
+          } else {
+            console.warn(`[DataForCalculation] Invalid trayTypeSelection ('${rawTrayType}') received from backend for sector ${updateResponse.sector.id}. Defaulting to null.`);
+            sanitizedTrayType = null;
+          }
+          const rawInstallLayer = updateResponse.sector.installationLayerSelection;
+          let sanitizedInstallLayer: InstallationLayerType | null | undefined = null;
+          if (rawInstallLayer === 'singleLayer' || rawInstallLayer === 'multiLayer') {
+            sanitizedInstallLayer = rawInstallLayer;
+          } else if (rawInstallLayer === null || rawInstallLayer === undefined) {
+            sanitizedInstallLayer = rawInstallLayer;
+          } else {
+            console.warn(`[DataForCalculation] Invalid installationLayerSelection ('${rawInstallLayer}') received from backend for sector ${updateResponse.sector.id}. Defaulting to null.`);
+            sanitizedInstallLayer = null;
+          }
+
+          const sectorUpdateForStore = {
+            ...updateResponse.sector,
+            trayTypeSelection: sanitizedTrayType,
+            installationLayerSelection: sanitizedInstallLayer,
+          };
+          updateProjectDataWithSector(sectorUpdateForStore);
+          console.log('[DataForCalc] Installation layer updated and store synced for sector:', updateResponse.sector.id);
+        } else {
+          console.error('[DataForCalc] Error updating installation layer via service:', updateResponse.message);
+          // Potentially revert optimistic UI update here if needed
+        }
+      } catch (error) {
+        console.error('[DataForCalc] Failed to call updateSectorInstallationLayer service:', error);
+        // Potentially revert optimistic UI update here if needed
       }
-    } catch (error) {
-      // Manejo de error
+    } else {
+      console.error('[DataForCalc] Cannot update installation layer: Project ID or Sector ID is missing.');
     }
   };
 
-  const componentKey = isProjectWithoutSectors 
-    ? `project-${currentProject?.id}`
-    : `sector-${currentSector?.id}`;
-
   const handleTrayTypeChange = async (newType: TrayType) => {
-    try {
-      if (isProjectWithoutSectors && currentProject) {
-        if (currentProject.defaultSector && currentProject.defaultSector.id) {
-          const updateResponse = await updateSectorTrayType(
-            currentProject.id,
-            currentProject.defaultSector.id,
-            newType
-          );
-          
-          if (updateResponse.success) {
-            onTrayTypeChange && onTrayTypeChange(newType);
-          }
-        }
-      } else if (currentSector && currentSector.id && currentProject) {
+    // Optimistically update UI via onTrayTypeChange callback, which should update parent state
+    onTrayTypeChange && onTrayTypeChange(newType);
+
+    let sectorIdToUpdate: string | undefined;
+    let projectIdForUpdate: string | undefined = currentProject?.id;
+
+    if (isProjectWithoutSectors && currentProject?.defaultSector?.id) {
+      sectorIdToUpdate = currentProject.defaultSector.id;
+    } else if (currentSector?.id) {
+      sectorIdToUpdate = currentSector.id;
+    }
+
+    if (projectIdForUpdate && sectorIdToUpdate) {
+      try {
         const updateResponse = await updateSectorTrayType(
-          currentProject.id,
-          currentSector.id,
+          projectIdForUpdate,
+          sectorIdToUpdate,
           newType
         );
-        
-        if (updateResponse.success) {
-          onTrayTypeChange && onTrayTypeChange(newType);
+        if (updateResponse.success && updateResponse.sector) {
+          console.log('Sector tray type updated successfully in backend, sector data:', updateResponse.sector);
+          const rawTrayType = updateResponse.sector.trayTypeSelection;
+          let sanitizedTrayType: TrayType | null | undefined = null;
+          if (rawTrayType === 'escalerilla' || rawTrayType === 'canal') {
+            sanitizedTrayType = rawTrayType;
+          } else if (rawTrayType === null || rawTrayType === undefined) {
+            sanitizedTrayType = rawTrayType;
+          } else {
+            console.warn(`[DataForCalculation] Invalid trayTypeSelection ('${rawTrayType}') received from backend for sector ${updateResponse.sector.id}. Defaulting to null.`);
+            sanitizedTrayType = null;
+          }
+          const rawInstallLayer = updateResponse.sector.installationLayerSelection;
+          let sanitizedInstallLayer: InstallationLayerType | null | undefined = null;
+          if (rawInstallLayer === 'singleLayer' || rawInstallLayer === 'multiLayer') {
+            sanitizedInstallLayer = rawInstallLayer;
+          } else if (rawInstallLayer === null || rawInstallLayer === undefined) {
+            sanitizedInstallLayer = rawInstallLayer;
+          } else {
+            console.warn(`[DataForCalculation] Invalid installationLayerSelection ('${rawInstallLayer}') received from backend for sector ${updateResponse.sector.id}. Defaulting to null.`);
+            sanitizedInstallLayer = null;
+          }
+
+          const sectorUpdateForStore = {
+            ...updateResponse.sector,
+            trayTypeSelection: sanitizedTrayType,
+            installationLayerSelection: sanitizedInstallLayer,
+          };
+          updateProjectDataWithSector(sectorUpdateForStore);
+          console.log('[DataForCalc] Tray type updated and store synced for sector:', updateResponse.sector.id);
+        } else {
+          console.error('[DataForCalc] Error updating tray type via service:', updateResponse.message);
+          // Potentially revert optimistic UI update here if needed
         }
+      } catch (error) {
+        console.error('[DataForCalc] Failed to call updateSectorTrayType service:', error);
+        // Potentially revert optimistic UI update here if needed
       }
-    } catch (error) {
-      // Manejo de error
+    } else {
+      console.error('[DataForCalc] Cannot update tray type: Project ID or Sector ID is missing.');
     }
   };
 
   const handleReservePercentageChange = async (newValue: number) => {
-    try {
-      if (isProjectWithoutSectors && currentProject) {
-        if (currentProject.defaultSector && currentProject.defaultSector.id) {
-          const updateResponse = await updateSectorReservePercentage(
-            currentProject.id,
-            currentProject.defaultSector.id,
-            newValue
-          );
-          
-          if (updateResponse.success) {
-            onReservePercentageChange && onReservePercentageChange(newValue);
-          }
-        }
-      } else if (currentSector && currentSector.id && currentProject) {
+    // Optimistically update UI via onReservePercentageChange callback
+    onReservePercentageChange && onReservePercentageChange(newValue);
+
+    let sectorIdToUpdate: string | undefined;
+    let projectIdForUpdate: string | undefined = currentProject?.id;
+
+    if (isProjectWithoutSectors && currentProject?.defaultSector?.id) {
+      sectorIdToUpdate = currentProject.defaultSector.id;
+    } else if (currentSector?.id) {
+      sectorIdToUpdate = currentSector.id;
+    }
+
+    if (projectIdForUpdate && sectorIdToUpdate) {
+      try {
         const updateResponse = await updateSectorReservePercentage(
-          currentProject.id,
-          currentSector.id,
+          projectIdForUpdate,
+          sectorIdToUpdate,
           newValue
         );
-        
-        if (updateResponse.success) {
-          onReservePercentageChange && onReservePercentageChange(newValue);
+        if (updateResponse.success && updateResponse.sector) {
+          console.log('Sector reserve percentage updated successfully in backend, sector data:', updateResponse.sector);
+          // Sanitize trayTypeSelection before passing to store
+          const rawTrayType = updateResponse.sector.trayTypeSelection;
+          let sanitizedTrayType: TrayType | null | undefined = null;
+          if (rawTrayType === 'escalerilla' || rawTrayType === 'canal') {
+            sanitizedTrayType = rawTrayType;
+          } else if (rawTrayType === null || rawTrayType === undefined) {
+            sanitizedTrayType = rawTrayType;
+          } else {
+            console.warn(`[DataForCalculation] Invalid trayTypeSelection ('${rawTrayType}') received from backend for sector ${updateResponse.sector.id}. Defaulting to null.`);
+            sanitizedTrayType = null;
+          }
+          const rawInstallLayer = updateResponse.sector.installationLayerSelection;
+          let sanitizedInstallLayer: InstallationLayerType | null | undefined = null;
+          if (rawInstallLayer === 'singleLayer' || rawInstallLayer === 'multiLayer') {
+            sanitizedInstallLayer = rawInstallLayer;
+          } else if (rawInstallLayer === null || rawInstallLayer === undefined) {
+            sanitizedInstallLayer = rawInstallLayer;
+          } else {
+            console.warn(`[DataForCalculation] Invalid installationLayerSelection ('${rawInstallLayer}') received from backend for sector ${updateResponse.sector.id}. Defaulting to null.`);
+            sanitizedInstallLayer = null;
+          }
+
+          const sectorUpdateForStore = {
+            ...updateResponse.sector,
+            trayTypeSelection: sanitizedTrayType,
+            installationLayerSelection: sanitizedInstallLayer,
+          };
+          updateProjectDataWithSector(sectorUpdateForStore);
+          console.log('[DataForCalc] Reserve percentage updated and store synced for sector:', updateResponse.sector.id);
+        } else {
+          console.error('[DataForCalc] Error updating reserve percentage via service:', updateResponse.message);
+          // Potentially revert optimistic UI update here if needed
         }
+      } catch (error) {
+        console.error('[DataForCalc] Failed to call updateSectorReservePercentage service:', error);
+        // Potentially revert optimistic UI update here if needed
       }
-    } catch (error) {
-      // Manejo de error
+    } else {
+      console.error('[DataForCalc] Cannot update reserve percentage: Project ID or Sector ID is missing.');
     }
   };
+
+  const componentKey = isProjectWithoutSectors 
+  ? `project-${currentProject?.id}`
+  : `sector-${currentSector?.id}`; // Correct placement of componentKey
 
   return (
     <div key={componentKey} className="flex flex-col gap-6 lg:gap-16">

@@ -8,10 +8,12 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import * as Collapsible from '@radix-ui/react-collapsible'
 import { useCallback, useEffect, useState } from 'react'
 
-// Importar la variable global desde SectorsListbox
-import { activeSectorGlobal } from './SectorsListbox'
 
-export default function OtherTrayOptionsCollapsible() {
+interface OtherTrayOptionsCollapsibleProps {
+  activeSectorId: string | null;
+}
+
+export default function OtherTrayOptionsCollapsible({ activeSectorId }: OtherTrayOptionsCollapsibleProps) {
   const { currentProject } = useProjectStore()
   const [isOpen, setIsOpen] = useState(false)
   const [otherRecommendedOptions, setOtherRecommendedOptions] = useState<Tray[]>([])  
@@ -20,9 +22,14 @@ export default function OtherTrayOptionsCollapsible() {
   const updateOtherOptions = useCallback(() => {
     let options: Tray[] = [];
     
+    let activeSector = null;
+    if (activeSectorId && currentProject && currentProject.sectors) {
+      activeSector = currentProject.sectors.find(sector => sector.id === activeSectorId);
+    }
+
     // Si hay un sector activo con resultados, mostrar sus opciones alternativas
-    if (activeSectorGlobal && activeSectorGlobal.results && activeSectorGlobal.results.otherRecommendedOptions) {
-      options = activeSectorGlobal.results.otherRecommendedOptions;
+    if (activeSector && activeSector.results && activeSector.results.otherRecommendedOptions) {
+      options = activeSector.results.otherRecommendedOptions;
       // Mostrando opciones alternativas para el sector activo
     } 
     // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
@@ -44,19 +51,11 @@ export default function OtherTrayOptionsCollapsible() {
     }
     
     setOtherRecommendedOptions(options);
-  }, [currentProject]);
+  }, [currentProject, activeSectorId]);
   
   // Ejecutar la verificación cuando cambia el proyecto
   useEffect(() => {
     updateOtherOptions();
-    
-    // Establecer un intervalo para verificar cambios en el sector activo
-    const intervalId = setInterval(() => {
-      updateOtherOptions();
-    }, 500); // Verificar cada 500ms
-    
-    // Limpiar el intervalo cuando el componente se desmonta
-    return () => clearInterval(intervalId);
   }, [updateOtherOptions]);
 
   // Convertir las opciones de bandejas a props para TrayRecommendationCard

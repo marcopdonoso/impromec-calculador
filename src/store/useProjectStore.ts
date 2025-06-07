@@ -1,5 +1,5 @@
 import { CableInTray } from '@/models/cable.model'
-import { Project } from '@/models/project.model'
+import { Project, Sector, DefaultSector } from '@/models/project.model'
 import { TrayType } from '@/models/tray.model'
 import {
   addCableToProject,
@@ -37,13 +37,14 @@ interface ProjectState {
   ) => Promise<boolean>
   calculateTray: (
     projectId: string,
-    sectorId: string | null,
-    trayType: TrayType,
-    reservePercentage: number
+    sectorId?: string,
+    trayType?: TrayType,
+    reservePercentage?: number
   ) => Promise<{
     success: boolean
     message: string
   }>
+  updateProjectDataWithSector: (updatedSectorData: Partial<Sector> & { id: string }) => void // Accept Partial<Sector> but require 'id'
 }
 
 export const useProjectStore = create<ProjectState>((set, get) => ({
@@ -55,15 +56,18 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     try {
       set({ isLoading: true, error: null })
 
+      const currentTrayType = trayType ?? 'escalerilla'; // Default to 'escalerilla'
+      const currentReservePercentage = reservePercentage ?? 20; // Default to 20%
+
       // Realizar la llamada al servicio correspondiente según si es un proyecto con sectores o no
       const response = sectorId
         ? await calculateSectorTray(
             projectId,
             sectorId,
-            trayType,
-            reservePercentage
+            currentTrayType,
+            currentReservePercentage
           )
-        : await calculateProjectTray(projectId, trayType, reservePercentage)
+        : await calculateProjectTray(projectId, currentTrayType, currentReservePercentage)
 
       if (!response.success) {
         set({
@@ -206,5 +210,85 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
       })
       return null
     }
+  },
+  updateProjectDataWithSector: (updatedSectorData: Partial<Sector> & { id: string }) => {
+    set((state) => {
+      if (!state.currentProject) return {}
+
+      const project = { ...state.currentProject }
+      let newSectors = project.sectors ? [...project.sectors] : []
+
+      if (!updatedSectorData.id) {
+        console.error('[useProjectStore] Cannot update sector without an ID.');
+        return {}; // Abort if no ID is present in the update data
+      }
+
+      if (project.hasSectors) {
+        const sectorIndex = newSectors.findIndex(s => s.id === updatedSectorData.id);
+        if (sectorIndex !== -1) {
+          // Merge existing sector with new data, preserving fields not in updatedSectorData
+          newSectors[sectorIndex] = { ...newSectors[sectorIndex], ...updatedSectorData };
+        } else {
+          console.warn('[useProjectStore] Multi-sector: Updated sector not found. ID:', updatedSectorData.id);
+          // Optionally, if new sectors can be added this way:
+          // newSectors.push(updatedSectorData as Sector); // This would require updatedSectorData to be a full Sector
+        }
+      } else {
+        // Single-sector project (hasSectors: false)
+        if (project.defaultSector && project.defaultSector.id === updatedSectorData.id) {
+          const existingDefaultSector = project.defaultSector;
+          // Ensure sectorName is a string. Fallback to existing or empty string if new one is null/undefined.
+          const newSectorName = updatedSectorData.sectorName !== undefined && updatedSectorData.sectorName !== null 
+                                ? updatedSectorData.sectorName 
+                                : existingDefaultSector.sectorName;
+          
+          project.defaultSector = {
+            id: updatedSectorData.id, // id is guaranteed by type
+            sectorName: newSectorName,
+          };
+
+          // Update mirrored properties on the project object itself from updatedSectorData
+          if (updatedSectorData.installationLayerSelection !== undefined) project.installationLayerSelection = updatedSectorData.installationLayerSelection;
+          if (updatedSectorData.trayTypeSelection !== undefined) project.trayTypeSelection = updatedSectorData.trayTypeSelection;
+          if (updatedSectorData.reservePercentage !== undefined) project.reservePercentage = updatedSectorData.reservePercentage;
+
+          // Construct the representation for the 'sectors' array.
+          // This should reflect the updated defaultSector and any other relevant fields from updatedSectorData.
+          const sectorForArray: Sector = {
+            // Start with the most complete existing version of this sector if available in the array
+            ...(newSectors.find(s => s.id === updatedSectorData.id) || {} as Partial<Sector>),
+            // Apply all fields from the incoming update data
+            ...updatedSectorData,
+            // Ensure core DefaultSector fields are correctly sourced from the now-updated project.defaultSector
+            id: project.defaultSector.id, 
+            sectorName: project.defaultSector.sectorName,
+            // Preserve existing results if not part of this specific update
+            results: (newSectors.find(s => s.id === updatedSectorData.id)?.results) || updatedSectorData.results || null,
+            // Ensure other non-optional Sector fields have fallbacks if not in updatedSectorData
+            trayTypeSelection: updatedSectorData.trayTypeSelection !== undefined ? updatedSectorData.trayTypeSelection : (newSectors.find(s => s.id === updatedSectorData.id)?.trayTypeSelection || null),
+            reservePercentage: updatedSectorData.reservePercentage !== undefined ? updatedSectorData.reservePercentage : (newSectors.find(s => s.id === updatedSectorData.id)?.reservePercentage || 0),
+            installationLayerSelection: updatedSectorData.installationLayerSelection !== undefined ? updatedSectorData.installationLayerSelection : (newSectors.find(s => s.id === updatedSectorData.id)?.installationLayerSelection || null),
+          };
+          newSectors = [sectorForArray];
+        } else {
+          console.warn(`[useProjectStore] Single-sector: updatedSectorData.id (${updatedSectorData.id}) does not match project.defaultSector.id (${project.defaultSector?.id}) or defaultSector is missing.`);
+          // Fallback: if the updatedSectorData ID matches any sector in the 'newSectors' array
+          const existingSectorIndex = newSectors.findIndex(s => s.id === updatedSectorData.id);
+          if (existingSectorIndex !== -1) {
+            console.warn('[useProjectStore] Single-sector: Updating sector in newSectors array as a fallback.');
+            newSectors[existingSectorIndex] = { ...newSectors[existingSectorIndex], ...updatedSectorData };
+          } else {
+            console.warn('[useProjectStore] Single-sector: updatedSectorData did not match defaultSector and was not found. No update to sectors list.');
+          }
+        }
+      }
+
+      return {
+        currentProject: {
+          ...project,
+          sectors: newSectors,
+        },
+      }
+    })
   },
 }))

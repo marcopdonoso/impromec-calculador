@@ -1,6 +1,5 @@
 import { useProjectStore } from '@/store/useProjectStore'
 import { useEffect, useState } from 'react'
-import { activeSectorGlobal } from './SectorsListbox'
 
 // Función auxiliar para formatear los números con un máximo de 2 decimales
 const formatNumber = (value: number | null | undefined): string => {
@@ -8,7 +7,11 @@ const formatNumber = (value: number | null | undefined): string => {
   return value.toFixed(1).replace(/\.0$/, '') // Elimina .0 si termina en .0
 }
 
-export default function LoadAreaTotals() {
+interface LoadAreaTotalsProps {
+  activeSectorId: string | null;
+}
+
+export default function LoadAreaTotals({ activeSectorId }: LoadAreaTotalsProps) {
   const { currentProject } = useProjectStore()
   const [loadResistance, setLoadResistance] = useState<number | undefined>(
     undefined
@@ -21,10 +24,15 @@ export default function LoadAreaTotals() {
     const updateData = () => {
       if (!currentProject) return
 
+      let activeSector = null;
+      if (activeSectorId && currentProject.sectors) {
+        activeSector = currentProject.sectors.find(sector => sector.id === activeSectorId);
+      }
+
       // Si hay un sector activo con resultados, usar sus datos
-      if (activeSectorGlobal && activeSectorGlobal.results) {
-        setLoadResistance(activeSectorGlobal.results.calculatedLoadInKgM || 0)
-        setTotalArea(activeSectorGlobal.results.calculatedAreaInMM2 || 0)
+      if (activeSector && activeSector.results) {
+        setLoadResistance(activeSector.results.calculatedLoadInKgM || 0)
+        setTotalArea(activeSector.results.calculatedAreaInMM2 || 0)
         // Usando datos del sector activo
       }
       // Si no hay sector activo pero el proyecto tiene sectores, buscar uno con resultados
@@ -52,14 +60,7 @@ export default function LoadAreaTotals() {
 
     // Ejecutar al montar el componente
     updateData()
-
-    // Crear un intervalo para detectar cambios en el sector activo
-    const intervalId = setInterval(() => {
-      updateData()
-    }, 500)
-
-    return () => clearInterval(intervalId)
-  }, [currentProject])
+  }, [currentProject, activeSectorId])
 
   // La función updateData se ha movido dentro del useEffect para evitar dependencias cambiantes
 
