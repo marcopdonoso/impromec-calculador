@@ -4,21 +4,20 @@ import TrayRecommendationCard, {
   TrayRecommendationCardProps,
 } from '@/components/TrayRecommendationCard'
 import { useReportGeneration } from '@/hooks/useReportGeneration'
-import { Results, Sector } from '@/models/project.model'; // Added Sector import
+import { Results, Sector } from '@/models/project.model' // Added Sector import
 import { getProjectById } from '@/services/project.service'
 import { useProjectStore } from '@/store/useProjectStore'
 import { useUserStore } from '@/store/useStore'
 import {
-  ArrowDownTrayIcon,
-  DocumentIcon,
+  ArrowPathIcon, // Added for Generate Report
+  ArrowTopRightOnSquareIcon,
+  Cog6ToothIcon,
   PencilIcon,
-  PhoneIcon,
-  Cog6ToothIcon, // Added for Generate Report
-  ArrowTopRightOnSquareIcon, // Added for Open Report
-  ArrowPathIcon, // Added for loading spinner
 } from '@heroicons/react/24/outline'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { BsWhatsapp } from 'react-icons/bs'
+import { Tray } from '../../../../../../models/tray.model'
 import AddedCablesTable from '../../components/AddedCablesTable'
 import ModalOverlay from '../../components/ModalOverlay'
 import ProjectOverviewContent from '../../components/ProjectOverviewContent'
@@ -30,7 +29,7 @@ import MyProjectsLinkButton from './components/MyProjectsLinkButton'
 import OtherTrayOptionsCollapsible from './components/OtherTrayOptionsCollapsible'
 import ProjectOverviewTitle from './components/ProjectOverviewTitle'
 import ResultsHeader from './components/ResultsHeader'
-import SectorsListbox from './components/SectorsListbox'; // Ensure SectorsListbox is imported if not already explicitly
+import SectorsListbox from './components/SectorsListbox' // Ensure SectorsListbox is imported if not already explicitly
 import SelectedTrayCard from './components/SelectedTrayCard'
 import UnfinishedSectorsListMessages from './components/UnfinishedSectorsListMessages'
 
@@ -39,7 +38,8 @@ export default function ResultsPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const projectId = params.slug as string
-  const { currentProject, setCurrentProject } = useProjectStore()
+  const { currentProject, setCurrentProject, updateProjectDataWithSector } =
+    useProjectStore()
   const { user } = useUserStore()
 
   // Verificar si se llegó desde el proceso de cálculo
@@ -51,8 +51,10 @@ export default function ResultsPage() {
   // const [needsRegeneration, setNeedsRegeneration] = useState(false)
   const [isDeleteProjectModalVisible, setIsDeleteProjectModalVisible] =
     useState(false)
-  const [currentButtonAction, setCurrentButtonAction] = useState<'generate' | 'open' | null>(null);
-  const [activeSectorId, setActiveSectorId] = useState<string | null>(null); // State for active sector ID
+  const [currentButtonAction, setCurrentButtonAction] = useState<
+    'generate' | 'open' | null
+  >(null)
+  const [activeSectorId, setActiveSectorId] = useState<string | null>(null) // State for active sector ID
 
   // Crear estados para resultados y cables que se actualizarán cuando cambie el sector activo
   const [currentResults, setCurrentResults] = useState<Results | undefined>(
@@ -61,19 +63,30 @@ export default function ResultsPage() {
   const [currentCables, setCurrentCables] = useState<any[]>([])
 
   // Logic to determine if action buttons should be shown
-  const isUnfinishedProjectForButtonLogic = !currentProject?.hasSectors && !currentProject?.results;
-  const unfinishedSectorsForButtonLogic = currentProject?.hasSectors && currentProject?.sectors
-    ? currentProject.sectors.filter(sector => !sector.results)
-    : [];
-  const canShowActionButtons = !isUnfinishedProjectForButtonLogic && unfinishedSectorsForButtonLogic.length === 0;
+  const isUnfinishedProjectForButtonLogic =
+    !currentProject?.hasSectors && !currentProject?.results
+  const unfinishedSectorsForButtonLogic =
+    currentProject?.hasSectors && currentProject?.sectors
+      ? currentProject.sectors.filter((sector) => !sector.results)
+      : []
+  const canShowActionButtons =
+    !isUnfinishedProjectForButtonLogic &&
+    unfinishedSectorsForButtonLogic.length === 0
 
   // Derive activeSector object from activeSectorId and currentProject.sectors
   const activeSector = useMemo(() => {
-    if (!activeSectorId || !currentProject?.hasSectors || !currentProject.sectors) {
-      return null;
+    if (
+      !activeSectorId ||
+      !currentProject?.hasSectors ||
+      !currentProject.sectors
+    ) {
+      return null
     }
-    return currentProject.sectors.find(sector => sector.id === activeSectorId) || null;
-  }, [activeSectorId, currentProject]);
+    return (
+      currentProject.sectors.find((sector) => sector.id === activeSectorId) ||
+      null
+    )
+  }, [activeSectorId, currentProject])
 
   // Obtener el proyecto cuando se monta el componente
   useEffect(() => {
@@ -88,15 +101,19 @@ export default function ResultsPage() {
         const response = await getProjectById(projectId)
 
         if (response.data) {
-          const projectData = response.data.project;
+          const projectData = response.data.project
           // Actualizar el store global con los datos del proyecto
-          setCurrentProject(projectData);
+          setCurrentProject(projectData)
 
           // Initialize activeSectorId based on the fetched project data
-          if (projectData.hasSectors && projectData.sectors && projectData.sectors.length > 0) {
-            setActiveSectorId(projectData.sectors[0]?.id || null); // Default to the first sector
+          if (
+            projectData.hasSectors &&
+            projectData.sectors &&
+            projectData.sectors.length > 0
+          ) {
+            setActiveSectorId(projectData.sectors[0]?.id || null) // Default to the first sector
           } else {
-            setActiveSectorId(null); // No sectors or not a multi-sector project
+            setActiveSectorId(null) // No sectors or not a multi-sector project
           }
         } else {
           setError(response.error?.message || 'Error al cargar el proyecto')
@@ -116,49 +133,51 @@ export default function ResultsPage() {
 
   // Obtener los resultados del proyecto (ya sea del sector activo o del proyecto sin sectores)
   const getResults = useCallback(() => {
-    if (!currentProject) return undefined;
+    if (!currentProject) return undefined
 
     if (currentProject.hasSectors) {
       // For projects with sectors, use the activeSector's results (derived from activeSectorId)
-      return activeSector?.results || undefined;
+      return activeSector?.results || undefined
     } else {
       // For projects without sectors, use the project's top-level results
-      return currentProject.results || undefined;
+      return currentProject.results || undefined
     }
-  }, [currentProject, activeSector]); // <-- Use derived activeSector
+  }, [currentProject, activeSector]) // <-- Use derived activeSector
 
   // Obtener los cables del proyecto (ya sea del sector activo o del proyecto sin sectores)
   const getCables = useCallback(() => {
-    if (!currentProject) return [];
+    if (!currentProject) return []
 
     if (currentProject.hasSectors) {
       // For projects with sectors, use the activeSector's cables (derived from activeSectorId)
       // Ensure to check both possible property names for cables from different data structures
-      return activeSector?.cables || activeSector?.cablesInTray || [];
+      return activeSector?.cables || activeSector?.cablesInTray || []
     } else {
       // For projects without sectors, use the project's top-level cables
-      return currentProject.cables || [];
+      return currentProject.cables || []
     }
-  }, [currentProject, activeSector]); // <-- Use derived activeSector
+  }, [currentProject, activeSector]) // <-- Use derived activeSector
 
   // Actualizar los estados currentResults y currentCables reactively
   useEffect(() => {
     if (currentProject) {
       if (currentProject.hasSectors) {
         // If it's a project with sectors, results/cables depend on the activeSector
-        setCurrentResults(activeSector?.results || undefined);
-        setCurrentCables(activeSector?.cables || activeSector?.cablesInTray || []);
+        setCurrentResults(activeSector?.results || undefined)
+        setCurrentCables(
+          activeSector?.cables || activeSector?.cablesInTray || []
+        )
       } else {
         // If it's a project without sectors, use top-level project results/cables
-        setCurrentResults(currentProject.results || undefined);
-        setCurrentCables(currentProject.cables || []);
+        setCurrentResults(currentProject.results || undefined)
+        setCurrentCables(currentProject.cables || [])
       }
     } else {
       // If no currentProject, clear results and cables
-      setCurrentResults(undefined);
-      setCurrentCables([]);
+      setCurrentResults(undefined)
+      setCurrentCables([])
     }
-  }, [currentProject, activeSector]); // Update when project or derived activeSector changes
+  }, [currentProject, activeSector]) // Update when project or derived activeSector changes
 
   // Hook para la generación de la memoria de cálculo
   const {
@@ -189,10 +208,65 @@ export default function ResultsPage() {
     }
   }, [currentProject, needsGeneration]) // Added needsGeneration to dependency array
 
+  const handleRequestQuoteViaWhatsApp = () => {
+    if (!currentProject || !user) return
+
+    const whatsAppPhoneNumber = '59172216766' // Your WhatsApp number
+
+    let message = 'Hola, necesito soporte con el siguiente proyecto:\n\n'
+
+    message += '*Mis Datos de Contacto:*\n'
+    message += `Nombre: ${user.name || '[Su Nombre Aquí]'}\n`
+    message += `Empresa: ${user.company || 'N/A'}\n`
+    message += `Email: ${user.email || '[Su Email Aquí]'}\n\n`
+
+    message += '*Información del Proyecto:*\n'
+    message += `Nombre del Proyecto: ${currentProject.projectName || 'N/A'}\n`
+    message += `Ubicación: ${currentProject.projectLocation || 'N/A'}\n`
+    message += `ID del Proyecto: ${currentProject.id || 'N/A'}\n\n`
+
+    message += '*Resumen del Cálculo:*\n'
+
+    const formatTrayDetails = (tray: Tray | null | undefined) => {
+      if (!tray) return 'No disponible'
+      const type = tray.trayType || 'N/A'
+      const category = tray.trayCategory || 'N/A'
+      const width = tray.technicalDetails?.widthInMM
+      const height = tray.technicalDetails?.heightInMM
+      const dimensions =
+        width && height ? `${width}x${height}mm` : 'Dimensiones N/A'
+      return `Bandeja portacable ${type}, ${category}, ${dimensions}`
+    }
+
+    if (currentProject.hasSectors && currentProject.sectors) {
+      currentProject.sectors.forEach((sector, index) => {
+        const sectorNumber = index + 1
+        const trayDetails = formatTrayDetails(
+          sector.results?.moreConvenientOption
+        )
+        message += `Sector ${sectorNumber}: ${trayDetails}\n`
+      })
+    } else if (currentProject.results?.moreConvenientOption) {
+      const trayDetails = formatTrayDetails(
+        currentProject.results.moreConvenientOption
+      )
+      message += `Bandeja Seleccionada: ${trayDetails}\n`
+    } else {
+      message += 'Resultados del cálculo no disponibles.\n'
+    }
+
+    message += '\nGracias.'
+
+    const encodedMessage = encodeURIComponent(message)
+    const whatsappUrl = `https://wa.me/${whatsAppPhoneNumber}?text=${encodedMessage}`
+
+    window.open(whatsappUrl, '_blank')
+  }
+
   // Callback function to handle sector changes from SectorsListbox
   const handleSectorChange = useCallback((selectedSector: Sector) => {
-    setActiveSectorId(selectedSector.id || null);
-  }, []); // setActiveSectorId is stable, no dependencies needed
+    setActiveSectorId(selectedSector.id || null)
+  }, []) // setActiveSectorId is stable, no dependencies needed
 
   const moreConvenientOptionToCard: TrayRecommendationCardProps | null =
     currentResults?.moreConvenientOption
@@ -235,19 +309,22 @@ export default function ResultsPage() {
             {currentProject && (
               <ProjectOverviewContent project={currentProject} />
             )}
-            {currentProject?.hasSectors && currentProject.sectors && currentProject.sectors.length > 0 && (
-              <div className="mt-4 mb-4">
-                <SectorsListbox
-                  sectors={currentProject.sectors}
-                  activeSectorId={activeSectorId}
-                  onSectorChange={handleSectorChange}
-                />
-              </div>
-            )}
+            {currentProject?.hasSectors &&
+              currentProject.sectors &&
+              currentProject.sectors.length > 0 && (
+                <div className="mb-4 mt-4">
+                  <SectorsListbox
+                    sectors={currentProject.sectors}
+                    activeSectorId={activeSectorId}
+                    onSectorChange={handleSectorChange}
+                  />
+                </div>
+              )}
           </div>
 
           {/* Conditional rendering for the entire Calculation Data and Results section */}
-          {(currentProject && !currentProject.hasSectors) || (currentProject && currentProject.hasSectors && activeSector) ? (
+          {(currentProject && !currentProject.hasSectors) ||
+          (currentProject && currentProject.hasSectors && activeSector) ? (
             <>
               {/* This div is ALWAYS rendered if the outer condition is met, preserving its mb-6 for spacing */}
               <div className="mb-6 w-full">
@@ -260,29 +337,32 @@ export default function ResultsPage() {
 
               <div className="mb-6 w-full">
                 {(() => {
-              const dataSource = currentProject?.hasSectors ? activeSector : currentProject;
-              if (!dataSource) return null; // Or some placeholder/loading UI
+                  const dataSource = currentProject?.hasSectors
+                    ? activeSector
+                    : currentProject
+                  if (!dataSource) return null // Or some placeholder/loading UI
 
-              // Provide default values if properties are potentially null/undefined from dataSource
-              const trayType = dataSource.trayTypeSelection ?? 'escalerilla';
-              const reservePercentage = dataSource.reservePercentage ?? 20;
-              const installationLayer = dataSource.installationLayerSelection ?? 'adosada';
+                  // Provide default values if properties are potentially null/undefined from dataSource
+                  const trayType = dataSource.trayTypeSelection ?? 'escalerilla'
+                  const reservePercentage = dataSource.reservePercentage ?? 20
+                  const installationLayer =
+                    dataSource.installationLayerSelection ?? 'adosada'
 
-              return (
-                <SelectedTrayCard 
-                  trayType={trayType}
-                  reservePercentage={reservePercentage}
-                  installationLayer={installationLayer}
-                />
-              );
-            })()}
-          </div>
+                  return (
+                    <SelectedTrayCard
+                      trayType={trayType}
+                      reservePercentage={reservePercentage}
+                      installationLayer={installationLayer}
+                    />
+                  )
+                })()}
+              </div>
 
-          <div className="mb-8 w-full lg:mb-16">
-            <AddedCablesTable cablesInTray={currentCables} />
-          </div>
+              <div className="mb-8 w-full lg:mb-16">
+                <AddedCablesTable cablesInTray={currentCables} />
+              </div>
 
-          <LoadAreaTotals activeSectorId={activeSectorId} />
+              <LoadAreaTotals activeSectorId={activeSectorId} />
             </>
           ) : null}
           {/* End of conditional rendering for Calculation Data and Results section */}
@@ -310,70 +390,78 @@ export default function ResultsPage() {
 
         {canShowActionButtons && (
           <div className="flex w-full flex-col gap-4 lg:mb-14 lg:flex-row lg:gap-10">
-          <Button
-            variant="secondary"
-            icon={
-              isGenerating ? (
-                <ArrowPathIcon className="h-5 w-5 animate-spin" />
-              ) : needsGeneration ? (
-                <Cog6ToothIcon className="h-5 w-5" />
-              ) : (
-                <ArrowTopRightOnSquareIcon className="h-5 w-5" />
-              )
-            }
-            disabled={isGenerating}
-            onClick={() => {
-              // console.log('[ResultsPage] onClick: Button clicked. State at click time:', {
-              //   reportInStoreOnClick: Boolean(currentProject?.calculationReport),
-              //   needsGenerationOnClick: needsGeneration,
-              //   isGeneratingOnClick: isGenerating,
-              // });
-
-              if (isGenerating) return;
-
-              if (currentProject && user) {
-                if (!needsGeneration) {
-                  setCurrentButtonAction('open');
-                  // console.log('[ResultsPage] onClick: Action based on needsGeneration=false. Attempting to open existing report.');
-                  openReportWithFreshUrl(projectId).then((result) => {
-                    // console.log('[ResultsPage] onClick: Result of openReportWithFreshUrl:', result);
-                    if (!result.success && result.needsRegeneration) {
-                      // console.log('[ResultsPage] onClick: openReportWithFreshUrl indicated needsRegeneration. Reloading page as per user preference.');
-                      window.location.reload();
-                    } else if (result.success) {
-                      // console.log('[ResultsPage] onClick: openReportWithFreshUrl successful. Report should be open.');
-                    } else {
-                      // console.log('[ResultsPage] onClick: openReportWithFreshUrl failed but no regeneration needed. Error should be displayed by hook.');
-                    }
-                  }).finally(() => setCurrentButtonAction(null));
-                } else {
-                  setCurrentButtonAction('generate');
-                  // console.log('[ResultsPage] onClick: Action based on needsGeneration=true. Generating new report.');
-                  generateReport(user, currentProject).then(() => {
-                    // console.log('[ResultsPage] onClick: Result of generateReport. Hook updated store. useEffect should sync UI or page will reload if needed.');
-                  }).finally(() => setCurrentButtonAction(null));
-                }
+            <Button
+              variant="secondary"
+              icon={
+                isGenerating ? (
+                  <ArrowPathIcon className="h-5 w-5 animate-spin" />
+                ) : needsGeneration ? (
+                  <Cog6ToothIcon className="h-5 w-5" />
+                ) : (
+                  <ArrowTopRightOnSquareIcon className="h-5 w-5" />
+                )
               }
-            }}
-          >
-            {isGenerating ? (
-              <span className="flex items-center gap-2">
-                {currentButtonAction === 'generate' && 'Generando reporte...'}
-                {currentButtonAction === 'open' && 'Abriendo reporte...'}
-                {!currentButtonAction && 'Procesando...'}
-              </span>
-            ) : (
-              needsGeneration
-                ? 'Generar reporte de cálculo'
-                : 'Abrir reporte de cálculo'
-            )}
-          </Button>
+              disabled={isGenerating}
+              onClick={() => {
+                // console.log('[ResultsPage] onClick: Button clicked. State at click time:', {
+                //   reportInStoreOnClick: Boolean(currentProject?.calculationReport),
+                //   needsGenerationOnClick: needsGeneration,
+                //   isGeneratingOnClick: isGenerating,
+                // });
 
-          <Button icon={<PhoneIcon />}>
-            Solicitar Cotización del Proyecto
-          </Button>
-        </div>
-      )}
+                if (isGenerating) return
+
+                if (currentProject && user) {
+                  if (!needsGeneration) {
+                    setCurrentButtonAction('open')
+                    // console.log('[ResultsPage] onClick: Action based on needsGeneration=false. Attempting to open existing report.');
+                    openReportWithFreshUrl(projectId)
+                      .then((result) => {
+                        // console.log('[ResultsPage] onClick: Result of openReportWithFreshUrl:', result);
+                        if (!result.success && result.needsRegeneration) {
+                          // console.log('[ResultsPage] onClick: openReportWithFreshUrl indicated needsRegeneration. Reloading page as per user preference.');
+                          window.location.reload()
+                        } else if (result.success) {
+                          // console.log('[ResultsPage] onClick: openReportWithFreshUrl successful. Report should be open.');
+                        } else {
+                          // console.log('[ResultsPage] onClick: openReportWithFreshUrl failed but no regeneration needed. Error should be displayed by hook.');
+                        }
+                      })
+                      .finally(() => setCurrentButtonAction(null))
+                  } else {
+                    setCurrentButtonAction('generate')
+                    // console.log('[ResultsPage] onClick: Action based on needsGeneration=true. Generating new report.');
+                    generateReport(user, currentProject)
+                      .then(() => {
+                        // console.log('[ResultsPage] onClick: Result of generateReport. Hook updated store. useEffect should sync UI or page will reload if needed.');
+                      })
+                      .finally(() => setCurrentButtonAction(null))
+                  }
+                }
+              }}
+            >
+              {isGenerating ? (
+                <span className="flex items-center gap-2">
+                  {currentButtonAction === 'generate' && 'Generando reporte...'}
+                  {currentButtonAction === 'open' && 'Abriendo reporte...'}
+                  {!currentButtonAction && 'Procesando...'}
+                </span>
+              ) : needsGeneration ? (
+                'Generar reporte de cálculo'
+              ) : (
+                'Abrir reporte de cálculo'
+              )}
+            </Button>
+
+            <Button
+              icon={<BsWhatsapp />}
+              onClick={handleRequestQuoteViaWhatsApp}
+              disabled={!currentProject || !user}
+            >
+              Pedir Soporte vía WhatsApp
+            </Button>
+          </div>
+        )}
 
         <hr className="my-6 w-full text-gray-placeholder lg:hidden" />
 
