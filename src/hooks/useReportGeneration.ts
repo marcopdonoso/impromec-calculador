@@ -45,6 +45,17 @@ export function useReportGeneration(): UseReportGenerationReturn {
     setIsGenerating(true)
     setError(null)
 
+    // Open a blank window immediately if not in silent mode
+    let reportWindow: Window | null = null;
+    if (!silentMode) {
+      reportWindow = window.open('', '_blank');
+      if (!reportWindow) {
+        setError('No se pudo abrir una nueva ventana. Revisa la configuración de tu navegador para permitir pop-ups.');
+        setIsGenerating(false);
+        return { success: false };
+      }
+    }
+
     try {
       // console.log('[useReportGeneration] Obteniendo URL fresca para el reporte...');
       const result = await getReportDownloadUrl(projectId)
@@ -53,14 +64,20 @@ export function useReportGeneration(): UseReportGenerationReturn {
 
       // Si hay URL de descarga válida
       if (result.data?.downloadUrl) {
-        // Si no estamos en modo silencioso, abrimos el PDF
-        if (!silentMode) {
-          window.open(result.data.downloadUrl, '_blank')
+        // Si no estamos en modo silencioso, y tenemos una ventana, asignamos la URL
+        if (!silentMode && reportWindow) {
+          reportWindow.location.href = result.data.downloadUrl;
+        } else if (!silentMode && !reportWindow) {
+          // Fallback por si la ventana no se abrió pero tenemos URL (poco probable si la comprobación anterior funcionó)
+          window.open(result.data.downloadUrl, '_blank');
         }
         return { success: true }
       }
       // Si hay error, verificamos si necesita regeneración
       else if (result.error) {
+        if (reportWindow && !reportWindow.closed) {
+          reportWindow.close(); // Cerrar la ventana en blanco si hubo un error
+        }
         const errorMessage =
           result.error.message || 'No se pudo obtener la URL del reporte'
         setError(errorMessage)
@@ -92,8 +109,14 @@ export function useReportGeneration(): UseReportGenerationReturn {
 
       // Si no hay datos ni error definido
       setError('Respuesta inesperada del servidor')
+      if (reportWindow && !reportWindow.closed) {
+        reportWindow.close(); // Cerrar la ventana en blanco
+      }
       return { success: false }
     } catch (err: any) {
+      if (reportWindow && !reportWindow.closed) {
+        reportWindow.close(); // Cerrar la ventana en blanco en caso de excepción
+      }
       console.error('[useReportGeneration] Error al abrir reporte:', err)
       setError(err.message || 'Ocurrió un error procesando el reporte.')
       return {
