@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: 'ingenieria@impromec.com', // TODO Reemplaza con tu correo de destino
+      to: 'contacto@impromec.com',
       subject: `Nuevo mensaje de contacto de ${name}`,
       text: `De: ${name} <${email}>\n\nMensaje:\n${message}`,
     })
