@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   title: 'Impromec Calculador',
   description:
     'Impromec Calculador te ayudará a determinar la bandeja portacables ideal para tu instalación. Ahorra tiempo, reduce errores y mejora la eficiencia de tus proyectos.',
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
 }
 
 export default function RootLayout({
