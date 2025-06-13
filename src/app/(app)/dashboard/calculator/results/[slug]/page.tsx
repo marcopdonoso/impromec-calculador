@@ -105,13 +105,29 @@ export default function ResultsPage() {
           // Actualizar el store global con los datos del proyecto
           setCurrentProject(projectData)
 
-          // Initialize activeSectorId based on the fetched project data
+          // Check if there's a sector ID in the URL
+          const sectorIdFromUrl = searchParams.get('sectorId')
+
           if (
             projectData.hasSectors &&
             projectData.sectors &&
             projectData.sectors.length > 0
           ) {
-            setActiveSectorId(projectData.sectors[0]?.id || null) // Default to the first sector
+            // If there's a sector ID in the URL, try to use that
+            if (sectorIdFromUrl) {
+              const sectorExists = projectData.sectors.some(
+                (sector) => sector.id === sectorIdFromUrl
+              )
+              if (sectorExists) {
+                setActiveSectorId(sectorIdFromUrl)
+              } else {
+                // If the sector from URL doesn't exist, default to the first sector
+                setActiveSectorId(projectData.sectors[0]?.id || null)
+              }
+            } else {
+              // No sector ID in URL, default to the first sector
+              setActiveSectorId(projectData.sectors[0]?.id || null)
+            }
           } else {
             setActiveSectorId(null) // No sectors or not a multi-sector project
           }
@@ -127,7 +143,7 @@ export default function ResultsPage() {
     }
 
     fetchProjectData()
-  }, [projectId, setCurrentProject])
+  }, [projectId, setCurrentProject, searchParams])
 
   // Usar useCallback para evitar recreaciones de funciones en cada renderizado
 
@@ -477,7 +493,7 @@ export default function ResultsPage() {
               }
             }}
           >
-            Editar
+            Editar Proyecto
           </Button>
           <Button
             variant="destructive"

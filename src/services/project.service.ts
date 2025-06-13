@@ -438,8 +438,8 @@ export const updateSectorInstallationLayer = async (
       return {
         success: true,
         message: response.data.message,
-        sector: response.data.data?.sector,
-        project: response.data.data?.project,
+        sector: response.data.sector,
+        project: response.data.project,
       }
     } else {
       return {
@@ -502,7 +502,7 @@ export const getDefaultSector = async (
     if (response.data.success) {
       return {
         success: true,
-        defaultSector: response.data.data?.project.defaultSector || null,
+        defaultSector: response.data.project.defaultSector || null,
       }
     } else {
       return {
@@ -939,8 +939,8 @@ export const updateSectorTrayType = async (
       return {
         success: true,
         message: response.data.message,
-        sector: response.data.data?.sector,
-        project: response.data.data?.project,
+        sector: response.data.sector,
+        project: response.data.project,
       }
     } else {
       return {
@@ -1030,8 +1030,8 @@ export const updateSectorReservePercentage = async (
       return {
         success: true,
         message: response.data.message,
-        sector: response.data.data?.sector,
-        project: response.data.data?.project,
+        sector: response.data.sector,
+        project: response.data.project,
       }
     } else {
       return {

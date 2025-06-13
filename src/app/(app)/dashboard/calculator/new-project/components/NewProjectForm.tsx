@@ -4,7 +4,7 @@ import Input from '@/components/Input'
 import { appLinks } from '@/constants/links.constants'
 import Link from 'next/link'
 import SectorSwitch from './SectorSwitch'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createProject } from '@/services/project.service'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -12,11 +12,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { NewProjectFormData, newProjectSchema } from '@/schemas/project.schema'
 import { Controller } from 'react-hook-form'
 import Alert from '@/components/Alert'
+import { useProjectStore } from '@/store/useProjectStore'
 
 export default function NewProjectForm() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { clearProject } = useProjectStore()
 
   const {
     control,
@@ -33,10 +35,18 @@ export default function NewProjectForm() {
     },
   })
 
+  // Clear the project store when the component mounts
+  useEffect(() => {
+    clearProject()
+  }, [clearProject])
+
   const onSubmit = async (formData: NewProjectFormData) => {
     try {
       setLoading(true)
       setError(null)
+      
+      // Clear the project store before creating a new project
+      clearProject()
 
       const { data, error } = await createProject(formData)
 

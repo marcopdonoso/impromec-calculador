@@ -27,20 +27,69 @@ export default function EditProjectPage() {
     currentProject,
     isLoading,
     fetchProject,
+    clearProject,
     error: projectError,
   } = useProjectStore()
   const [showError, setShowError] = useState(false)
   const [activeSector, setActiveSector] = useState<Sector | null>(null)
 
   // Estados para los valores de UI que se pasan a SaveAndCalc
-  const [trayTypeUI, setTrayTypeUI] = useState<TrayType>('escalerilla')
-  const [reservePercentageUI, setReservePercentageUI] = useState<number>(30)
+  const [trayType, setTrayType] = useState<TrayType>('escalerilla')
+  const [reservePercentage, setReservePercentage] = useState<number>(30)
 
+  // Cargar el proyecto cuando cambie el slug
   useEffect(() => {
-    if (slug && typeof slug === 'string') {
-      fetchProject(slug)
+    const loadProject = async () => {
+      if (slug && typeof slug === 'string') {
+        try {
+          await fetchProject(slug)
+        } catch (err) {
+          setShowError(true)
+        }
+      }
     }
-  }, [slug, fetchProject])
+    
+    // Cargar el proyecto
+    loadProject()
+    
+    // Cleanup function to clear the project store when the component unmounts
+    return () => {
+      clearProject()
+    }
+  }, [slug, fetchProject, clearProject])
+
+  // Efecto para manejar la selección del sector desde la URL
+  useEffect(() => {
+    if (!currentProject?.sectors?.length) return;
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const newSectorId = searchParams.get('newSectorId');
+    
+    if (newSectorId) {
+      const newSector = currentProject.sectors.find(s => s.id === newSectorId);
+      if (newSector) {
+        console.log('Setting active sector from URL:', newSector);
+        // Forzar la actualización del sector activo
+        setActiveSector(null); // Resetear primero
+        setTimeout(() => {
+          setActiveSector(newSector);
+          // Limpiar la URL después de seleccionar
+          window.history.replaceState({}, '', window.location.pathname);
+        }, 0);
+        return;
+      }
+    }
+  }, [currentProject]);
+
+  // Efecto separado para la selección inicial del sector
+  useEffect(() => {
+    if (!currentProject?.sectors?.length || activeSector) return;
+    
+    // Si no hay sector activo, seleccionar el último sector
+    const lastSector = currentProject.sectors[currentProject.sectors.length - 1];
+    console.log('Setting initial active sector to last sector:', lastSector);
+    setActiveSector(lastSector);
+  }, [currentProject, activeSector]);
 
   useEffect(() => {
     if (projectError) {
@@ -91,13 +140,13 @@ export default function EditProjectPage() {
     // Solo actualizar si hay un sector activo o un proyecto
     if (activeSector) {
       // Actualizando valores UI con datos del sector
-      setTrayTypeUI(activeSector.trayTypeSelection || 'escalerilla')
-      setReservePercentageUI(activeSector.reservePercentage || 30)
+      setTrayType(activeSector.trayTypeSelection || 'escalerilla')
+      setReservePercentage(activeSector.reservePercentage || 30)
     } else if (currentProject && !currentProject.hasSectors) {
       // Para proyectos sin sectores, los valores están directamente en el objeto del proyecto
       // Actualizando valores UI con datos del proyecto (sin sectores)
-      setTrayTypeUI(currentProject.trayTypeSelection || 'escalerilla')
-      setReservePercentageUI(currentProject.reservePercentage || 30)
+      setTrayType(currentProject.trayTypeSelection || 'escalerilla')
+      setReservePercentage(currentProject.reservePercentage || 30)
     }
   }, [activeSector, currentProject])
 
@@ -167,30 +216,30 @@ export default function EditProjectPage() {
               : null)
           }
           currentProject={currentProject}
-          trayType={trayTypeUI}
-          reservePercentage={reservePercentageUI}
+          trayType={trayType}
+          reservePercentage={reservePercentage}
           onTrayTypeChange={(newType) => {
-            console.log('Page: trayTypeUI cambiado a', newType)
-            setTrayTypeUI(newType)
+            console.log('Page: trayType cambiado a', newType)
+            setTrayType(newType)
           }}
           onReservePercentageChange={(newValue) => {
-            console.log('Page: reservePercentageUI cambiado a', newValue)
-            setReservePercentageUI(newValue)
+            console.log('Page: reservePercentage cambiado a', newValue)
+            setReservePercentage(newValue)
           }}
         />
       ) : (
         // Para proyectos sin sectores, pasar el proyecto completo
         <DataForCalculation
           currentProject={currentProject}
-          trayType={trayTypeUI}
-          reservePercentage={reservePercentageUI}
+          trayType={trayType}
+          reservePercentage={reservePercentage}
           onTrayTypeChange={(newType) => {
-            console.log('Page: trayTypeUI cambiado a', newType)
-            setTrayTypeUI(newType)
+            console.log('Page: trayType cambiado a', newType)
+            setTrayType(newType)
           }}
           onReservePercentageChange={(newValue) => {
-            console.log('Page: reservePercentageUI cambiado a', newValue)
-            setReservePercentageUI(newValue)
+            console.log('Page: reservePercentage cambiado a', newValue)
+            setReservePercentage(newValue)
           }}
         />
       )}
@@ -213,8 +262,8 @@ export default function EditProjectPage() {
             : !!(currentProject.cables && currentProject.cables.length > 0)
         }
         // Pasar los valores actualizados de UI
-        trayTypeUI={trayTypeUI}
-        reservePercentageUI={reservePercentageUI}
+        trayTypeUI={trayType}
+        reservePercentageUI={reservePercentage}
       />
     </section>
   )

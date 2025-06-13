@@ -89,8 +89,12 @@ export default function SaveAndCalc({
         })
 
         // Redireccionar a la página de resultados con parámetro para indicar que viene de calcular
+        // y con el ID del sector activo si existe
+        const redirectUrl = `/dashboard/calculator/results/${projectId}?fromCalculation=true${
+          sectorId ? `&sectorId=${sectorId}` : ''
+        }`
         setTimeout(() => {
-          router.push(`/dashboard/calculator/results/${projectId}?fromCalculation=true`)
+          router.push(redirectUrl)
         }, 1500) // Esperar 1.5 segundos para que el usuario vea el mensaje
       } else {
         // Mostrar alerta de error
