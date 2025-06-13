@@ -64,8 +64,8 @@ export default function AddSectorPage() {
       }
 
       if (data) {
-        // Redirigir a la página de edición del proyecto
-        const editProjectUrl = `${appLinks.calculatorEditProject.path}/${projectId}`;
+        // Redirigir a la página de edición del proyecto con el ID del nuevo sector
+        const editProjectUrl = `${appLinks.calculatorEditProject.path}/${projectId}?newSectorId=${data.sector.id}`;
         console.log(`Redirigiendo a: ${editProjectUrl}`);
         
         // Usar window.location para una redirección directa del navegador
